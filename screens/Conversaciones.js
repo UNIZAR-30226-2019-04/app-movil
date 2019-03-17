@@ -17,7 +17,24 @@ import { AsyncStorage } from "react-native";
 
 export default class Conversaciones extends Component {
   state = {
-    conversaciones: [],
+    conversaciones: [
+      {
+        id: 1,
+        seller: 2,
+        seller_email: "albertoynono@gmail.com",
+        buyer_email: "albert111.garcia@gmail.com",
+        buyer: 2,
+        reated_date: "2019-02-15 15:26:52"
+      },
+      {
+        id: 2,
+        buyer: 1,
+        buyer_email: "albertoynono@gmail.com",
+        seller_email: "albert111.garcia@gmail.com",
+        seller: 2,
+        created_date: "2019-02-15 15:26:52"
+      }
+    ],
     user: "",
     token: ""
   };
@@ -72,12 +89,13 @@ export default class Conversaciones extends Component {
           renderItem={({ item, index }) => (
             <ListItem
               title={this._checkUser(item)}
-              leftIcon={{ name: "av-timer" }}
-              style={{
-                height: 52,
-                backgroundColor: "grey",
-                borderRadius: 1
+              leftAvatar={{
+                source: {
+                  uri:
+                    "https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg"
+                }
               }}
+              style={{}}
               onPress={() =>
                 this.props.navigation.navigate("ChatTabNavigator", {
                   room: item.id,
