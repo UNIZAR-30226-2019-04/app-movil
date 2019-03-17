@@ -41,17 +41,6 @@ export default class SearchModal extends Component {
           onRequestClose={() => this.setModalVisible(false)}
         >
           <ScrollView style={{ backgroundColor: "#01579B" }}>
-            <Ionicons
-              style={{
-                position: "absolute",
-                right: 20,
-                top: 20
-              }}
-              onPress={() => this.setModalVisible(false)}
-              name="md-close"
-              size={32}
-              color="white"
-            />
             <View style={{ margin: 52 }}>
               <SearchBar
                 searchIcon={{ color: "white" }}
@@ -77,7 +66,17 @@ export default class SearchModal extends Component {
                 lightTheme
                 round
               />
-
+              <Ionicons
+                style={{
+                  position: "absolute",
+                  right: -30,
+                  top: 15
+                }}
+                onPress={() => this.setModalVisible(false)}
+                name="md-close"
+                size={32}
+                color="white"
+              />
               <View>
                 <Text style={{ color: "white" }}>Hide Modal</Text>
 

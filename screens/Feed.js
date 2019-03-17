@@ -62,7 +62,7 @@ export default class Feed extends Component {
     const { search } = this.state;
 
     return (
-      <View style={{ flex: 1 }}>
+      <View style={{ flex: 1, backgroundColor: "#F5F5F5" }}>
         <View
           style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
         >

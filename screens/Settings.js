@@ -11,11 +11,21 @@ import {
   RkTheme,
   RkStyleSheet
 } from "react-native-ui-kitten";
-import { Avatar, Button, Text } from "react-native-elements";
+import { Avatar, Button, Text, ButtonGroup } from "react-native-elements";
 import { Constants, MapView } from "expo";
 
 import MapModal from "../components/mapModal";
 export default class Settings extends Component {
+  constructor() {
+    super();
+
+    this.updateIndex = this.updateIndex.bind(this);
+  }
+
+  updateIndex(selectedIndex) {
+    this.setState({ selectedIndex });
+  }
+
   static navigationOptions = ({ navigation }) => {
     return {
       // Your custom header
@@ -61,7 +71,8 @@ export default class Settings extends Component {
     confirmPassword: this.user.confirmPassword,
     value: 0,
     language: null,
-    distancia: 0
+    distancia: 0,
+    selectedIndex: null
   };
 
   stepFunction() {
@@ -74,16 +85,29 @@ export default class Settings extends Component {
     }
   }
   render() {
+    const buttons = ["24h", "7d", "30d"];
+    const { selectedIndex } = this.state;
+
     return (
       <View style={styles.section}>
-        <View style={[styles.row, styles.heading]}>
-          <RkText rkType="header6 primary">CATEGORIAS</RkText>
-        </View>
+        <View style={{ flexDirection: "column" }}>
+          <RkText
+            style={{ margin: 20, marginBottom: 30 }}
+            rkType="header6 primary"
+          >
+            CATEGORIAS
+          </RkText>
 
-        <View style={styles.row}>
           <Picker
+            mode="dropdown"
             selectedValue={this.state.language}
-            style={{ height: 50, width: 100 }}
+            style={{
+              height: 50,
+              width: 200,
+              marginLeft: 20,
+              marginTop: -30,
+              marginBottom: 10
+            }}
             onValueChange={(itemValue, itemIndex) =>
               this.setState({ language: itemValue })
             }
@@ -92,7 +116,8 @@ export default class Settings extends Component {
             <Picker.Item label="JavaScript" value="js" />
           </Picker>
         </View>
-        <View style={styles.lineStyle} />
+
+        <View style={[styles.lineStyle, { marginBottom: 20 }]} />
 
         <View style={[styles.row, styles.heading]}>
           <RkText
@@ -109,6 +134,7 @@ export default class Settings extends Component {
               onValueChange={value => this.setState({ value })}
               maximumValue={2000}
               step={this.stepFunction()}
+              thumbTintColor="#01579B"
             />
             <Text>Precio hasta: {this.state.value} €</Text>
           </View>
@@ -130,9 +156,8 @@ export default class Settings extends Component {
 
         <View
           style={{
-            flex: 1,
             alignItems: "stretch",
-            margin: 30,
+            marginHorizontal: 30,
             justifyContent: "center"
           }}
         >
@@ -141,11 +166,25 @@ export default class Settings extends Component {
             onValueChange={distancia => this.setState({ distancia })}
             maximumValue={200}
             step={1}
+            thumbTintColor="#01579B"
           />
           <Text>Distancia max: {this.state.distancia} km</Text>
         </View>
 
         <View style={styles.lineStyle} />
+
+        <View style={[styles.row, styles.heading]}>
+          <RkText style={{ marginTop: 10 }} rkType="header6 primary">
+            FECHA PUBLCACIÖN
+          </RkText>
+        </View>
+
+        <ButtonGroup
+          onPress={this.updateIndex}
+          selectedIndex={selectedIndex}
+          buttons={buttons}
+          containerStyle={{ height: 100 }}
+        />
       </View>
     );
   }
@@ -163,7 +202,7 @@ const styles = RkStyleSheet.create(theme => ({
     flex: 1
   },
   section: {
-    marginVertical: 25
+    backgroundColor: "#F5F5F5"
   },
   heading: {
     paddingBottom: 12.5
@@ -183,7 +222,7 @@ const styles = RkStyleSheet.create(theme => ({
     flexDirection: "row",
     alignItems: "center",
     padding: Constants.statusBarHeight,
-    backgroundColor: "white"
+    backgroundColor: "#F5F5F5"
   },
 
   picker: {

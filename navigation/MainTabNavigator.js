@@ -192,7 +192,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
+    backgroundColor: "#F5F5F5"
   },
   header: {
     paddingTop: Constants.statusBarHeight,

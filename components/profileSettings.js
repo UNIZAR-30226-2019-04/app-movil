@@ -69,7 +69,7 @@ export default class ProfileSettings extends React.Component {
   };
 
   render = () => (
-    <ScrollView style={styles.root} style={{ marginTop: 60 }}>
+    <ScrollView style={styles.root} style={{ marginTop: 0 }}>
       <RkAvoidKeyboard>
         <View style={styles.header}>
           <Avatar
@@ -160,12 +160,13 @@ export default class ProfileSettings extends React.Component {
             />
           </View>
         </View>
-        <View style={styles.section}>
-          <View style={[styles.row, styles.heading]}>
-            <RkText rkType="primary header6">CONNECT YOUR ACCOUNT</RkText>
-          </View>
-        </View>
-        <Button type="large" style={styles.button} title="SAVE" />
+
+        <Button
+          type="clear"
+          containerStyle={{ height: 100 }}
+          style={styles.button}
+          title="SAVE"
+        />
       </RkAvoidKeyboard>
     </ScrollView>
   );
@@ -183,7 +184,7 @@ const styles = RkStyleSheet.create(theme => ({
     flex: 1
   },
   section: {
-    marginVertical: 25
+    marginVertical: 15
   },
   heading: {
     paddingBottom: 12.5
@@ -196,7 +197,7 @@ const styles = RkStyleSheet.create(theme => ({
     alignItems: "center"
   },
   button: {
-    marginHorizontal: 16,
-    marginBottom: 32
+    flex: 1,
+    height: 100
   }
 }));
