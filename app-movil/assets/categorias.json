@@ -1,0 +1,41 @@
+{
+  "Coches": {
+    "icon": "car"
+  },
+  "Inmuebles": {
+    "icon": "home"
+  },
+  "Motos": {
+    "icon": "motorcycle"
+  },
+  "Moviles y Accesorios": {
+    "icon": "mobile"
+  },
+  "TV, audio, cámaras": {
+    "icon": "motorcycle"
+  },
+  "Ordenadores": {
+    "icon": "laptop"
+  },
+  "Deportes": {
+    "icon": "soccer-ball-o"
+  },
+  "Bicicletas": {
+    "icon": "bicycle"
+  },
+  "Juesgos y Consolas": {
+    "icon": "gamepad"
+  },
+  "Moda y accesorios": {
+    "icon": "shirtsinbulk"
+  },
+  "Libros y música": {
+    "icon": "book"
+  },
+  "Servicios": {
+    "icon": "wrench"
+  },
+  "Otros": {
+    "icon": "ellipsis-h"
+  }
+}
