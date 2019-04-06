@@ -11,12 +11,16 @@ import { Rating, AirbnbRating, Button } from "react-native-elements";
 import ModalDropdown from "react-native-modal-dropdown";
 
 import TabsExample from "../components/Tabs/TabsExample";
+import axios from "axios";
+import { API_BASE } from "../config";
+import { AsyncStorage } from "react-native";
 
 let _this = null;
 
 export default class Profile extends Component {
   componentDidMount() {
     _this = this;
+    this.fetchData();
   }
 
   static navigationOptions = ({ navigation }) => {
@@ -32,7 +36,11 @@ export default class Profile extends Component {
             marginRight: 10
           }}
         >
-          <EditProfileModal />
+          <EditProfileModal
+            profile={() => {
+              this._perfil;
+            }}
+          />
 
           <ModalDropdown
             options={["Log out", "option 2"]}
@@ -61,8 +69,16 @@ export default class Profile extends Component {
       />
     );
   }
+
   state = {
     data: undefined,
+    nick: "",
+    nombre: "",
+    apellidos: "",
+    imagen_perfil: "",
+    valoracion: "",
+    telefono: "",
+    profile: {},
     index: 0,
     routes: [
       { key: "first", title: "En Venta" },
@@ -75,6 +91,9 @@ export default class Profile extends Component {
     console.log("Rating is: " + rating);
   }
 
+  _perfil() {
+    return this.state.profile;
+  }
   constructor(props) {
     super(props);
 
@@ -110,6 +129,34 @@ export default class Profile extends Component {
     );
   };
 
+  fetchData = async () => {
+    let token, user;
+    try {
+      user = await AsyncStorage.getItem("user");
+      token = await AsyncStorage.getItem("token");
+      console.log("User", user, token);
+    } catch (error) {
+      console.log(error);
+    }
+    const URL = `${API_BASE}/user/`;
+    const res = await axios.get(URL, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token
+      }
+    });
+    const perfil = res.data.data[0];
+    console.log("Response Perfil", perfil);
+    this.setState({
+      nick: perfil.nick,
+      nombre: perfil.nombre,
+      apellidos: perfil.apellidos,
+      valoracion: perfil.valoracion,
+      telefono: perfil.telefono,
+      profile: perfil
+    });
+  };
+
   _renderLabel = scene => {
     const label = scene.label;
     return <Text style={{ color: "black" }}>{label}</Text>;
@@ -138,17 +185,17 @@ export default class Profile extends Component {
           }}
         >
           <RkText style={{ fontSize: 20, fontWeight: "bold" }}>{`${
-            this.state.data.firstName
-          } ${this.state.data.lastName}`}</RkText>
+            this.state.nick
+          }`}</RkText>
 
           <AirbnbRating
             count={5}
             style={{ marginTop: -10 }}
             //reviews={["Terrible", "Bad", "OK", "Good", "Very Good"]}
             showRating={false}
-            defaultRating={3}
+            defaultRating={this.state.valoracion}
             size={12}
-            readonly
+            readonly={true}
           />
         </View>
       </View>

@@ -200,7 +200,7 @@ const AppDrawerNavigator = createDrawerNavigator(
 */
 const AppSwitchNavigator = createSwitchNavigator({
   // LogIn & Registration
-  //Welcome: { screen: WelcomeScreen },
+  Welcome: { screen: WelcomeScreen },
   Dashboard: { screen: AppDrawerNavigator }
 });
 
