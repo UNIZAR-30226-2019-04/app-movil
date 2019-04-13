@@ -14,26 +14,16 @@ export default class ProfileSettings extends React.Component {
     title: "Profile Settings".toUpperCase()
   };
 
-  user = {
-    firstName: "Alberto",
-    lastName: "Garcia",
-    email: "alberto@gmail.com",
-    country: "España",
-    phone: "608014003",
-    password: "password",
-    newPassword: "new password",
-    confirmPassword: "new password"
-  };
-
   state = {
-    firstName: this.user.firstName,
-    lastName: this.user.lastName,
-    email: this.user.email,
-    country: this.user.country,
-    phone: this.user.phone,
-    password: this.user.password,
-    newPassword: this.user.newPassword,
-    confirmPassword: this.user.confirmPassword
+    profile_image: this.props.profile.imagen_perfil,
+    firstName: this.props.profile.nombre,
+    lastName: this.props.profile.apellido,
+    email: this.props.profile.email,
+    country: "España",
+    phone: this.props.profile.telefono,
+    password: "",
+    newPassword: "",
+    confirmPassword: ""
   };
 
   onFirstNameInputChanged = text => {
@@ -89,7 +79,7 @@ export default class ProfileSettings extends React.Component {
           </View>
           <View style={styles.row}>
             <RkTextInput
-              label="First Name"
+              label="Nombre"
               value={this.state.firstName}
               rkType="right clear"
               onChangeText={this.onFirstNameInputChanged}
@@ -97,7 +87,7 @@ export default class ProfileSettings extends React.Component {
           </View>
           <View style={styles.row}>
             <RkTextInput
-              label="Last Name"
+              label="Apellido"
               value={this.state.lastName}
               onChangeText={this.onLastNameInputChanged}
               rkType="right clear"
@@ -113,7 +103,7 @@ export default class ProfileSettings extends React.Component {
           </View>
           <View style={styles.row}>
             <RkTextInput
-              label="Country"
+              label="País"
               value={this.state.country}
               onChangeText={this.onCountryInputChanged}
               rkType="right clear"
@@ -121,7 +111,7 @@ export default class ProfileSettings extends React.Component {
           </View>
           <View style={styles.row}>
             <RkTextInput
-              label="Phone"
+              label="Teléfono"
               value={this.state.phone}
               onChangeText={this.onPhoneInputChanged}
               rkType="right clear"
@@ -130,11 +120,11 @@ export default class ProfileSettings extends React.Component {
         </View>
         <View style={styles.section}>
           <View style={[styles.row, styles.heading]}>
-            <RkText rkType="primary header6">CHANGE PASSWORD</RkText>
+            <RkText rkType="primary header6">CAMBIAR CONTRASEÑA</RkText>
           </View>
           <View style={styles.row}>
             <RkTextInput
-              label="Old Password"
+              label="Antigua contraseña"
               value={this.state.password}
               rkType="right clear"
               secureTextEntry
@@ -143,7 +133,7 @@ export default class ProfileSettings extends React.Component {
           </View>
           <View style={styles.row}>
             <RkTextInput
-              label="New Password"
+              label="Nueva contraseña"
               value={this.state.newPassword}
               rkType="right clear"
               secureTextEntry
@@ -152,7 +142,7 @@ export default class ProfileSettings extends React.Component {
           </View>
           <View style={styles.row}>
             <RkTextInput
-              label="Confirm Password"
+              label="Confirmar nueva contraseña"
               value={this.state.confirmPassword}
               rkType="right clear"
               secureTextEntry

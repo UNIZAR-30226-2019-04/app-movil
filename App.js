@@ -6,7 +6,7 @@ import { Provider } from "react-redux";
 import { createStore } from "redux";
 import allReducers from "./reducers/index.js";
 
-export default class App extends React.Component {
+export default class App extends React.Component<{}> {
   state = {
     isLoadingComplete: false
   };
@@ -41,7 +41,8 @@ export default class App extends React.Component {
         ...Icon.Ionicons.font,
         // We include SpaceMono because we use it in HomeScreen.js. Feel free
         // to remove this if you are not using it in your app
-        "space-mono": require("./assets/fonts/SpaceMono-Regular.ttf")
+        "space-mono": require("./assets/fonts/SpaceMono-Regular.ttf"),
+        "Lato-Regular": require("./assets/fonts/Lato-Regular.ttf")
       })
     ]);
   };

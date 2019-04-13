@@ -1,16 +1,23 @@
 {
   "expo": {
-    "name": "Test",
-    "slug": "Test-project",
+    "name": "Telocam",
+    "slug": "Telocam",
+    "icon": "./assets/icons/telocam_icon.png",
+    "version": "1.0.1",
     "privacy": "public",
     "sdkVersion": "32.0.0",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.telocamSL.telocam"
+    },
+    "android": {
+      "package": "com.telocamSL.telocam"
+    },
     "platforms": [
       "ios",
       "android"
     ],
-    "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
     "splash": {
       "image": "./assets/images/splash.png",
       "resizeMode": "contain",
@@ -22,8 +29,6 @@
     "assetBundlePatterns": [
       "**/*"
     ],
-    "ios": {
-      "supportsTablet": true
-    }
+    "description": ""
   }
 }

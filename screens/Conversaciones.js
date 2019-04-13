@@ -95,7 +95,7 @@ export default class Conversaciones extends Component {
                     "https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg"
                 }
               }}
-              style={{}}
+              style={{ marginVertical: 3 }}
               onPress={() =>
                 this.props.navigation.navigate("ChatTabNavigator", {
                   room: item.id,
@@ -116,7 +116,7 @@ export default class Conversaciones extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff"
+    backgroundColor: "#F5F5F5"
   },
   item: {
     padding: 10,

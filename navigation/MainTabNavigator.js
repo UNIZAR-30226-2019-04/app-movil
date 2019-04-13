@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import { View, Text, StyleSheet, Button, Field } from "react-native";
-import { SearchBar } from "react-native-elements";
+import { View, StyleSheet, Button, Field } from "react-native";
 import WelcomeScreen from "../screens/WelcomeScreen";
 import DashboardScreen from "../screens/DashboardScreen";
 import Feed from "../screens/Feed";
@@ -10,17 +9,16 @@ import Chat from "../screens/Chat";
 import Conversaciones from "../screens/Conversaciones";
 import { Ionicons } from "@expo/vector-icons";
 import Icon from "react-native-vector-icons/FontAwesome";
+import ProductDetails from "../screens/ProductDetails";
+import CustomLeftDrawerComponent from "../components/CustomLeftDrawerComponent";
 
 import {
   createSwitchNavigator,
   createAppContainer,
   createDrawerNavigator,
-  createBottomTabNavigator,
   createStackNavigator
 } from "react-navigation";
 import { Constants } from "expo";
-
-import SimpleForm from "../components/SimpleForm.js";
 
 /*
 Pantalla principal
@@ -58,6 +56,25 @@ const DashboardStackNavigator = createStackNavigator({
   },
   Settings: {
     screen: Settings,
+    navigationOptions: ({ navigation }) => {
+      return {
+        headerStyle: {
+          backgroundColor: "#01579B"
+        },
+        headerLeft: (
+          <Icon
+            onPress={() => navigation.navigate("DashboardTabNavigator")}
+            name="arrow-left"
+            style={{ marginLeft: 10 }}
+            size={30}
+            color="white"
+          />
+        )
+      };
+    }
+  },
+  ProductDetails: {
+    screen: ProductDetails,
     navigationOptions: ({ navigation }) => {
       return {
         headerStyle: {
@@ -133,6 +150,8 @@ const ChatStackNavigator = createStackNavigator({
   ChatTabNavigator: {
     screen: Chat,
     navigationOptions: ({ navigation }) => {
+      const { state, goBack } = navigation;
+      const params = state.params || {};
       return {
         headerStyle: {
           backgroundColor: "#01579B"
@@ -142,7 +161,8 @@ const ChatStackNavigator = createStackNavigator({
         },
         headerLeft: (
           <Icon
-            onPress={() => navigation.navigate("ConversacionesTabNavigator")}
+            //onPress={() => navigation.navigate("ConversacionesTabNavigator")}
+            onPress={() => goBack(params.go_back_key)}
             name="arrow-left"
             style={{ marginLeft: 10 }}
             size={30}
@@ -171,8 +191,8 @@ const AppDrawerNavigator = createDrawerNavigator(
   },
   {
     initialRouteName: "Dashboard",
-    //contentComponent: DrawerScreen,
-    drawerWidth: 300
+    contentComponent: CustomLeftDrawerComponent
+    //drawerWidth: 300
   }
 );
 

@@ -19,7 +19,7 @@ import SimpleIcon from "react-native-vector-icons/SimpleLineIcons";
 const SCREEN_WIDTH = Dimensions.get("window").width;
 const SCREEN_HEIGHT = Dimensions.get("window").height;
 
-const BG_IMAGE = require("../assets/images/bg_screen4.jpg");
+const BG_IMAGE = require("../assets/images/bg_screen3.jpg");
 
 import axios from "axios";
 import { API_BASE } from "../config";
@@ -53,7 +53,9 @@ export default class LoginScreen2 extends Component {
       isLoading: false,
       isEmailValid: true,
       isPasswordValid: true,
-      isConfirmationValid: true
+      isConfirmationValid: true,
+      isFormValid: true,
+      isFormErrorMsg: ""
     };
 
     this.selectCategory = this.selectCategory.bind(this);
@@ -99,7 +101,11 @@ export default class LoginScreen2 extends Component {
   validateEmail(email) {
     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-    return re.test(email);
+    response = re.test(email);
+    if (!response) {
+      this.setState({ isFormErrorMsg: "Introduzca un email valido" });
+    }
+    return response;
   }
 
   login() {
@@ -114,9 +120,7 @@ export default class LoginScreen2 extends Component {
     });
 
     /////// !!!!!!!!!!
-
     //this._storeData();
-
     ///////
 
     axios
@@ -130,12 +134,13 @@ export default class LoginScreen2 extends Component {
       )
       .then(resp => {
         const token = resp.data.Authorization;
-        const user = resp.data.user;
-        console.log(token, user);
+        //const user = resp.data.user;
+        const public_id = resp.data.public_id;
+        console.log(resp.data);
 
         try {
           AsyncStorage.setItem("token", token);
-          AsyncStorage.setItem("user", user);
+          AsyncStorage.setItem("user", public_id);
         } catch (error) {
           console.log(error);
         }
@@ -145,7 +150,14 @@ export default class LoginScreen2 extends Component {
         this.props.navigation.navigate("Dashboard");
       })
       .catch(err => {
-        console.log(err);
+        console.log("Error: ", err.response.status);
+        if (err.response.status == 401 && this.state.isEmailValid) {
+          this.setState({
+            isFormErrorMsg: "Email o contraseña no coinciden.",
+            isEmailValid: false
+          });
+        }
+
         try {
           AsyncStorage.removeItem("token" + "");
           AsyncStorage.removeItem("user" + "");
@@ -180,6 +192,7 @@ export default class LoginScreen2 extends Component {
         {}
       )
       .then(resp => {
+        console.log(resp);
         const token = resp.data.Authorization;
         const user = resp.data.user;
         if (user !== null) {
@@ -231,7 +244,7 @@ export default class LoginScreen2 extends Component {
               >
                 <View style={styles.titleContainer}>
                   <View style={{ flexDirection: "row" }}>
-                    <Text style={styles.titleText}>WALLAPOP</Text>
+                    <Text style={styles.titleText}>TELOCAM</Text>
                   </View>
                 </View>
                 <View
@@ -325,7 +338,7 @@ export default class LoginScreen2 extends Component {
                     onSubmitEditing={() => this.passwordInput.focus()}
                     onChangeText={email => this.setState({ email })}
                     errorMessage={
-                      isEmailValid ? null : "Please enter a valid email address"
+                      isEmailValid ? null : this.state.isFormErrorMsg
                     }
                   />
 
@@ -350,7 +363,7 @@ export default class LoginScreen2 extends Component {
                       borderBottomColor: "rgba(0, 0, 0, 0.38)"
                     }}
                     inputStyle={{ marginLeft: 10 }}
-                    placeholder={"Password"}
+                    placeholder={"Contraseña"}
                     ref={input => (this.passwordInput = input)}
                     onSubmitEditing={() =>
                       isSignUpPage
@@ -361,7 +374,7 @@ export default class LoginScreen2 extends Component {
                     errorMessage={
                       isPasswordValid
                         ? null
-                        : "Please enter at least 8 characters"
+                        : "La contraseña debe de tener al menos 8 caracteres"
                     }
                   />
                   {isSignUpPage && (
@@ -387,7 +400,7 @@ export default class LoginScreen2 extends Component {
                         borderBottomColor: "rgba(0, 0, 0, 0.38)"
                       }}
                       inputStyle={{ marginLeft: 10 }}
-                      placeholder={"Confirm password"}
+                      placeholder={"Confirmar contraseña"}
                       ref={input => (this.confirmationInput = input)}
                       onSubmitEditing={this.signUp}
                       onChangeText={passwordConfirmation =>
@@ -396,7 +409,7 @@ export default class LoginScreen2 extends Component {
                       errorMessage={
                         isConfirmationValid
                           ? null
-                          : "Please enter the same password"
+                          : "Por favor, vuelve a introducir la misma contraseña"
                       }
                     />
                   )}
@@ -414,7 +427,7 @@ export default class LoginScreen2 extends Component {
               </KeyboardAvoidingView>
               <View style={styles.helpContainer}>
                 <Button
-                  title={"Need help ?"}
+                  title={"¿Necesita ayuda?"}
                   titleStyle={{ color: "white" }}
                   buttonStyle={{ backgroundColor: "transparent" }}
                   underlayColor="transparent"
@@ -423,7 +436,7 @@ export default class LoginScreen2 extends Component {
               </View>
             </View>
           ) : (
-            <Text>Loading...</Text>
+            <Text>Cargando...</Text>
           )}
         </ImageBackground>
       </View>
@@ -465,7 +478,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold"
   },
   loginButton: {
-    backgroundColor: "rgba(232, 147, 142, 1)",
+    backgroundColor: "#3399FF",
     borderRadius: 10,
     height: 50,
     width: 200
@@ -495,7 +508,8 @@ const styles = StyleSheet.create({
     width: SCREEN_WIDTH,
     height: SCREEN_HEIGHT,
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
+    resizeMode: "stretch"
   },
   categoryText: {
     textAlign: "center",

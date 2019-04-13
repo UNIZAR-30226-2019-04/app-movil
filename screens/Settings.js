@@ -13,6 +13,7 @@ import {
 } from "react-native-ui-kitten";
 import { Avatar, Button, Text, ButtonGroup } from "react-native-elements";
 import { Constants, MapView } from "expo";
+import categories from "../assets/categorias.json";
 
 import MapModal from "../components/mapModal";
 export default class Settings extends Component {
@@ -88,9 +89,13 @@ export default class Settings extends Component {
     const buttons = ["24h", "7d", "30d"];
     const { selectedIndex } = this.state;
 
+    const list_categories = Object.keys(categories).map(name => {
+      return <Picker.Item label={name} value={name} />;
+    });
+
     return (
       <View style={styles.section}>
-        <View style={{ flexDirection: "column" }}>
+        <View style={{ flexDirection: "column", marginBottom: -20 }}>
           <RkText
             style={{ margin: 20, marginBottom: 30 }}
             rkType="header6 primary"
@@ -102,22 +107,19 @@ export default class Settings extends Component {
             mode="dropdown"
             selectedValue={this.state.language}
             style={{
-              height: 50,
               width: 200,
-              marginLeft: 20,
-              marginTop: -30,
-              marginBottom: 10
+              top: -30,
+              marginLeft: 10
             }}
             onValueChange={(itemValue, itemIndex) =>
               this.setState({ language: itemValue })
             }
           >
-            <Picker.Item label="Java" value="java" />
-            <Picker.Item label="JavaScript" value="js" />
+            {list_categories}
           </Picker>
         </View>
 
-        <View style={[styles.lineStyle, { marginBottom: 20 }]} />
+        <View style={[styles.lineStyle, { marginBottom: 0 }]} />
 
         <View style={[styles.row, styles.heading]}>
           <RkText
@@ -175,7 +177,7 @@ export default class Settings extends Component {
 
         <View style={[styles.row, styles.heading]}>
           <RkText style={{ marginTop: 10 }} rkType="header6 primary">
-            FECHA PUBLCACIÖN
+            FECHA PUBLCACIÓN
           </RkText>
         </View>
 
@@ -185,6 +187,7 @@ export default class Settings extends Component {
           buttons={buttons}
           containerStyle={{ height: 100 }}
         />
+        <View style={styles.padding} />
       </View>
     );
   }
@@ -193,6 +196,10 @@ export default class Settings extends Component {
 const styles = RkStyleSheet.create(theme => ({
   root: {
     backgroundColor: theme.colors.screen.base
+  },
+  padding: {
+    padding: 20,
+    height: 10
   },
   header: {
     backgroundColor: theme.colors.screen.neutral,
