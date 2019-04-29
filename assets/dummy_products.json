@@ -4,28 +4,56 @@
     "price": 53,
     "description": "Surface: 110 m \n Rooms: 4. \n \n Se vende precioso piso en el Actur, en el edificio Sarakuta. Parada de autobus y tranvia en la puerta, a 5 min caminando del Centro COmercial Grancasqa y el WTCZ. El piso tiene 4 habitaciones, 3 de ellas dobles, una de ellas suite con ducha de hidromasaje, el otrobaño completo, salón, cocina equipada, 2 terrazas, una de ellas con vista paronámica",
     "name": "Apple Watch",
-    "url": "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/image/AppleInc/aos/published/images/M/TQ/MTQT2/MTQT2_AV1?wid=1144&hei=1144&fmt=jpeg&qlt=95&op_usm=0.5,0.5&.v=1535575239308"
+    "multimedia": [
+      {
+        "url": "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/image/AppleInc/aos/published/images/M/TQ/MTQT2/MTQT2_AV1?wid=1144&hei=1144&fmt=jpeg&qlt=95&op_usm=0.5,0.5&.v=1535575239308",
+        "type": "image"
+      },
+      {
+        "url": "http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4",
+        "type": "video"
+      },
+      {
+        "url": "https://photos5.appleinsider.com/gallery/30510-50255-all-three-goals-apple-watch-xl.jpg",
+        "type": "image"
+      }
+    ]
   },
   "camera10": {
     "id": 2,
     "price": 53,
     "description": "Surface: 110 m \n Rooms: 4. \n \n Se vende precioso piso en el Actur, en el edificio Sarakuta. Parada de autobus y tranvia en la puerta, a 5 min caminando del ce",
     "name": "Canon EOS &D",
-    "url": "https://cspl-corpweb-site-asia-production.s3.amazonaws.com/media/init/thumbnails/photography.png"
+    "multimedia": [
+      {
+        "type": "image",
+        "url": "https://cspl-corpweb-site-asia-production.s3.amazonaws.com/media/init/thumbnails/photography.png"
+      }
+    ]
   },
   "Apple TV": {
     "id": 3,
     "price": 53,
     "description": "Surface: 110 m \n Rooms: 4. \n \n Se vende precioso piso en el Actur, en el edificio Sarakuta. Parada de autobus y tranvia en la puerta, a 5 min caminando del ce",
     "name": "Apple TV",
-    "url": "https://support.apple.com/library/content/dam/edam/applecare/images/en_US/homepod/apple-tv-product-lockup-callout.png"
+    "multimedia": [
+      {
+        "type": "image",
+        "url": "https://support.apple.com/library/content/dam/edam/applecare/images/en_US/homepod/apple-tv-product-lockup-callout.png"
+      }
+    ]
   },
   "Vans sweeter": {
     "id": 4,
     "price": 53,
     "description": "Surface: 110 m \n Rooms: 4. \n \n Se vende precioso piso en el Actur, en el edificio Sarakuta. Parada de autobus y tranvia en la puerta, a 5 min caminando del ce",
     "name": "Sudadera Vans",
-    "url": "http://picture-cdn.wheretoget.it/thcn3v-l-610x610-sweater-sweat-grey-vans-clothe-clothes-clothing.jpg"
+    "multimedia": [
+      {
+        "type": "image",
+        "url": "http://picture-cdn.wheretoget.it/thcn3v-l-610x610-sweater-sweat-grey-vans-clothe-clothes-clothing.jpg"
+      }
+    ]
   },
 
   "Nike1": {
@@ -33,35 +61,68 @@
     "price": 53,
     "description": "Surface: 110 m \n Rooms: 4. \n \n Se vende precioso piso en el Actur, en el edificio Sarakuta. Parada de autobus y tranvia en la puerta, a 5 min caminando del ce",
     "name": "Nike shorts",
-    "url": "https://cdn.zando.co.za/p/267155-5783-551762-2-product.jpg"
+    "multimedia": [
+      {
+        "type": "image",
+        "url": "https://cdn.zando.co.za/p/267155-5783-551762-2-product.jpg"
+      }
+    ]
   },
   "watch1": {
     "id": 6,
     "price": 53,
     "description": "Surface: 110 m \n Rooms: 4. \n \n Se vende precioso piso en el Actur, en el edificio Sarakuta. Parada de autobus y tranvia en la puerta, a 5 min caminando del Centro COmercial Grancasqa y el WTCZ. El piso tiene 4 habitaciones, 3 de ellas dobles, una de ellas suite con ducha de hidromasaje, el otrobaño completo, salón, cocina equipada, 2 terrazas, una de ellas con vista paronámica",
     "name": "Apple Watch",
-    "url": "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/image/AppleInc/aos/published/images/M/TQ/MTQT2/MTQT2_AV1?wid=1144&hei=1144&fmt=jpeg&qlt=95&op_usm=0.5,0.5&.v=1535575239308"
+    "multimedia": [
+      {
+        "url": "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/image/AppleInc/aos/published/images/M/TQ/MTQT2/MTQT2_AV1?wid=1144&hei=1144&fmt=jpeg&qlt=95&op_usm=0.5,0.5&.v=1535575239308",
+        "type": "image"
+      },
+      {
+        "url": "http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4",
+        "type": "video"
+      },
+      {
+        "url": "https://photos5.appleinsider.com/gallery/30510-50255-all-three-goals-apple-watch-xl.jpg",
+        "type": "image"
+      }
+    ]
   },
   "camera1": {
     "id": 7,
     "price": 53,
     "description": "Surface: 110 m \n Rooms: 4. \n \n Se vende precioso piso en el Actur, en el edificio Sarakuta. Parada de autobus y tranvia en la puerta, a 5 min caminando del ce",
     "name": "Canon EOS &D",
-    "url": "https://cspl-corpweb-site-asia-production.s3.amazonaws.com/media/init/thumbnails/photography.png"
+    "multimedia": [
+      {
+        "type": "image",
+        "url": "https://cspl-corpweb-site-asia-production.s3.amazonaws.com/media/init/thumbnails/photography.png"
+      }
+    ]
   },
   "Apple TV1": {
     "id": 8,
     "price": 53,
     "description": "Surface: 110 m \n Rooms: 4. \n \n Se vende precioso piso en el Actur, en el edificio Sarakuta. Parada de autobus y tranvia en la puerta, a 5 min caminando del ce",
     "name": "Apple TV",
-    "url": "https://support.apple.com/library/content/dam/edam/applecare/images/en_US/homepod/apple-tv-product-lockup-callout.png"
+    "multimedia": [
+      {
+        "type": "image",
+        "url": "https://support.apple.com/library/content/dam/edam/applecare/images/en_US/homepod/apple-tv-product-lockup-callout.png"
+      }
+    ]
   },
   "Vans sweeter1": {
     "id": 9,
     "price": 53,
     "description": "Surface: 110 m \n Rooms: 4. \n \n Se vende precioso piso en el Actur, en el edificio Sarakuta. Parada de autobus y tranvia en la puerta, a 5 min caminando del ce",
     "name": "Sudadera Vans",
-    "url": "http://picture-cdn.wheretoget.it/thcn3v-l-610x610-sweater-sweat-grey-vans-clothe-clothes-clothing.jpg"
+    "multimedia": [
+      {
+        "type": "image",
+        "url": "http://picture-cdn.wheretoget.it/thcn3v-l-610x610-sweater-sweat-grey-vans-clothe-clothes-clothing.jpg"
+      }
+    ]
   },
 
   "Nike2": {
@@ -69,35 +130,68 @@
     "price": 53,
     "description": "Surface: 110 m \n Rooms: 4. \n \n Se vende precioso piso en el Actur, en el edificio Sarakuta. Parada de autobus y tranvia en la puerta, a 5 min caminando del ce",
     "name": "Nike shorts",
-    "url": "https://cdn.zando.co.za/p/267155-5783-551762-2-product.jpg"
+    "multimedia": [
+      {
+        "type": "image",
+        "url": "https://cdn.zando.co.za/p/267155-5783-551762-2-product.jpg"
+      }
+    ]
   },
   "watch2": {
     "id": 11,
     "price": 53,
     "description": "Surface: 110 m \n Rooms: 4. \n \n Se vende precioso piso en el Actur, en el edificio Sarakuta. Parada de autobus y tranvia en la puerta, a 5 min caminando del Centro COmercial Grancasqa y el WTCZ. El piso tiene 4 habitaciones, 3 de ellas dobles, una de ellas suite con ducha de hidromasaje, el otrobaño completo, salón, cocina equipada, 2 terrazas, una de ellas con vista paronámica",
     "name": "Apple Watch",
-    "url": "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/image/AppleInc/aos/published/images/M/TQ/MTQT2/MTQT2_AV1?wid=1144&hei=1144&fmt=jpeg&qlt=95&op_usm=0.5,0.5&.v=1535575239308"
+    "multimedia": [
+      {
+        "url": "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/image/AppleInc/aos/published/images/M/TQ/MTQT2/MTQT2_AV1?wid=1144&hei=1144&fmt=jpeg&qlt=95&op_usm=0.5,0.5&.v=1535575239308",
+        "type": "image"
+      },
+      {
+        "url": "http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4",
+        "type": "video"
+      },
+      {
+        "url": "https://photos5.appleinsider.com/gallery/30510-50255-all-three-goals-apple-watch-xl.jpg",
+        "type": "image"
+      }
+    ]
   },
   "camera2": {
     "id": 12,
     "price": 53,
     "description": "Surface: 110 m \n Rooms: 4. \n \n Se vende precioso piso en el Actur, en el edificio Sarakuta. Parada de autobus y tranvia en la puerta, a 5 min caminando del ce",
     "name": "Canon EOS &D",
-    "url": "https://cspl-corpweb-site-asia-production.s3.amazonaws.com/media/init/thumbnails/photography.png"
+    "multimedia": [
+      {
+        "type": "image",
+        "url": "https://cspl-corpweb-site-asia-production.s3.amazonaws.com/media/init/thumbnails/photography.png"
+      }
+    ]
   },
   "Apple TV2": {
     "id": 13,
     "price": 53,
     "description": "Surface: 110 m \n Rooms: 4. \n \n Se vende precioso piso en el Actur, en el edificio Sarakuta. Parada de autobus y tranvia en la puerta, a 5 min caminando del ce",
     "name": "Apple TV",
-    "url": "https://support.apple.com/library/content/dam/edam/applecare/images/en_US/homepod/apple-tv-product-lockup-callout.png"
+    "multimedia": [
+      {
+        "type": "image",
+        "url": "https://support.apple.com/library/content/dam/edam/applecare/images/en_US/homepod/apple-tv-product-lockup-callout.png"
+      }
+    ]
   },
   "Vans sweeter2": {
     "id": 14,
     "price": 53,
     "description": "Surface: 110 m \n Rooms: 4. \n \n Se vende precioso piso en el Actur, en el edificio Sarakuta. Parada de autobus y tranvia en la puerta, a 5 min caminando del ce",
     "name": "Sudadera Vans",
-    "url": "http://picture-cdn.wheretoget.it/thcn3v-l-610x610-sweater-sweat-grey-vans-clothe-clothes-clothing.jpg"
+    "multimedia": [
+      {
+        "type": "image",
+        "url": "http://picture-cdn.wheretoget.it/thcn3v-l-610x610-sweater-sweat-grey-vans-clothe-clothes-clothing.jpg"
+      }
+    ]
   },
 
   "Nike3": {
@@ -105,35 +199,68 @@
     "price": 53,
     "description": "Surface: 110 m \n Rooms: 4. \n \n Se vende precioso piso en el Actur, en el edificio Sarakuta. Parada de autobus y tranvia en la puerta, a 5 min caminando del ce",
     "name": "Nike shorts",
-    "url": "https://cdn.zando.co.za/p/267155-5783-551762-2-product.jpg"
+    "multimedia": [
+      {
+        "type": "image",
+        "url": "https://cdn.zando.co.za/p/267155-5783-551762-2-product.jpg"
+      }
+    ]
   },
   "watch3": {
     "id": 16,
     "price": 53,
     "description": "Surface: 110 m \n Rooms: 4. \n \n Se vende precioso piso en el Actur, en el edificio Sarakuta. Parada de autobus y tranvia en la puerta, a 5 min caminando del Centro COmercial Grancasqa y el WTCZ. El piso tiene 4 habitaciones, 3 de ellas dobles, una de ellas suite con ducha de hidromasaje, el otrobaño completo, salón, cocina equipada, 2 terrazas, una de ellas con vista paronámica",
     "name": "Apple Watch",
-    "url": "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/image/AppleInc/aos/published/images/M/TQ/MTQT2/MTQT2_AV1?wid=1144&hei=1144&fmt=jpeg&qlt=95&op_usm=0.5,0.5&.v=1535575239308"
+    "multimedia": [
+      {
+        "url": "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/image/AppleInc/aos/published/images/M/TQ/MTQT2/MTQT2_AV1?wid=1144&hei=1144&fmt=jpeg&qlt=95&op_usm=0.5,0.5&.v=1535575239308",
+        "type": "image"
+      },
+      {
+        "url": "http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4",
+        "type": "video"
+      },
+      {
+        "url": "https://photos5.appleinsider.com/gallery/30510-50255-all-three-goals-apple-watch-xl.jpg",
+        "type": "image"
+      }
+    ]
   },
   "camera3": {
     "id": 17,
     "price": 53,
     "description": "Surface: 110 m \n Rooms: 4. \n \n Se vende precioso piso en el Actur, en el edificio Sarakuta. Parada de autobus y tranvia en la puerta, a 5 min caminando del ce",
     "name": "Canon EOS &D",
-    "url": "https://cspl-corpweb-site-asia-production.s3.amazonaws.com/media/init/thumbnails/photography.png"
+    "multimedia": [
+      {
+        "type": "image",
+        "url": "https://cspl-corpweb-site-asia-production.s3.amazonaws.com/media/init/thumbnails/photography.png"
+      }
+    ]
   },
   "Apple TV3": {
     "id": 18,
     "price": 53,
     "description": "Surface: 110 m \n Rooms: 4. \n \n Se vende precioso piso en el Actur, en el edificio Sarakuta. Parada de autobus y tranvia en la puerta, a 5 min caminando del ce",
     "name": "Apple TV",
-    "url": "https://support.apple.com/library/content/dam/edam/applecare/images/en_US/homepod/apple-tv-product-lockup-callout.png"
+    "multimedia": [
+      {
+        "type": "image",
+        "url": "https://support.apple.com/library/content/dam/edam/applecare/images/en_US/homepod/apple-tv-product-lockup-callout.png"
+      }
+    ]
   },
   "Vans sweeter3": {
     "id": 19,
     "price": 53,
     "description": "Surface: 110 m \n Rooms: 4. \n \n Se vende precioso piso en el Actur, en el edificio Sarakuta. Parada de autobus y tranvia en la puerta, a 5 min caminando del ce",
     "name": "Sudadera Vans",
-    "url": "http://picture-cdn.wheretoget.it/thcn3v-l-610x610-sweater-sweat-grey-vans-clothe-clothes-clothing.jpg"
+    "multimedia": [
+      {
+        "type": "image",
+        "url": "http://picture-cdn.wheretoget.it/thcn3v-l-610x610-sweater-sweat-grey-vans-clothe-clothes-clothing.jpg"
+      }
+    ]
   },
 
   "Nike4": {
@@ -141,35 +268,68 @@
     "price": 53,
     "description": "Surface: 110 m \n Rooms: 4. \n \n Se vende precioso piso en el Actur, en el edificio Sarakuta. Parada de autobus y tranvia en la puerta, a 5 min caminando del ce",
     "name": "Nike shorts",
-    "url": "https://cdn.zando.co.za/p/267155-5783-551762-2-product.jpg"
+    "multimedia": [
+      {
+        "type": "image",
+        "url": "https://cdn.zando.co.za/p/267155-5783-551762-2-product.jpg"
+      }
+    ]
   },
   "watch4": {
     "id": 12,
     "price": 53,
     "description": "Surface: 110 m \n Rooms: 4. \n \n Se vende precioso piso en el Actur, en el edificio Sarakuta. Parada de autobus y tranvia en la puerta, a 5 min caminando del Centro COmercial Grancasqa y el WTCZ. El piso tiene 4 habitaciones, 3 de ellas dobles, una de ellas suite con ducha de hidromasaje, el otrobaño completo, salón, cocina equipada, 2 terrazas, una de ellas con vista paronámica",
     "name": "Apple Watch",
-    "url": "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/image/AppleInc/aos/published/images/M/TQ/MTQT2/MTQT2_AV1?wid=1144&hei=1144&fmt=jpeg&qlt=95&op_usm=0.5,0.5&.v=1535575239308"
+    "multimedia": [
+      {
+        "url": "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/image/AppleInc/aos/published/images/M/TQ/MTQT2/MTQT2_AV1?wid=1144&hei=1144&fmt=jpeg&qlt=95&op_usm=0.5,0.5&.v=1535575239308",
+        "type": "image"
+      },
+      {
+        "url": "http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4",
+        "type": "video"
+      },
+      {
+        "url": "https://photos5.appleinsider.com/gallery/30510-50255-all-three-goals-apple-watch-xl.jpg",
+        "type": "image"
+      }
+    ]
   },
   "camera4": {
     "id": 22,
     "price": 53,
     "description": "Surface: 110 m \n Rooms: 4. \n \n Se vende precioso piso en el Actur, en el edificio Sarakuta. Parada de autobus y tranvia en la puerta, a 5 min caminando del ce",
     "name": "Canon EOS &D",
-    "url": "https://cspl-corpweb-site-asia-production.s3.amazonaws.com/media/init/thumbnails/photography.png"
+    "multimedia": [
+      {
+        "type": "image",
+        "url": "https://cspl-corpweb-site-asia-production.s3.amazonaws.com/media/init/thumbnails/photography.png"
+      }
+    ]
   },
   "Apple TV4": {
     "id": 23,
     "price": 53,
     "description": "Surface: 110 m \n Rooms: 4. \n \n Se vende precioso piso en el Actur, en el edificio Sarakuta. Parada de autobus y tranvia en la puerta, a 5 min caminando del ce",
     "name": "Apple TV",
-    "url": "https://support.apple.com/library/content/dam/edam/applecare/images/en_US/homepod/apple-tv-product-lockup-callout.png"
+    "multimedia": [
+      {
+        "type": "image",
+        "url": "https://support.apple.com/library/content/dam/edam/applecare/images/en_US/homepod/apple-tv-product-lockup-callout.png"
+      }
+    ]
   },
   "Vans sweeter4": {
     "id": 24,
     "price": 53,
     "description": "Surface: 110 m \n Rooms: 4. \n \n Se vende precioso piso en el Actur, en el edificio Sarakuta. Parada de autobus y tranvia en la puerta, a 5 min caminando del ce",
     "name": "Sudadera Vans",
-    "url": "http://picture-cdn.wheretoget.it/thcn3v-l-610x610-sweater-sweat-grey-vans-clothe-clothes-clothing.jpg"
+    "multimedia": [
+      {
+        "type": "image",
+        "url": "http://picture-cdn.wheretoget.it/thcn3v-l-610x610-sweater-sweat-grey-vans-clothe-clothes-clothing.jpg"
+      }
+    ]
   },
 
   "Nike5": {
@@ -177,35 +337,68 @@
     "price": 53,
     "description": "Surface: 110 m \n Rooms: 4. \n \n Se vende precioso piso en el Actur, en el edificio Sarakuta. Parada de autobus y tranvia en la puerta, a 5 min caminando del ce",
     "name": "Nike shorts",
-    "url": "https://cdn.zando.co.za/p/267155-5783-551762-2-product.jpg"
+    "multimedia": [
+      {
+        "type": "image",
+        "url": "https://cdn.zando.co.za/p/267155-5783-551762-2-product.jpg"
+      }
+    ]
   },
   "watch5": {
     "id": 26,
     "price": 53,
     "description": "Surface: 110 m \n Rooms: 4. \n \n Se vende precioso piso en el Actur, en el edificio Sarakuta. Parada de autobus y tranvia en la puerta, a 5 min caminando del Centro COmercial Grancasqa y el WTCZ. El piso tiene 4 habitaciones, 3 de ellas dobles, una de ellas suite con ducha de hidromasaje, el otrobaño completo, salón, cocina equipada, 2 terrazas, una de ellas con vista paronámica",
     "name": "Apple Watch",
-    "url": "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/image/AppleInc/aos/published/images/M/TQ/MTQT2/MTQT2_AV1?wid=1144&hei=1144&fmt=jpeg&qlt=95&op_usm=0.5,0.5&.v=1535575239308"
+    "multimedia": [
+      {
+        "url": "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/image/AppleInc/aos/published/images/M/TQ/MTQT2/MTQT2_AV1?wid=1144&hei=1144&fmt=jpeg&qlt=95&op_usm=0.5,0.5&.v=1535575239308",
+        "type": "image"
+      },
+      {
+        "url": "http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4",
+        "type": "video"
+      },
+      {
+        "url": "https://photos5.appleinsider.com/gallery/30510-50255-all-three-goals-apple-watch-xl.jpg",
+        "type": "image"
+      }
+    ]
   },
   "camera5": {
     "id": 27,
     "price": 53,
     "description": "Surface: 110 m \n Rooms: 4. \n \n Se vende precioso piso en el Actur, en el edificio Sarakuta. Parada de autobus y tranvia en la puerta, a 5 min caminando del ce",
     "name": "Canon EOS &D",
-    "url": "https://cspl-corpweb-site-asia-production.s3.amazonaws.com/media/init/thumbnails/photography.png"
+    "multimedia": [
+      {
+        "type": "image",
+        "url": "https://cspl-corpweb-site-asia-production.s3.amazonaws.com/media/init/thumbnails/photography.png"
+      }
+    ]
   },
   "Apple TV5": {
     "id": 28,
     "price": 53,
     "description": "Surface: 110 m \n Rooms: 4. \n \n Se vende precioso piso en el Actur, en el edificio Sarakuta. Parada de autobus y tranvia en la puerta, a 5 min caminando del ce",
     "name": "Apple TV",
-    "url": "https://support.apple.com/library/content/dam/edam/applecare/images/en_US/homepod/apple-tv-product-lockup-callout.png"
+    "multimedia": [
+      {
+        "type": "image",
+        "url": "https://support.apple.com/library/content/dam/edam/applecare/images/en_US/homepod/apple-tv-product-lockup-callout.png"
+      }
+    ]
   },
   "Vans sweeter5": {
     "id": 29,
     "price": 53,
     "description": "Surface: 110 m \n Rooms: 4. \n \n Se vende precioso piso en el Actur, en el edificio Sarakuta. Parada de autobus y tranvia en la puerta, a 5 min caminando del ce",
     "name": "Sudadera Vans",
-    "url": "http://picture-cdn.wheretoget.it/thcn3v-l-610x610-sweater-sweat-grey-vans-clothe-clothes-clothing.jpg"
+    "multimedia": [
+      {
+        "type": "image",
+        "url": "http://picture-cdn.wheretoget.it/thcn3v-l-610x610-sweater-sweat-grey-vans-clothe-clothes-clothing.jpg"
+      }
+    ]
   },
 
   "Nike6": {
@@ -213,35 +406,68 @@
     "price": 53,
     "description": "Surface: 110 m \n Rooms: 4. \n \n Se vende precioso piso en el Actur, en el edificio Sarakuta. Parada de autobus y tranvia en la puerta, a 5 min caminando del ce",
     "name": "Nike shorts",
-    "url": "https://cdn.zando.co.za/p/267155-5783-551762-2-product.jpg"
+    "multimedia": [
+      {
+        "type": "image",
+        "url": "https://cdn.zando.co.za/p/267155-5783-551762-2-product.jpg"
+      }
+    ]
   },
   "watch6": {
     "id": 31,
     "price": 53,
     "description": "Surface: 110 m \n Rooms: 4. \n \n Se vende precioso piso en el Actur, en el edificio Sarakuta. Parada de autobus y tranvia en la puerta, a 5 min caminando del Centro COmercial Grancasqa y el WTCZ. El piso tiene 4 habitaciones, 3 de ellas dobles, una de ellas suite con ducha de hidromasaje, el otrobaño completo, salón, cocina equipada, 2 terrazas, una de ellas con vista paronámica",
     "name": "Apple Watch",
-    "url": "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/image/AppleInc/aos/published/images/M/TQ/MTQT2/MTQT2_AV1?wid=1144&hei=1144&fmt=jpeg&qlt=95&op_usm=0.5,0.5&.v=1535575239308"
+    "multimedia": [
+      {
+        "url": "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/image/AppleInc/aos/published/images/M/TQ/MTQT2/MTQT2_AV1?wid=1144&hei=1144&fmt=jpeg&qlt=95&op_usm=0.5,0.5&.v=1535575239308",
+        "type": "image"
+      },
+      {
+        "url": "http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4",
+        "type": "video"
+      },
+      {
+        "url": "https://photos5.appleinsider.com/gallery/30510-50255-all-three-goals-apple-watch-xl.jpg",
+        "type": "image"
+      }
+    ]
   },
   "camera6": {
     "id": 32,
     "price": 53,
     "description": "Surface: 110 m \n Rooms: 4. \n \n Se vende precioso piso en el Actur, en el edificio Sarakuta. Parada de autobus y tranvia en la puerta, a 5 min caminando del ce",
     "name": "Canon EOS &D",
-    "url": "https://cspl-corpweb-site-asia-production.s3.amazonaws.com/media/init/thumbnails/photography.png"
+    "multimedia": [
+      {
+        "type": "image",
+        "url": "https://cspl-corpweb-site-asia-production.s3.amazonaws.com/media/init/thumbnails/photography.png"
+      }
+    ]
   },
   "Apple TV6": {
     "id": 33,
     "price": 53,
     "description": "Surface: 110 m \n Rooms: 4. \n \n Se vende precioso piso en el Actur, en el edificio Sarakuta. Parada de autobus y tranvia en la puerta, a 5 min caminando del ce",
     "name": "Apple TV",
-    "url": "https://support.apple.com/library/content/dam/edam/applecare/images/en_US/homepod/apple-tv-product-lockup-callout.png"
+    "multimedia": [
+      {
+        "type": "image",
+        "url": "https://support.apple.com/library/content/dam/edam/applecare/images/en_US/homepod/apple-tv-product-lockup-callout.png"
+      }
+    ]
   },
   "Vans sweeter6": {
     "id": 34,
     "price": 53,
     "description": "Surface: 110 m \n Rooms: 4. \n \n Se vende precioso piso en el Actur, en el edificio Sarakuta. Parada de autobus y tranvia en la puerta, a 5 min caminando del ce",
     "name": "Sudadera Vans",
-    "url": "http://picture-cdn.wheretoget.it/thcn3v-l-610x610-sweater-sweat-grey-vans-clothe-clothes-clothing.jpg"
+    "multimedia": [
+      {
+        "type": "image",
+        "url": "http://picture-cdn.wheretoget.it/thcn3v-l-610x610-sweater-sweat-grey-vans-clothe-clothes-clothing.jpg"
+      }
+    ]
   },
 
   "Nike7": {
@@ -249,35 +475,68 @@
     "price": 53,
     "description": "Surface: 110 m \n Rooms: 4. \n \n Se vende precioso piso en el Actur, en el edificio Sarakuta. Parada de autobus y tranvia en la puerta, a 5 min caminando del ce",
     "name": "Nike shorts",
-    "url": "https://cdn.zando.co.za/p/267155-5783-551762-2-product.jpg"
+    "multimedia": [
+      {
+        "type": "image",
+        "url": "https://cdn.zando.co.za/p/267155-5783-551762-2-product.jpg"
+      }
+    ]
   },
   "watch7": {
     "id": 36,
     "price": 53,
     "description": "Surface: 110 m \n Rooms: 4. \n \n Se vende precioso piso en el Actur, en el edificio Sarakuta. Parada de autobus y tranvia en la puerta, a 5 min caminando del Centro COmercial Grancasqa y el WTCZ. El piso tiene 4 habitaciones, 3 de ellas dobles, una de ellas suite con ducha de hidromasaje, el otrobaño completo, salón, cocina equipada, 2 terrazas, una de ellas con vista paronámica",
     "name": "Apple Watch",
-    "url": "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/image/AppleInc/aos/published/images/M/TQ/MTQT2/MTQT2_AV1?wid=1144&hei=1144&fmt=jpeg&qlt=95&op_usm=0.5,0.5&.v=1535575239308"
+    "multimedia": [
+      {
+        "url": "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/image/AppleInc/aos/published/images/M/TQ/MTQT2/MTQT2_AV1?wid=1144&hei=1144&fmt=jpeg&qlt=95&op_usm=0.5,0.5&.v=1535575239308",
+        "type": "image"
+      },
+      {
+        "url": "http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4",
+        "type": "video"
+      },
+      {
+        "url": "https://photos5.appleinsider.com/gallery/30510-50255-all-three-goals-apple-watch-xl.jpg",
+        "type": "image"
+      }
+    ]
   },
   "camera": {
     "id": 37,
     "price": 53,
     "description": "Surface: 110 m \n Rooms: 4. \n \n Se vende precioso piso en el Actur, en el edificio Sarakuta. Parada de autobus y tranvia en la puerta, a 5 min caminando del ce",
     "name": "Canon EOS &D",
-    "url": "https://cspl-corpweb-site-asia-production.s3.amazonaws.com/media/init/thumbnails/photography.png"
+    "multimedia": [
+      {
+        "type": "image",
+        "url": "https://cspl-corpweb-site-asia-production.s3.amazonaws.com/media/init/thumbnails/photography.png"
+      }
+    ]
   },
   "Apple TV7": {
     "id": 38,
     "price": 53,
     "description": "Surface: 110 m \n Rooms: 4. \n \n Se vende precioso piso en el Actur, en el edificio Sarakuta. Parada de autobus y tranvia en la puerta, a 5 min caminando del ce",
     "name": "Apple TV",
-    "url": "https://support.apple.com/library/content/dam/edam/applecare/images/en_US/homepod/apple-tv-product-lockup-callout.png"
+    "multimedia": [
+      {
+        "type": "image",
+        "url": "https://support.apple.com/library/content/dam/edam/applecare/images/en_US/homepod/apple-tv-product-lockup-callout.png"
+      }
+    ]
   },
   "Vans sweeter7": {
     "id": 39,
     "price": 53,
     "description": "Surface: 110 m \n Rooms: 4. \n \n Se vende precioso piso en el Actur, en el edificio Sarakuta. Parada de autobus y tranvia en la puerta, a 5 min caminando del ce",
     "name": "Sudadera Vans",
-    "url": "http://picture-cdn.wheretoget.it/thcn3v-l-610x610-sweater-sweat-grey-vans-clothe-clothes-clothing.jpg"
+    "multimedia": [
+      {
+        "type": "image",
+        "url": "http://picture-cdn.wheretoget.it/thcn3v-l-610x610-sweater-sweat-grey-vans-clothe-clothes-clothing.jpg"
+      }
+    ]
   },
 
   "Nike8": {
@@ -285,35 +544,68 @@
     "price": 53,
     "description": "Surface: 110 m \n Rooms: 4. \n \n Se vende precioso piso en el Actur, en el edificio Sarakuta. Parada de autobus y tranvia en la puerta, a 5 min caminando del ce",
     "name": "Nike shorts",
-    "url": "https://cdn.zando.co.za/p/267155-5783-551762-2-product.jpg"
+    "multimedia": [
+      {
+        "type": "image",
+        "url": "https://cdn.zando.co.za/p/267155-5783-551762-2-product.jpg"
+      }
+    ]
   },
   "watch8": {
     "id": 41,
     "price": 53,
     "description": "Surface: 110 m \n Rooms: 4. \n \n Se vende precioso piso en el Actur, en el edificio Sarakuta. Parada de autobus y tranvia en la puerta, a 5 min caminando del Centro COmercial Grancasqa y el WTCZ. El piso tiene 4 habitaciones, 3 de ellas dobles, una de ellas suite con ducha de hidromasaje, el otrobaño completo, salón, cocina equipada, 2 terrazas, una de ellas con vista paronámica",
     "name": "Apple Watch",
-    "url": "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/image/AppleInc/aos/published/images/M/TQ/MTQT2/MTQT2_AV1?wid=1144&hei=1144&fmt=jpeg&qlt=95&op_usm=0.5,0.5&.v=1535575239308"
+    "multimedia": [
+      {
+        "url": "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/image/AppleInc/aos/published/images/M/TQ/MTQT2/MTQT2_AV1?wid=1144&hei=1144&fmt=jpeg&qlt=95&op_usm=0.5,0.5&.v=1535575239308",
+        "type": "image"
+      },
+      {
+        "url": "http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4",
+        "type": "video"
+      },
+      {
+        "url": "https://photos5.appleinsider.com/gallery/30510-50255-all-three-goals-apple-watch-xl.jpg",
+        "type": "image"
+      }
+    ]
   },
   "camera8": {
     "id": 42,
     "price": 53,
     "description": "Surface: 110 m \n Rooms: 4. \n \n Se vende precioso piso en el Actur, en el edificio Sarakuta. Parada de autobus y tranvia en la puerta, a 5 min caminando del ce",
     "name": "Canon EOS &D",
-    "url": "https://cspl-corpweb-site-asia-production.s3.amazonaws.com/media/init/thumbnails/photography.png"
+    "multimedia": [
+      {
+        "type": "image",
+        "url": "https://cspl-corpweb-site-asia-production.s3.amazonaws.com/media/init/thumbnails/photography.png"
+      }
+    ]
   },
   "Apple TV8": {
     "id": 43,
     "price": 53,
     "description": "Surface: 110 m \n Rooms: 4. \n \n Se vende precioso piso en el Actur, en el edificio Sarakuta. Parada de autobus y tranvia en la puerta, a 5 min caminando del ce",
     "name": "Apple TV",
-    "url": "https://support.apple.com/library/content/dam/edam/applecare/images/en_US/homepod/apple-tv-product-lockup-callout.png"
+    "multimedia": [
+      {
+        "type": "image",
+        "url": "https://support.apple.com/library/content/dam/edam/applecare/images/en_US/homepod/apple-tv-product-lockup-callout.png"
+      }
+    ]
   },
   "Vans sweeter8": {
     "id": 44,
     "price": 53,
     "description": "Surface: 110 m \n Rooms: 4. \n \n Se vende precioso piso en el Actur, en el edificio Sarakuta. Parada de autobus y tranvia en la puerta, a 5 min caminando del ce",
     "name": "Sudadera Vans",
-    "url": "http://picture-cdn.wheretoget.it/thcn3v-l-610x610-sweater-sweat-grey-vans-clothe-clothes-clothing.jpg"
+    "multimedia": [
+      {
+        "type": "image",
+        "url": "http://picture-cdn.wheretoget.it/thcn3v-l-610x610-sweater-sweat-grey-vans-clothe-clothes-clothing.jpg"
+      }
+    ]
   },
 
   "Nike9": {
@@ -321,34 +613,67 @@
     "price": 53,
     "description": "Surface: 110 m \n Rooms: 4. \n \n Se vende precioso piso en el Actur, en el edificio Sarakuta. Parada de autobus y tranvia en la puerta, a 5 min caminando del ce",
     "name": "Nike shorts",
-    "url": "https://cdn.zando.co.za/p/267155-5783-551762-2-product.jpg"
+    "multimedia": [
+      {
+        "type": "image",
+        "url": "https://cdn.zando.co.za/p/267155-5783-551762-2-product.jpg"
+      }
+    ]
   },
   "watch9": {
     "id": 46,
     "price": 53,
     "description": "Surface: 110 m \n Rooms: 4. \n \n Se vende precioso piso en el Actur, en el edificio Sarakuta. Parada de autobus y tranvia en la puerta, a 5 min caminando del Centro COmercial Grancasqa y el WTCZ. El piso tiene 4 habitaciones, 3 de ellas dobles, una de ellas suite con ducha de hidromasaje, el otrobaño completo, salón, cocina equipada, 2 terrazas, una de ellas con vista paronámica",
     "name": "Apple Watch",
-    "url": "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/image/AppleInc/aos/published/images/M/TQ/MTQT2/MTQT2_AV1?wid=1144&hei=1144&fmt=jpeg&qlt=95&op_usm=0.5,0.5&.v=1535575239308"
+    "multimedia": [
+      {
+        "url": "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/image/AppleInc/aos/published/images/M/TQ/MTQT2/MTQT2_AV1?wid=1144&hei=1144&fmt=jpeg&qlt=95&op_usm=0.5,0.5&.v=1535575239308",
+        "type": "image"
+      },
+      {
+        "url": "http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4",
+        "type": "video"
+      },
+      {
+        "url": "https://photos5.appleinsider.com/gallery/30510-50255-all-three-goals-apple-watch-xl.jpg",
+        "type": "image"
+      }
+    ]
   },
   "camera9": {
     "id": 47,
     "price": 53,
     "description": "Surface: 110 m \n Rooms: 4. \n \n Se vende precioso piso en el Actur, en el edificio Sarakuta. Parada de autobus y tranvia en la puerta, a 5 min caminando del ce",
     "name": "Canon EOS &D",
-    "url": "https://cspl-corpweb-site-asia-production.s3.amazonaws.com/media/init/thumbnails/photography.png"
+    "multimedia": [
+      {
+        "type": "image",
+        "url": "https://cspl-corpweb-site-asia-production.s3.amazonaws.com/media/init/thumbnails/photography.png"
+      }
+    ]
   },
   "Apple TV9": {
     "id": 48,
     "price": 53,
     "description": "Surface: 110 m \n Rooms: 4. \n \n Se vende precioso piso en el Actur, en el edificio Sarakuta. Parada de autobus y tranvia en la puerta, a 5 min caminando del ce",
     "name": "Apple TV",
-    "url": "https://support.apple.com/library/content/dam/edam/applecare/images/en_US/homepod/apple-tv-product-lockup-callout.png"
+    "multimedia": [
+      {
+        "type": "image",
+        "url": "https://support.apple.com/library/content/dam/edam/applecare/images/en_US/homepod/apple-tv-product-lockup-callout.png"
+      }
+    ]
   },
   "Vans sweeter9": {
     "id": 49,
     "price": 53,
     "description": "Surface: 110 m \n Rooms: 4. \n \n Se vende precioso piso en el Actur, en el edificio Sarakuta. Parada de autobus y tranvia en la puerta, a 5 min caminando del ce",
     "name": "Sudadera Vans",
-    "url": "http://picture-cdn.wheretoget.it/thcn3v-l-610x610-sweater-sweat-grey-vans-clothe-clothes-clothing.jpg"
+    "multimedia": [
+      {
+        "type": "image",
+        "url": "http://picture-cdn.wheretoget.it/thcn3v-l-610x610-sweater-sweat-grey-vans-clothe-clothes-clothing.jpg"
+      }
+    ]
   }
 }

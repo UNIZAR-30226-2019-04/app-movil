@@ -14,6 +14,7 @@ import {
 import { Avatar, Button, Text, ButtonGroup } from "react-native-elements";
 import { Constants, MapView } from "expo";
 import categories from "../assets/categorias.json";
+import CategoryPickerModal from "../components/CategoryPickerModal";
 
 import MapModal from "../components/mapModal";
 export default class Settings extends Component {
@@ -73,7 +74,13 @@ export default class Settings extends Component {
     value: 0,
     language: null,
     distancia: 0,
-    selectedIndex: null
+    selectedIndex: null,
+    categoria: ""
+  };
+
+  saveCategory = category => {
+    console.log("saveCategory", category);
+    this.setState({ categoria: category });
   };
 
   stepFunction() {
@@ -95,28 +102,18 @@ export default class Settings extends Component {
 
     return (
       <View style={styles.section}>
-        <View style={{ flexDirection: "column", marginBottom: -20 }}>
+        <View style={styles.row}>
           <RkText
-            style={{ margin: 20, marginBottom: 30 }}
+            style={{ alignItems: "stretch", marginVertical: 10 }}
             rkType="header6 primary"
           >
-            CATEGORIAS
+            CATEGORÍA
           </RkText>
+        </View>
 
-          <Picker
-            mode="dropdown"
-            selectedValue={this.state.language}
-            style={{
-              width: 200,
-              top: -30,
-              marginLeft: 10
-            }}
-            onValueChange={(itemValue, itemIndex) =>
-              this.setState({ language: itemValue })
-            }
-          >
-            {list_categories}
-          </Picker>
+        <View style={styles.row}>
+          <CategoryPickerModal saveCategory={this.saveCategory} />
+          <Text style={{ marginHorizontal: 5 }}>{this.state.categoria}</Text>
         </View>
 
         <View style={[styles.lineStyle, { marginBottom: 0 }]} />

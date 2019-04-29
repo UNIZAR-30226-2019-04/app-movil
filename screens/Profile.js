@@ -14,6 +14,7 @@ import TabsExample from "../components/Tabs/TabsExample";
 import axios from "axios";
 import { API_BASE } from "../config";
 import { AsyncStorage } from "react-native";
+import UploadProductModal from "../components/UploadProductModal";
 
 let _this = null;
 
@@ -43,8 +44,8 @@ export default class Profile extends Component {
           />
 
           <ModalDropdown
-            options={["Log out", "option 2"]}
-            dropdownStyle={{ marginTop: -10, height: 100 }}
+            options={["Log out"]}
+            dropdownStyle={{ marginTop: -10, height: 43 }}
             renderRow={(a, b, c) => _this._renderRow(a, b, c)}
           >
             <Icon
@@ -81,9 +82,10 @@ export default class Profile extends Component {
     profile: {},
     index: 0,
     routes: [
-      { key: "first", title: "En Venta" },
-      { key: "second", title: "Favoritos" },
-      { key: "third", title: "Reviews" }
+      { key: "first", title: "En Venta", navigation: this.props.navigation },
+      { key: "second", title: "Comprados", navigation: this.props.navigation },
+      { key: "third", title: "Favoritos", navigation: this.props.navigation },
+      { key: "fourth", title: "Reviews", navigation: this.props.navigation }
     ]
   };
 
@@ -163,60 +165,64 @@ export default class Profile extends Component {
   };
 
   render = () => (
-    <ScrollView style={styles.root}>
-      <View style={[styles.header, styles.bordered]}>
-        <Avatar
-          rounded
-          onPress={() => console.log("Works!")}
-          size="large"
-          containerStyle={{ marginHorizontal: 10 }}
-          source={{
-            uri:
-              "https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg"
-          }}
-        />
-        <View
-          style={{
-            flex: 1,
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "flex-start",
-            display: "flex"
-          }}
-        >
-          <RkText style={{ fontSize: 20, fontWeight: "bold" }}>{`${
-            this.state.nick
-          }`}</RkText>
-
-          <AirbnbRating
-            count={5}
-            style={{ marginTop: -10 }}
-            //reviews={["Terrible", "Bad", "OK", "Good", "Very Good"]}
-            showRating={false}
-            defaultRating={this.state.valoracion}
-            size={12}
-            readonly={true}
+    <View>
+      <ScrollView style={styles.root}>
+        <View style={[styles.header, styles.bordered]}>
+          <Avatar
+            rounded
+            onPress={() => console.log("Works!")}
+            size="large"
+            containerStyle={{ marginHorizontal: 10 }}
+            source={{
+              uri:
+                "https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg"
+            }}
           />
+          <View
+            style={{
+              flex: 1,
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "flex-start",
+              display: "flex"
+            }}
+          >
+            <RkText style={{ fontSize: 20, fontWeight: "bold" }}>{`${
+              this.state.nick
+            }`}</RkText>
+
+            <AirbnbRating
+              count={5}
+              style={{ marginTop: -10 }}
+              //reviews={["Terrible", "Bad", "OK", "Good", "Very Good"]}
+              showRating={false}
+              defaultRating={this.state.valoracion}
+              size={12}
+              isDisabled={true}
+            />
+          </View>
         </View>
-      </View>
-      <TabView
-        style={{ backgroundColor: "white", color: "red", fontWeight: "bold" }}
-        navigationState={this.state}
-        renderScene={SceneMap({
-          first: TabsExample,
-          second: TabsExample,
-          third: TabsExample
-        })}
-        renderTabBar={this._renderTabBar}
-        onIndexChange={index => this.setState({ index })}
-        initialLayout={{ width: Dimensions.get("window").width }}
-      />
-      {/*       <View style={styles.buttons}>
+        <TabView
+          style={{ backgroundColor: "white", color: "red", fontWeight: "bold" }}
+          navigationState={this.state}
+          renderScene={SceneMap({
+            first: TabsExample,
+            second: TabsExample,
+            third: TabsExample,
+            fourth: TabsExample
+          })}
+          renderTabBar={this._renderTabBar}
+          onIndexChange={index => this.setState({ index })}
+          initialLayout={{ width: Dimensions.get("window").width }}
+        />
+        {/*       <View style={styles.buttons}>
         <Button buttonStyle={styles.button} title="FOLLOW" type="outline" />
         <View style={styles.separator} />
         <Button buttonStyle={styles.button} title="MESSAGE" type="outline" />
       </View> */}
-    </ScrollView>
+      </ScrollView>
+      <UploadProductModal />
+    </View>
   );
 }
 

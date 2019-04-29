@@ -5,21 +5,24 @@ import {
   FlatList,
   Text,
   StyleSheet,
-  Button,
   Field,
-  TouchableHighlight
+  TouchableHighlight,
+  Dimensions
 } from "react-native";
-import { SearchBar } from "react-native-elements";
+import { SearchBar, Button } from "react-native-elements";
 import { Platform, StatusBar, TouchableOpacity } from "react-native";
 import SearchModal from "../components/SearchModal";
 import categories from "../assets/categorias.json";
 import dummy_products from "../assets/dummy_products.json";
 import Product from "../components/Product";
 import ProductVertical from "../components/ProductVertical";
+import UploadProductModal from "../components/UploadProductModal";
+
 import { Font } from "expo";
 
 import Icon from "react-native-vector-icons/FontAwesome";
-
+const width = Dimensions.get("window").width;
+const height = Dimensions.get("window").height;
 export default class Feed extends Component {
   state = {
     search: "",
@@ -99,7 +102,7 @@ export default class Feed extends Component {
     return (
       <TouchableHighlight onPress={() => this._method(item)}>
         <ProductVertical
-          imageUri={{ uri: item.url }}
+          imageUri={{ uri: item.multimedia[0].url }}
           name={item.name}
           price={item.price}
           description={item.description}
@@ -162,7 +165,7 @@ export default class Feed extends Component {
         >
           <TouchableHighlight onPress={() => this._method(product)}>
             <Product
-              imageUri={{ uri: product.url }}
+              imageUri={{ uri: product.multimedia[0].url }}
               name={product.name}
               price={product.price}
             />
@@ -173,70 +176,74 @@ export default class Feed extends Component {
 
     console.log(this.state.products);
     return (
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        style={{
-          backgroundColor: "#F5F5F5"
-        }}
-      >
+      <View>
         <ScrollView
-          horizontal={true}
-          showsHorizontalScrollIndicator={false}
-          style={styles.section}
+          showsVerticalScrollIndicator={false}
+          style={{
+            backgroundColor: "#F5F5F5"
+          }}
         >
-          {list_categories}
-        </ScrollView>
-
-        <View style={styles.section}>
-          <Text
-            style={{
-              fontSize: 18,
-              fontWeight: "500",
-              paddingHorizontal: 16,
-              margin: 5,
-              fontFamily: "space-mono"
-            }}
-          >
-            Productos Destacados
-          </Text>
-
           <ScrollView
             horizontal={true}
             showsHorizontalScrollIndicator={false}
             style={styles.section}
           >
-            {list_products}
+            {list_categories}
           </ScrollView>
-        </View>
 
-        <View style={styles.section}>
-          <Text
-            style={{
-              fontSize: 18,
-              fontWeight: "500",
-              paddingHorizontal: 16,
-              fontFamily: "space-mono",
-              margin: 5
-            }}
-          >
-            Productos cercanos
-          </Text>
-
-          <View style={{ flex: 1, flexDirection: "row" }}>
-            <FlatList
-              data={this.state.products}
-              keyExtractor={this._keyExtractor}
-              renderItem={this._renderItem}
-              numColumns={2}
+          <View style={styles.section}>
+            <Text
               style={{
-                flex: 1,
-                flexDirection: "row",
-                flexWrap: "wrap"
+                fontSize: 18,
+                fontWeight: "500",
+                paddingHorizontal: 16,
+                margin: 5,
+                fontFamily: "space-mono"
               }}
-            />
+            >
+              Productos Destacados
+            </Text>
+
+            <ScrollView
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+              style={styles.section}
+            >
+              {list_products}
+            </ScrollView>
           </View>
-        </View>
-      </ScrollView>
+
+          <View style={styles.section}>
+            <Text
+              style={{
+                fontSize: 18,
+                fontWeight: "500",
+                paddingHorizontal: 16,
+                fontFamily: "space-mono",
+                margin: 5
+              }}
+            >
+              Productos cercanos
+            </Text>
+
+            <View style={{ flex: 1, flexDirection: "row" }}>
+              <FlatList
+                data={this.state.products}
+                keyExtractor={this._keyExtractor}
+                renderItem={this._renderItem}
+                numColumns={2}
+                style={{
+                  flex: 1,
+                  flexDirection: "row",
+                  flexWrap: "wrap"
+                }}
+              />
+            </View>
+          </View>
+        </ScrollView>
+
+        <UploadProductModal />
+      </View>
     );
   }
 }
@@ -264,6 +271,15 @@ const styles = StyleSheet.create({
   button: {
     width: 180
   },
+
+  floatingButton: {
+    width: 160,
+    height: 60,
+    position: "absolute",
+    bottom: 10,
+    right: width / 2 - 80
+  },
+
   scene: {
     flex: 1
   }

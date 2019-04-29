@@ -73,6 +73,7 @@ const DashboardStackNavigator = createStackNavigator({
       };
     }
   },
+
   ProductDetails: {
     screen: ProductDetails,
     navigationOptions: ({ navigation }) => {

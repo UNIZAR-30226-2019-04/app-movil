@@ -5,22 +5,31 @@ import {
   StyleSheet,
   Image,
   Dimensions,
-  TouchableOpacity
+  TouchableOpacity,
+  Share
 } from "react-native";
-import { AsyncStorage } from "react-native";
-import { Rating, AirbnbRating, Button } from "react-native-elements";
+
+import { Video } from "expo";
+
+import { AsyncStorage, ScrollView } from "react-native";
+import { Rating, AirbnbRating, Button, Avatar } from "react-native-elements";
 //import Icon from "react-native-vector-icons/FontAwesome";
 import ModalDropdown from "react-native-modal-dropdown";
 import Icon from "react-native-animated-icons";
+import MapModal from "../components/mapModal";
+import Carousel from "react-native-banner-carousel";
 
 const width = Dimensions.get("window").width;
 let _this = null;
+
+const BannerWidth = Dimensions.get("window").width;
+const BannerHeight = 260;
 
 export default class ProductDetails extends Component {
   state = {
     search: "",
     modalVisible: null,
-    product: "",
+    product: {},
     room: 1,
     user: "unzurdo@gmail.com",
     receiver: "alberto@gmail.com",
@@ -28,8 +37,28 @@ export default class ProductDetails extends Component {
     isLiked: false
   };
   onPressHeart() {
-    console.log("Like pressed");
     this.setState({ isLiked: !this.state.isLiked });
+  }
+
+  _onShare() {
+    try {
+      const result = Share.share({
+        message:
+          "React Native | A framework for building native apps using React"
+      });
+
+      if (result.action === Share.sharedAction) {
+        if (result.activityType) {
+          // shared with activity type of result.activityType
+        } else {
+          // shared
+        }
+      } else if (result.action === Share.dismissedAction) {
+        // dismissed
+      }
+    } catch (error) {
+      alert(error.message);
+    }
   }
 
   _isLiked = () => {
@@ -50,12 +79,14 @@ export default class ProductDetails extends Component {
           }}
         >
           <View style={{ marginRight: 15 }}>
-            <Icon
-              style={{ marginTop: 6, marginHorizontal: 5 }}
-              name="share-variant"
-              size={32}
-              color="white"
-            />
+            <TouchableOpacity onPress={() => _this._onShare()}>
+              <Icon
+                style={{ marginTop: 6, marginHorizontal: 5 }}
+                name="share-variant"
+                size={32}
+                color="white"
+              />
+            </TouchableOpacity>
           </View>
 
           <ModalDropdown
@@ -101,6 +132,41 @@ export default class ProductDetails extends Component {
     this.setState({ product: product });
   }
 
+  renderPage(image, index) {
+    return (
+      <View key={index}>
+        {image.type === "image" ? (
+          <Image
+            style={{
+              resizeMode: "cover",
+              width: BannerWidth,
+              height: BannerHeight,
+              borderRadius: 12
+            }}
+            source={{ uri: image.url }}
+          />
+        ) : (
+          []
+        )}
+        {image.type === "video" ? (
+          <Video
+            source={{
+              uri: image.url
+            }}
+            rate={1.0}
+            volume={1.0}
+            isMuted={true}
+            resizeMode="cover"
+            shouldPlay
+            isLooping
+            style={{ width: BannerWidth, height: BannerHeight }}
+          />
+        ) : (
+          []
+        )}
+      </View>
+    );
+  }
   render() {
     console.log("render", this.state.product);
     const width = Dimensions.get("window").width;
@@ -108,22 +174,43 @@ export default class ProductDetails extends Component {
     let light = "rgba(255,255,255,0.5)";
 
     return (
-      <View style={{ flex: 1 }}>
-        <View style={styles.container}>
+      <ScrollView style={{ flex: 1 }}>
+        <View style={{ flex: 1 }}>
           <View style={{ flex: 1 }}>
-            <Image
-              source={{ uri: this.state.product.url }}
-              style={{
-                resizeMode: "cover",
-                width: width,
-                height: 200,
-                borderRadius: 12
-              }}
-            />
+            <Carousel
+              //autoplay
+              //autoplayTimeout={5000}
+              //loop
+              index={0}
+              pageSize={BannerWidth}
+            >
+              {this.state.product.multimedia !== undefined
+                ? this.state.product.multimedia.map((image, index) =>
+                    this.renderPage(image, index)
+                  )
+                : []}
+            </Carousel>
           </View>
           <View style={{ flex: 2 }}>
-            <View>
-              <View style={styles.lineStyle} />
+            <View style={styles.lineStyle} />
+
+            <View
+              style={{
+                marginHorizontal: 12,
+                flex: 1,
+                flexDirection: "row"
+              }}
+            >
+              <Text
+                style={{
+                  fontSize: 28,
+                  fontWeight: "500",
+                  paddingHorizontal: 10
+                }}
+              >
+                {this.state.product.price}€
+              </Text>
+
               <TouchableOpacity
                 style={{
                   height: 50,
@@ -145,38 +232,121 @@ export default class ProductDetails extends Component {
                   ]}
                 />
               </TouchableOpacity>
-              <Text
+            </View>
+            <View style={{ flex: 10 }}>
+              <View style={{ marginBottom: 20, marginHorizontal: 10 }}>
+                <Text
+                  style={{
+                    marginTop: -10,
+                    paddingHorizontal: 10,
+                    fontSize: 28,
+                    fontWeight: "300"
+                  }}
+                >
+                  {this.state.product.name}
+                </Text>
+              </View>
+
+              <View style={{ marginBottom: 5, marginHorizontal: 10 }}>
+                <Text
+                  //ellipsizeMode="tail"
+                  //numberOfLines={6}
+                  style={{
+                    paddingHorizontal: 10,
+                    marginBottom: 5
+                  }}
+                >
+                  {this.state.product.description}
+                </Text>
+              </View>
+
+              <View style={styles.lineStyle} />
+
+              <View style={{ marginBottom: 0, marginHorizontal: 10 }}>
+                <Text
+                  style={{
+                    paddingHorizontal: 10,
+                    color: "grey",
+                    marginVertical: 10
+                  }}
+                >
+                  Publicado el dia 28/4/2019
+                </Text>
+              </View>
+
+              <View style={styles.lineStyle} />
+
+              <View style={{ marginVertical: 10 }}>
+                <Text
+                  style={{
+                    marginHorizontal: 20,
+                    marginBottom: 10,
+                    fontSize: 16,
+                    fontWeight: "500"
+                  }}
+                >
+                  Pablo Neruda Nº11 3ºZ
+                </Text>
+
+                <MapModal />
+              </View>
+
+              <View style={styles.lineStyle} />
+
+              <View
                 style={{
-                  fontSize: 20,
-                  fontWeight: "500",
-                  paddingHorizontal: 10
+                  marginVertical: 10,
+                  marginHorizontal: 10,
+                  flex: 1,
+                  flexDirection: "row",
+                  paddingBottom: 70
                 }}
               >
-                {this.state.product.price}€
-              </Text>
-            </View>
+                <Avatar
+                  rounded
+                  onPress={() =>
+                    this.props.navigation.navigate(
+                      "Profile",
+                      this.state.product
+                    )
+                  }
+                  size="medium"
+                  containerStyle={{ marginHorizontal: 10 }}
+                  source={{
+                    uri:
+                      "https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg"
+                  }}
+                  showEditButton
+                />
 
-            <View style={{ marginBottom: 5 }}>
-              <Text style={{ paddingHorizontal: 10, color: "grey" }}>
-                {this.state.product.name}
-              </Text>
-            </View>
+                <View
+                  style={{
+                    flex: 1,
+                    flexDirection: "column",
+                    alignItems: "flex-start",
+                    display: "flex"
+                  }}
+                >
+                  <Text
+                    style={{
+                      paddingHorizontal: 10,
+                      marginTop: 5
+                    }}
+                  >
+                    USUARIO
+                  </Text>
 
-            <View style={{ marginBottom: 5 }}>
-              <Text
-                //ellipsizeMode="tail"
-                //numberOfLines={6}
-                style={{ paddingHorizontal: 10, color: "grey" }}
-              >
-                {this.state.product.description}
-              </Text>
-            </View>
-            <View style={styles.lineStyle} />
-
-            <View style={{ marginBottom: 5 }}>
-              <Text style={{ paddingHorizontal: 10, marginBottom: 120 }}>
-                USUARIO
-              </Text>
+                  <AirbnbRating
+                    count={5}
+                    style={{ paddingHorizontal: 10 }}
+                    //reviews={["Terrible", "Bad", "OK", "Good", "Very Good"]}
+                    showRating={false}
+                    defaultRating={this.state.valoracion}
+                    size={16}
+                    isDisabled={true}
+                  />
+                </View>
+              </View>
             </View>
           </View>
         </View>
@@ -189,6 +359,7 @@ export default class ProductDetails extends Component {
         >
           <Button
             title="Chat"
+            titleStyle={{ margin: 10 }}
             onPress={() =>
               this.props.navigation.navigate("ChatTabNavigator", {
                 room: this.state.room,
@@ -199,7 +370,7 @@ export default class ProductDetails extends Component {
             }
           />
         </View>
-      </View>
+      </ScrollView>
     );
   }
 }

@@ -1,12 +1,32 @@
 import React, { Component } from "react";
-import { View, Text, StyleSheet, Image, Dimensions } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  Dimensions,
+  TouchableOpacity
+} from "react-native";
 import { AsyncStorage } from "react-native";
 import { Rating, AirbnbRating, Button } from "react-native-elements";
-import Icon from "react-native-vector-icons/FontAwesome";
+import Icon from "react-native-animated-icons";
 const width = Dimensions.get("window").width / 2 - 20;
 
 export default class ProductVertical extends Component {
+  state = {
+    isLiked: false
+  };
+  onPressHeart() {
+    console.log("Like pressed");
+    this.setState({ isLiked: !this.state.isLiked });
+  }
+
+  _isLiked = () => {
+    return this.state.isLiked;
+  };
+
   render() {
+    let red = "rgba(245,60,60,0.8)";
     const width = Dimensions.get("window").width / 2 - 20;
     return (
       <View style={styles.container}>
@@ -48,26 +68,40 @@ export default class ProductVertical extends Component {
         <View
           style={{
             marginBottom: 5,
-            marginHorizontal: 6,
+            marginHorizontal: 2,
             flex: 1,
             flexDirection: "row"
           }}
         >
-          <View style={styles.button}>
-            <Button
-              icon={{
-                name: "favorite-border",
-                size: 25,
-                color: "grey"
-              }}
-              type="outline"
-              style={{
-                backgroundColor: "#F5F5F5",
-                color: "#F5F5F5",
-                marginHorizontal: 2
-              }}
+          <TouchableOpacity
+            style={{
+              marginHorizontal: 2,
+              paddingLeft: 18,
+              marginRight: -10,
+              marginLeft: 10,
+
+              width: width / 2 - 13,
+              height: 42,
+              borderRadius: 6,
+              borderWidth: 2,
+              borderColor: "#fff",
+              backgroundColor: "#dddddd"
+            }}
+            onPress={() => this.onPressHeart()}
+          >
+            <Icon
+              name={this.state.isLiked ? "heart" : "heart-outline"}
+              isActive={true}
+              size={25}
+              color="grey"
+              colorInputRange={[0, 0.56, 1]}
+              colorOutputRange={[
+                "grey",
+                "grey",
+                this.state.isLiked ? red : "grey"
+              ]}
             />
-          </View>
+          </TouchableOpacity>
 
           <View style={styles.button}>
             <Button
@@ -94,6 +128,8 @@ const styles = StyleSheet.create({
   },
   button: {
     marginHorizontal: 2,
+    marginLeft: 10,
+
     width: width / 2 - 13,
     height: 42,
     borderRadius: 6,
