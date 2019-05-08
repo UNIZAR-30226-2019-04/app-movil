@@ -307,10 +307,7 @@ export default class ProductDetails extends Component {
                 <Avatar
                   rounded
                   onPress={() =>
-                    this.props.navigation.navigate(
-                      "Profile",
-                      this.state.product
-                    )
+                    this.props.navigation.navigate("Perfil", this.state.product)
                   }
                   size="medium"
                   containerStyle={{ marginHorizontal: 10 }}

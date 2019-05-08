@@ -9,7 +9,7 @@ import { TabView, TabBar, SceneMap } from "react-native-tab-view";
 import { RkText, RkStyleSheet, RkGallery } from "react-native-ui-kitten";
 import { Rating, AirbnbRating, Button } from "react-native-elements";
 import ModalDropdown from "react-native-modal-dropdown";
-
+import ReviewTab from "../components/Tabs/ReviewTab";
 import TabsExample from "../components/Tabs/TabsExample";
 import axios from "axios";
 import { API_BASE } from "../config";
@@ -209,7 +209,7 @@ export default class Profile extends Component {
             first: TabsExample,
             second: TabsExample,
             third: TabsExample,
-            fourth: TabsExample
+            fourth: ReviewTab
           })}
           renderTabBar={this._renderTabBar}
           onIndexChange={index => this.setState({ index })}

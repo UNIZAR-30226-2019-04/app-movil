@@ -211,10 +211,10 @@ const ChatStackNavigator = createStackNavigator({
 */
 const AppDrawerNavigator = createDrawerNavigator(
   {
-    Dashboard: {
+    Home: {
       screen: DashboardStackNavigator
     },
-    Profile: {
+    Perfil: {
       screen: ProfileStackNavigator
     },
     Chat: {
@@ -222,7 +222,7 @@ const AppDrawerNavigator = createDrawerNavigator(
     }
   },
   {
-    initialRouteName: "Dashboard",
+    initialRouteName: "Home",
     contentComponent: CustomLeftDrawerComponent
     //drawerWidth: 300
   }
