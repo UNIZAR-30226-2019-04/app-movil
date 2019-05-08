@@ -14,7 +14,7 @@ import { Platform, StatusBar, TouchableOpacity } from "react-native";
 import SearchModal from "../components/SearchModal";
 import categories from "../assets/categorias.json";
 import dummy_products from "../assets/dummy_products.json";
-import SearchTags from "../components/SearchTags";
+import VisibleTags from "../containers/VisibleTags";
 import ProductVertical from "../components/ProductVertical";
 import UploadProductModal from "../components/UploadProductModal";
 import { AsyncStorage } from "react-native";
@@ -200,12 +200,7 @@ export default class Feed extends Component {
             backgroundColor: "#F5F5F5"
           }}
         >
-          <SearchTags
-            tags={this.state.tags}
-            updated={this.updated}
-            deleteTag={this.deleteTag}
-            //forceUpdate={this.forceUpdate()}
-          />
+          <VisibleTags />
 
           <View style={styles.section}>
             <Text

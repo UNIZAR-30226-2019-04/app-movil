@@ -18,13 +18,15 @@ import Product from "../components/Product";
 import ProductVertical from "../components/ProductVertical";
 import UploadProductModal from "../components/UploadProductModal";
 import { AsyncStorage } from "react-native";
+import { connect } from "react-redux";
+import { addTag } from "../actions";
 
 import { Font } from "expo";
 
 import Icon from "react-native-vector-icons/FontAwesome";
 const width = Dimensions.get("window").width;
 const height = Dimensions.get("window").height;
-export default class Feed extends Component {
+class Feed extends Component {
   state = {
     search: "",
     modalVisible: null,
@@ -115,14 +117,8 @@ export default class Feed extends Component {
   };
 
   selectCategory = async name => {
-    try {
-      let tags = [];
-      tags.push({ name: name, type: "category" });
-      await AsyncStorage.setItem("tags", JSON.stringify(tags));
-      console.log("addTag", name);
-    } catch (error) {
-      console.log(error);
-    }
+    await this.props.dispatch(addTag(name, "category"));
+
     let { navigation } = this.props;
     navigation.navigate("SearchResults", { search: "" });
   };
@@ -264,6 +260,7 @@ export default class Feed extends Component {
     );
   }
 }
+export default connect()(Feed);
 
 const styles = StyleSheet.create({
   root: {

@@ -3,7 +3,7 @@ import { View, StyleSheet, Field } from "react-native";
 import Icon from "@expo/vector-icons/Ionicons";
 import { SearchBar } from "react-native-elements";
 import { Slider, Card } from "react-native-elements";
-import { Picker, Divider } from "react-native";
+import { Picker, Divider, ScrollView } from "react-native";
 import {
   RkText,
   RkTextInput,
@@ -16,20 +16,29 @@ import { Constants, MapView } from "expo";
 import categories from "../assets/categorias.json";
 import CategoryPickerModal from "../components/CategoryPickerModal";
 import { AsyncStorage } from "react-native";
-
+import { connect } from "react-redux";
+import { addTag } from "../actions";
 import MapModal from "../components/mapModal";
 
 const dates = ["24h", "7d", "30d"];
-export default class Settings extends Component {
+const modos = ["Compra", "Trueque", "Subasta"];
+
+class Settings extends Component {
   constructor() {
     super();
 
     this.updateIndex = this.updateIndex.bind(this);
+    this.updateIndexM = this.updateIndexM.bind(this);
   }
 
   updateIndex = async selectedIndex => {
     this.setState({ selectedIndex });
-    this.addTag(dates[selectedIndex], "date");
+    this.props.dispatch(addTag(dates[selectedIndex], "date"));
+  };
+
+  updateIndexM = async selectedIndexM => {
+    this.setState({ selectedIndexM });
+    this.props.dispatch(addTag(modos[selectedIndexM], "mode"));
   };
 
   static navigationOptions = ({ navigation }) => {
@@ -83,6 +92,8 @@ export default class Settings extends Component {
     language: null,
     distancia: 0,
     selectedIndex: null,
+    selectedIndexM: null,
+
     categoria: ""
   };
 
@@ -120,51 +131,19 @@ export default class Settings extends Component {
       console.log(error);
     }
   };
-  saveCategory = async category => {
+  saveCategory = category => {
     this.setState({ categoria: category });
-    this.addTag(category, "category");
+    this.props.dispatch(addTag(category, "category"));
   };
 
   setDistancia = async distancia => {
     this.setState({ distancia });
-    this.addTag(distancia, "distance");
+    this.props.dispatch(addTag(distancia, "distance"));
   };
 
   updateValue = async value => {
     this.setState({ value });
-
-    this.addTag(value, "price");
-  };
-
-  addTag = async (name, type) => {
-    try {
-      let tags = await AsyncStorage.getItem("tags");
-      if (tags == null) {
-        tags = [];
-      }
-      tags = JSON.parse(tags);
-      if (type === "price" || type == "distance") {
-        console.log("TAGS", tags);
-        let index = 0;
-        const match = tags.filter((tag, i) => {
-          index = i;
-          return tag.type === "price" || tag.type == "distance";
-        });
-        if (match.length > 0) {
-          tags[index].name = name;
-          const tag = tags[index];
-          console.log("match", index, match, tag.name, name);
-        } else {
-          tags.push({ name: name, type: type });
-        }
-      } else {
-        tags.push({ name: name, type: type });
-      }
-      await AsyncStorage.setItem("tags", JSON.stringify(tags));
-      console.log("addTag", name, type);
-    } catch (error) {
-      console.log(error);
-    }
+    this.props.dispatch(addTag(value, "price"));
   };
 
   stepFunction() {
@@ -178,10 +157,12 @@ export default class Settings extends Component {
   }
   render() {
     const buttons = ["24h", "7d", "30d"];
-    const { selectedIndex } = this.state;
+    const modos = ["Compra", "Trueque", "Subasta"];
+
+    const { selectedIndex, selectedIndexM } = this.state;
 
     return (
-      <View style={styles.section}>
+      <ScrollView style={styles.section}>
         <View style={styles.row}>
           <RkText
             style={{ alignItems: "stretch", marginVertical: 10 }}
@@ -282,11 +263,26 @@ export default class Settings extends Component {
           buttons={buttons}
           containerStyle={{ height: 100 }}
         />
-        <View style={styles.padding} />
-      </View>
+        <View style={styles.lineStyle} />
+
+        <View style={[styles.row, styles.heading]}>
+          <RkText style={{ marginTop: 20 }} rkType="header6 primary">
+            MÉTODO DE COMPRA
+          </RkText>
+        </View>
+
+        <ButtonGroup
+          onPress={this.updateIndexM}
+          selectedIndex={selectedIndexM}
+          buttons={modos}
+          containerStyle={{ height: 100 }}
+        />
+      </ScrollView>
     );
   }
 }
+
+export default connect()(Settings);
 
 const styles = RkStyleSheet.create(theme => ({
   root: {
