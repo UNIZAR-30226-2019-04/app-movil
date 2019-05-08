@@ -28,6 +28,8 @@ export default class ProductVertical extends Component {
   render() {
     let red = "rgba(245,60,60,0.8)";
     const width = Dimensions.get("window").width / 2 - 20;
+    let { navigation } = this.props;
+
     return (
       <View style={styles.container}>
         <View style={{}}>
@@ -106,7 +108,7 @@ export default class ProductVertical extends Component {
           <View style={styles.button}>
             <Button
               title="Chat"
-              //onPress={() => this.props.navigation.navigate("Welcome")}
+              onPress={() => navigation.navigate("Chat")}
               //buttonStyle={{ height: 38 }}
             />
           </View>

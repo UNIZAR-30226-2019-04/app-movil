@@ -11,6 +11,7 @@ import { SearchBar } from "react-native-elements";
 import { Platform, StatusBar, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Button } from "react-native";
+import { AsyncStorage } from "react-native";
 
 export default class SearchModal extends Component {
   constructor(props) {
@@ -29,9 +30,18 @@ export default class SearchModal extends Component {
     this.setState({ modalVisible: visible });
   }
 
+  clearSearch() {
+    this.setState({ search: "" });
+  }
+
+  componentDidMount() {
+    if (this.props.search !== undefined) {
+      this.setState({ search: this.props.search });
+    }
+  }
   render() {
     const { search } = this.state;
-
+    console.log("Navigation", this.props);
     return (
       <View style={{ marginTop: 0 }}>
         <Modal
@@ -47,14 +57,12 @@ export default class SearchModal extends Component {
                 inputStyle={{ color: "white" }}
                 cancelIcon={{ color: "white" }}
                 clearlIcon={{ color: "white" }}
-                onClear={() => this.setModalVisible(false)}
+                onClear={() => this.clearSearch}
                 onCancel={() => this.setModalVisible(false)}
-                placeholder="Type Here..."
+                placeholder="Buscar..."
                 onChangeText={this.updateSearch}
                 value={search}
-                //returnKeyType="search"
-
-                //onChangeText={this.updateSearch}
+                returnKeyType="search"
                 //value={this.search}
                 platform={Platform.OS}
                 containerStyle={{
@@ -77,17 +85,46 @@ export default class SearchModal extends Component {
                 size={32}
                 color="white"
               />
-              <View>
-                <Text style={{ color: "white" }}>Hide Modal</Text>
 
+              {this.state.search !== "" ? (
                 <TouchableHighlight
-                  onPress={() => {
+                  onPress={async () => {
                     this.setModalVisible(!this.state.modalVisible);
+                    console.log("Search ", this.state.search);
+                    let tags = [];
+                    try {
+                      tags = await AsyncStorage.getItem("tags");
+                      if (tags != null) {
+                        //tags = JSON.parse(tags);
+                        tags = [];
+                        console.log("tags", tags);
+                        tags.push({ name: this.state.search, type: "search" });
+                      }
+
+                      await AsyncStorage.setItem("tags", JSON.stringify(tags));
+                      console.log("Search saved", tags);
+                    } catch (error) {
+                      console.log(error);
+                    }
+                    this.props.navigation.navigate("SearchResults", {
+                      search: this.state.search
+                    });
                   }}
                 >
-                  <Text style={{ color: "white" }}>Hide Modal</Text>
+                  <Text
+                    style={{
+                      color: "white",
+                      fontFamily: "space-mono",
+                      fontSize: 20,
+                      fontWeight: "500"
+                    }}
+                  >
+                    Buscar: "{this.state.search}"
+                  </Text>
                 </TouchableHighlight>
-              </View>
+              ) : (
+                []
+              )}
             </View>
           </ScrollView>
         </Modal>
@@ -101,6 +138,7 @@ export default class SearchModal extends Component {
             marginTop: 4,
             backgroundColor: "transparent"
           }}
+          value={search}
           searchIcon={{ color: "white" }}
           cancelIcon={{ color: "white" }}
           inputStyle={{ color: "white" }}

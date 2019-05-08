@@ -17,6 +17,8 @@ import { Rating, AirbnbRating, Button, Avatar } from "react-native-elements";
 import ModalDropdown from "react-native-modal-dropdown";
 import Icon from "react-native-animated-icons";
 import MapModal from "../components/mapModal";
+import ComprarModal from "../components/ComprarModal";
+
 import Carousel from "react-native-banner-carousel";
 
 const width = Dimensions.get("window").width;
@@ -352,14 +354,18 @@ export default class ProductDetails extends Component {
         </View>
         <View
           style={{
-            width: width,
+            //width: width,
             position: "absolute",
+            flex: 1,
+            flexDirection: "row",
             bottom: 0
           }}
         >
+          <ComprarModal />
+
           <Button
             title="Chat"
-            titleStyle={{ margin: 10 }}
+            titleStyle={{ margin: 10, width: width / 2 - 20 }}
             onPress={() =>
               this.props.navigation.navigate("ChatTabNavigator", {
                 room: this.state.room,

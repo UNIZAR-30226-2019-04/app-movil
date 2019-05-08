@@ -11,6 +11,7 @@ import { Ionicons } from "@expo/vector-icons";
 import Icon from "react-native-vector-icons/FontAwesome";
 import ProductDetails from "../screens/ProductDetails";
 import CustomLeftDrawerComponent from "../components/CustomLeftDrawerComponent";
+import SearchResults from "../screens/SearchResults";
 
 import {
   createSwitchNavigator,
@@ -83,11 +84,40 @@ const DashboardStackNavigator = createStackNavigator({
         },
         headerLeft: (
           <Icon
-            onPress={() => navigation.navigate("DashboardTabNavigator")}
+            onPress={() => navigation.pop()}
             name="arrow-left"
             style={{ marginLeft: 10 }}
             size={30}
             color="white"
+          />
+        )
+      };
+    }
+  },
+  SearchResults: {
+    screen: SearchResults,
+    navigationOptions: ({ navigation }) => {
+      return {
+        headerStyle: {
+          backgroundColor: "#01579B"
+        },
+        headerLeft: (
+          <Icon
+            onPress={() => navigation.pop()}
+            name="arrow-left"
+            style={{ marginLeft: 10 }}
+            size={30}
+            color="white"
+          />
+        ),
+        headerRight: (
+          <Icon
+            style={{ paddingRight: 10 }}
+            onPress={() => navigation.openDrawer()}
+            name="cog"
+            size={30}
+            color="white"
+            onPress={() => navigation.navigate("Settings")}
           />
         )
       };
@@ -163,7 +193,8 @@ const ChatStackNavigator = createStackNavigator({
         headerLeft: (
           <Icon
             //onPress={() => navigation.navigate("ConversacionesTabNavigator")}
-            onPress={() => goBack(params.go_back_key)}
+            onPress={() => navigation.pop()}
+            //onPress={() => goBack(params.go_back_key)}
             name="arrow-left"
             style={{ marginLeft: 10 }}
             size={30}

@@ -41,9 +41,9 @@ export default class CategoryPickerModal extends Component {
   render() {
     const { search } = this.state;
 
-    const list_categories = Object.keys(categories).map(name => {
+    const list_categories = Object.keys(categories).map((name, index) => {
       return (
-        <TouchableOpacity onPress={() => this.onSelect(name)}>
+        <TouchableOpacity key={index} onPress={() => this.onSelect(name)}>
           <View
             key={name}
             style={{

@@ -17,6 +17,7 @@ import dummy_products from "../assets/dummy_products.json";
 import Product from "../components/Product";
 import ProductVertical from "../components/ProductVertical";
 import UploadProductModal from "../components/UploadProductModal";
+import { AsyncStorage } from "react-native";
 
 import { Font } from "expo";
 
@@ -56,7 +57,7 @@ export default class Feed extends Component {
         // Your custom header
         headerTitle: (
           <View>
-            <SearchModal />
+            <SearchModal navigation={navigation} />
           </View>
         )
       };
@@ -98,10 +99,12 @@ export default class Feed extends Component {
     this.props.navigation.navigate("ProductDetails", { product });
   };
   _renderItem = ({ item }) => {
+    let { navigation } = this.props;
     console.log("pressed");
     return (
       <TouchableHighlight onPress={() => this._method(item)}>
         <ProductVertical
+          navigation={navigation}
           imageUri={{ uri: item.multimedia[0].url }}
           name={item.name}
           price={item.price}
@@ -110,6 +113,20 @@ export default class Feed extends Component {
       </TouchableHighlight>
     );
   };
+
+  selectCategory = async name => {
+    try {
+      let tags = [];
+      tags.push({ name: name, type: "category" });
+      await AsyncStorage.setItem("tags", JSON.stringify(tags));
+      console.log("addTag", name);
+    } catch (error) {
+      console.log(error);
+    }
+    let { navigation } = this.props;
+    navigation.navigate("SearchResults", { search: "" });
+  };
+
   render() {
     const { search } = this.state;
 
@@ -127,7 +144,7 @@ export default class Feed extends Component {
           }}
         >
           <Icon
-            //onPress={() => navigation.openDrawer()}
+            onPress={async () => this.selectCategory(name)}
             name={categories[name].icon}
             size={36}
             color="grey"

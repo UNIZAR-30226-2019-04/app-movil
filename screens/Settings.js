@@ -15,8 +15,11 @@ import { Avatar, Button, Text, ButtonGroup } from "react-native-elements";
 import { Constants, MapView } from "expo";
 import categories from "../assets/categorias.json";
 import CategoryPickerModal from "../components/CategoryPickerModal";
+import { AsyncStorage } from "react-native";
 
 import MapModal from "../components/mapModal";
+
+const dates = ["24h", "7d", "30d"];
 export default class Settings extends Component {
   constructor() {
     super();
@@ -24,9 +27,10 @@ export default class Settings extends Component {
     this.updateIndex = this.updateIndex.bind(this);
   }
 
-  updateIndex(selectedIndex) {
+  updateIndex = async selectedIndex => {
     this.setState({ selectedIndex });
-  }
+    this.addTag(dates[selectedIndex], "date");
+  };
 
   static navigationOptions = ({ navigation }) => {
     return {
@@ -43,8 +47,12 @@ export default class Settings extends Component {
           <Button
             title="Apply filter"
             titleStyle={{ color: "white" }}
+            style={{ marginTop: -5 }}
             color="white"
             type="outline"
+            onPress={() => {
+              navigation.navigate("SearchResults", { search: "" });
+            }}
           />
         </View>
       )
@@ -78,9 +86,85 @@ export default class Settings extends Component {
     categoria: ""
   };
 
-  saveCategory = category => {
-    console.log("saveCategory", category);
+  componentDidMount = async () => {
+    let tags = [];
+    try {
+      tags = await AsyncStorage.getItem("tags");
+      if (tags != null) {
+        tags = JSON.parse(tags);
+        console.log("tags", tags);
+
+        const price = tags.filter(tag => tag.type === "price");
+        const category = tags.filter(tag => tag.type === "category");
+        const date = tags.filter(tag => tag.type === "date");
+        const distance = tags.filter(tag => tag.type === "distance");
+
+        if (price.length > 0) {
+          this.setState({ value: price[0].name });
+        }
+        if (category.length > 0) {
+          this.setState({ category: category[0].name });
+        }
+        if (distance.length > 0) {
+          this.setState({ distancia: distance[0].name });
+        }
+        if (date.length > 0) {
+          for (let i = 0; i < dates.length; i++) {
+            if (dates[i] === date[0]) {
+              this.setState({ selectedIndex: i });
+            }
+          }
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  saveCategory = async category => {
     this.setState({ categoria: category });
+    this.addTag(category, "category");
+  };
+
+  setDistancia = async distancia => {
+    this.setState({ distancia });
+    this.addTag(distancia, "distance");
+  };
+
+  updateValue = async value => {
+    this.setState({ value });
+
+    this.addTag(value, "price");
+  };
+
+  addTag = async (name, type) => {
+    try {
+      let tags = await AsyncStorage.getItem("tags");
+      if (tags == null) {
+        tags = [];
+      }
+      tags = JSON.parse(tags);
+      if (type === "price" || type == "distance") {
+        console.log("TAGS", tags);
+        let index = 0;
+        const match = tags.filter((tag, i) => {
+          index = i;
+          return tag.type === "price" || tag.type == "distance";
+        });
+        if (match.length > 0) {
+          tags[index].name = name;
+          const tag = tags[index];
+          console.log("match", index, match, tag.name, name);
+        } else {
+          tags.push({ name: name, type: type });
+        }
+      } else {
+        tags.push({ name: name, type: type });
+      }
+      await AsyncStorage.setItem("tags", JSON.stringify(tags));
+      console.log("addTag", name, type);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   stepFunction() {
@@ -96,10 +180,6 @@ export default class Settings extends Component {
     const buttons = ["24h", "7d", "30d"];
     const { selectedIndex } = this.state;
 
-    const list_categories = Object.keys(categories).map(name => {
-      return <Picker.Item label={name} value={name} />;
-    });
-
     return (
       <View style={styles.section}>
         <View style={styles.row}>
@@ -113,7 +193,16 @@ export default class Settings extends Component {
 
         <View style={styles.row}>
           <CategoryPickerModal saveCategory={this.saveCategory} />
-          <Text style={{ marginHorizontal: 5 }}>{this.state.categoria}</Text>
+          <Text
+            style={{
+              marginHorizontal: 15,
+              fontSize: 22,
+              fontWeight: "500",
+              marginTop: -20
+            }}
+          >
+            {this.state.categoria}
+          </Text>
         </View>
 
         <View style={[styles.lineStyle, { marginBottom: 0 }]} />
@@ -130,7 +219,9 @@ export default class Settings extends Component {
           >
             <Slider
               value={this.state.value}
-              onValueChange={value => this.setState({ value })}
+              onValueChange={async value => {
+                this.updateValue(value);
+              }}
               maximumValue={2000}
               step={this.stepFunction()}
               thumbTintColor="#01579B"
@@ -146,7 +237,14 @@ export default class Settings extends Component {
           </RkText>
         </View>
         <View>
-          <Text style={{ paddingHorizontal: 17.5, marginBottom: 10 }}>
+          <Text
+            style={{
+              paddingHorizontal: 17.5,
+              marginBottom: 15,
+              fontSize: 16,
+              fontWeight: "500"
+            }}
+          >
             Pablo Neruda Nº11 3ºZ
           </Text>
 
@@ -162,7 +260,7 @@ export default class Settings extends Component {
         >
           <Slider
             value={this.state.distancia}
-            onValueChange={distancia => this.setState({ distancia })}
+            onValueChange={async distancia => this.setDistancia(distancia)}
             maximumValue={200}
             step={1}
             thumbTintColor="#01579B"
@@ -173,7 +271,7 @@ export default class Settings extends Component {
         <View style={styles.lineStyle} />
 
         <View style={[styles.row, styles.heading]}>
-          <RkText style={{ marginTop: 10 }} rkType="header6 primary">
+          <RkText style={{ marginTop: 20 }} rkType="header6 primary">
             FECHA PUBLCACIÓN
           </RkText>
         </View>
@@ -196,7 +294,7 @@ const styles = RkStyleSheet.create(theme => ({
   },
   padding: {
     padding: 20,
-    height: 10
+    height: 200
   },
   header: {
     backgroundColor: theme.colors.screen.neutral,
