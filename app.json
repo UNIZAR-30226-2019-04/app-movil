@@ -3,7 +3,7 @@
     "name": "Telocamv3-3",
     "slug": "telocamv3-3",
     "icon": "./assets/icons/telocam_icon.png",
-    "version": "1.0.1",
+    "version": "1.1.1",
     "privacy": "public",
     "sdkVersion": "32.0.0",
     "ios": {
@@ -19,8 +19,8 @@
     ],
     "orientation": "portrait",
     "splash": {
-      "image": "./assets/images/splash.png",
-      "resizeMode": "contain",
+      "image": "./assets/images/splash3.png",
+      "resizeMode": "cover",
       "backgroundColor": "#ffffff"
     },
     "updates": {
