@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { View, StyleSheet, Field } from "react-native";
-import Icon from "@expo/vector-icons/Ionicons";
 import { SearchBar } from "react-native-elements";
 import { Slider, Card } from "react-native-elements";
 import { Picker, Divider, ScrollView } from "react-native";
@@ -12,13 +11,15 @@ import {
   RkStyleSheet
 } from "react-native-ui-kitten";
 import { Avatar, Button, Text, ButtonGroup } from "react-native-elements";
-import { Constants, MapView } from "expo";
 import categories from "../assets/categorias.json";
 import CategoryPickerModal from "../components/CategoryPickerModal";
 import { AsyncStorage } from "react-native";
 import { connect } from "react-redux";
 import { addTag } from "../actions";
 import MapModal from "../components/mapModal";
+import { Constants, MapView, Location, Permissions } from "expo";
+import axios from "axios";
+import { API_BASE, API_KEY } from "../config";
 
 const dates = ["24h", "7d", "30d"];
 const modos = ["Compra", "Trueque", "Subasta"];
@@ -93,12 +94,15 @@ class Settings extends Component {
     distancia: 0,
     selectedIndex: null,
     selectedIndexM: null,
-
-    categoria: ""
+    mapRegion: null,
+    categoria: "",
+    address: "",
+    coords: null
   };
 
   componentDidMount = async () => {
     let tags = [];
+    this._getLocationAsync();
     try {
       tags = await AsyncStorage.getItem("tags");
       if (tags != null) {
@@ -130,6 +134,57 @@ class Settings extends Component {
     } catch (error) {
       console.log(error);
     }
+  };
+
+  getAddressFromCoordinates(lat, long) {
+    console.log(`latlng=${lat},${long}`);
+
+    axios
+      .get(
+        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${long}&key=${API_KEY}`,
+        {},
+        {}
+      )
+      .then(resp => {
+        let address = resp.data.results[0].formatted_address;
+        console.log(address);
+        this.setState({ address });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
+
+  _getLocationAsync = async () => {
+    let { status } = await Permissions.askAsync(Permissions.LOCATION);
+    console.log("_getLocationAsync", status);
+    if (status !== "granted") {
+      this.setState({
+        locationResult: "Permiso para acceder a la localizacion fue rechazado"
+      });
+      return;
+    } else {
+      this.setState({ hasLocationPermissions: true });
+    }
+
+    let location = await Location.getCurrentPositionAsync({});
+    //this.setState({ locationResult: JSON.stringify(location) });
+    this.setState({ locationResult: location });
+
+    // Center the map on the location we just fetched.
+    let lat = location.coords.latitude;
+    let long = location.coords.longitude;
+
+    this.setState({
+      mapRegion: {
+        latitude: lat,
+        longitude: long,
+        latitudeDelta: 0.0922,
+        longitudeDelta: 0.0421
+      }
+    });
+
+    this.getAddressFromCoordinates(lat, long);
   };
   saveCategory = category => {
     this.setState({ categoria: category });
@@ -226,10 +281,10 @@ class Settings extends Component {
               fontWeight: "500"
             }}
           >
-            Pablo Neruda Nº11 3ºZ
+            {this.state.address !== "" ? this.state.address : "Madrid, España"}
           </Text>
 
-          <MapModal />
+          <MapModal mapRegion={this.state.mapRegion} />
         </View>
 
         <View

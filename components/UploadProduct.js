@@ -49,7 +49,7 @@ export default class ProfileSettings extends React.Component {
     let { status } = await Permissions.askAsync(Permissions.LOCATION);
     if (status !== "granted") {
       this.setState({
-        locationResult: "Permission to access location was denied"
+        locationResult: "Permiso para acceder a la localizacion fue rechazado"
       });
     } else {
       this.setState({ hasLocationPermissions: true });

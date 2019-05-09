@@ -81,23 +81,6 @@ export default class LoginScreen2 extends Component {
     });
   }
 
-  _storeData = async () => {
-    const token =
-      "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1NTA0MjQ1OTMsImlhdCI6MTU1MDMzODE4OCwic3ViIjoxM30.DuB9Am9hddtUTskC0bOF7hK-iS41h9O-PWn-S80tzwo";
-    const user = "unzurdo@gmail.com";
-    console.log(token, user);
-
-    try {
-      await AsyncStorage.setItem("token", token);
-      await AsyncStorage.setItem("user", user);
-      console.log("herreee", user, token);
-
-      this.props.navigation.navigate("Dashboard");
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   validateEmail(email) {
     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
@@ -118,10 +101,6 @@ export default class LoginScreen2 extends Component {
       isEmailValid: this.validateEmail(email) || this.emailInput.shake(),
       isPasswordValid: password.length >= 8 || this.passwordInput.shake()
     });
-
-    /////// !!!!!!!!!!
-    //this._storeData();
-    ///////
 
     axios
       .post(

@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Telocamv3-1",
-    "slug": "telocamv3-1",
+    "name": "Telocamv3-3",
+    "slug": "telocamv3-3",
     "icon": "./assets/icons/telocam_icon.png",
     "version": "1.0.1",
     "privacy": "public",
