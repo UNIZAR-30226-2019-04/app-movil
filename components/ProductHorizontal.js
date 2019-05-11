@@ -21,7 +21,7 @@ export default class ProductHorizontal extends Component {
       <View style={styles.container}>
         <View style={{ flex: 1 }}>
           <Image
-            source={this.props.imageUri}
+            source={this.props.thumbnail}
             style={{
               width: 80,
               height: 80,
@@ -35,13 +35,13 @@ export default class ProductHorizontal extends Component {
           <Text
             style={{ fontSize: 20, fontWeight: "500", paddingHorizontal: 10 }}
           >
-            {this.props.name}
+            {this.props.titulo}
           </Text>
 
           <Text
             style={{ fontSize: 20, fontWeight: "500", paddingHorizontal: 10 }}
           >
-            {this.props.price}€
+            {this.props.precio}€
           </Text>
         </View>
       </View>

@@ -1,9 +1,9 @@
 {
   "expo": {
-    "name": "Telocamv3-3",
-    "slug": "telocamv3-3",
+    "name": "Telocamv3-4",
+    "slug": "telocamv3-4",
     "icon": "./assets/icons/telocam_icon.png",
-    "version": "1.1.1",
+    "version": "1.2.1",
     "privacy": "public",
     "sdkVersion": "32.0.0",
     "ios": {
@@ -19,7 +19,7 @@
     ],
     "orientation": "portrait",
     "splash": {
-      "image": "./assets/images/splash3.png",
+      "image": "./assets/images/splash2.png",
       "resizeMode": "cover",
       "backgroundColor": "#ffffff"
     },

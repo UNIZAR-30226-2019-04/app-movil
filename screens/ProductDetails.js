@@ -20,6 +20,8 @@ import MapModal from "../components/mapModal";
 import ComprarModal from "../components/ComprarModal";
 
 import Carousel from "react-native-banner-carousel";
+import axios from "axios";
+import { API_BASE, API_KEY } from "../config";
 
 const width = Dimensions.get("window").width;
 let _this = null;
@@ -32,21 +34,61 @@ export default class ProductDetails extends Component {
     search: "",
     modalVisible: null,
     product: {},
+    titulo: "",
+    precioBase: 0,
+    descripcion: "",
+    fecha: "",
+    multimedia: [],
+    tipo: "",
     room: 1,
     user: "unzurdo@gmail.com",
     receiver: "alberto@gmail.com",
     token: "",
-    isLiked: false
+    isLiked: false,
+    mapRegion: null,
+    address: ""
   };
-  onPressHeart() {
+  onPressHeart = async product => {
+    console.log("onPressHeart", product);
     this.setState({ isLiked: !this.state.isLiked });
-  }
+    let token, user;
+    try {
+      user = await AsyncStorage.getItem("user");
+      token = await AsyncStorage.getItem("token");
+      console.log("User", user, token);
+    } catch (error) {
+      console.log(error);
+    }
+    user = "8e4de80f-d9bf-411c-a696-58e3481a1b36";
+    token =
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE1NTc1ODg1NTEsInN1YiI6MTksImV4cCI6MTU1NzY3NDk1Nn0.rE3VWsRoamkEMPSM48kfnj1c5AfH572v2QjQzpoHxIA";
+
+    let URL = `${API_BASE}/deseados/${user}`;
+    if (!this.state.isLiked) {
+      URL = `${API_BASE}/deseados/remove${user}`;
+    }
+    axios
+      .post(
+        URL,
+        {
+          producto_id: product
+        },
+        {}
+      )
+      .then(resp => {
+        console.log(resp);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
 
   _onShare() {
     try {
       const result = Share.share({
         message:
-          "React Native | A framework for building native apps using React"
+          "Telocam | Mira lo que he encontrado en Telocam!" +
+          this.state.product.titulo
       });
 
       if (result.action === Share.sharedAction) {
@@ -113,6 +155,25 @@ export default class ProductDetails extends Component {
     this.props.navigation.navigate("Chat");
   };
 
+  getAddressFromCoordinates(lat, long) {
+    console.log(`latlng=${lat},${long}`);
+
+    axios
+      .get(
+        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${long}&key=${API_KEY}`,
+        {},
+        {}
+      )
+      .then(resp => {
+        let address = resp.data.results[0].formatted_address;
+        console.log("address", address);
+        this.setState({ address });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
+
   _renderRow(rowData, rowID, highlighted) {
     console.log(rowData, rowID, highlighted);
     return (
@@ -124,20 +185,49 @@ export default class ProductDetails extends Component {
       />
     );
   }
-  componentDidMount() {
+  componentDidMount = () => {
     _this = this;
 
     const { setParams } = this.props.navigation;
     const { state } = this.props.navigation;
-    const product = this.props.navigation.state.params.product;
-    console.log(product);
-    this.setState({ product: product });
-  }
+
+    this.fetchProduct(state.params.product);
+  };
+
+  fetchProduct = async id => {
+    const URL = `${API_BASE}/producto/${id}`;
+    console.log(URL);
+
+    const res = await axios.get(URL, {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    });
+
+    const producto = res.data;
+    console.log("Response producto", producto, id);
+    this.setState({ product: producto });
+    this.setState(producto);
+
+    this.setState({ isLiked: producto.deseado });
+
+    this.setState({
+      mapRegion: {
+        latitude: producto.latitud,
+        longitude: producto.longitud,
+        latitudeDelta: 0.0922,
+        longitudeDelta: 0.0421
+      }
+    });
+
+    this.getAddressFromCoordinates(producto.latitud, producto.longitud);
+    console.log(producto);
+  };
 
   renderPage(image, index) {
     return (
       <View key={index}>
-        {image.type === "image" ? (
+        {!image.tipo ? (
           <Image
             style={{
               resizeMode: "cover",
@@ -145,15 +235,15 @@ export default class ProductDetails extends Component {
               height: BannerHeight,
               borderRadius: 12
             }}
-            source={{ uri: image.url }}
+            source={{ uri: image.path }}
           />
         ) : (
           []
         )}
-        {image.type === "video" ? (
+        {image.tipo ? (
           <Video
             source={{
-              uri: image.url
+              uri: image.path
             }}
             rate={1.0}
             volume={1.0}
@@ -170,7 +260,7 @@ export default class ProductDetails extends Component {
     );
   }
   render() {
-    console.log("render", this.state.product);
+    console.log("render", this.state);
     const width = Dimensions.get("window").width;
     let red = "rgba(245,60,60,0.8)";
     let light = "rgba(255,255,255,0.5)";
@@ -186,8 +276,8 @@ export default class ProductDetails extends Component {
               index={0}
               pageSize={BannerWidth}
             >
-              {this.state.product.multimedia !== undefined
-                ? this.state.product.multimedia.map((image, index) =>
+              {this.state.multimedia !== undefined
+                ? this.state.multimedia.map((image, index) =>
                     this.renderPage(image, index)
                   )
                 : []}
@@ -210,7 +300,7 @@ export default class ProductDetails extends Component {
                   paddingHorizontal: 10
                 }}
               >
-                {this.state.product.price}€
+                {this.state.precioBase}€
               </Text>
 
               <TouchableOpacity
@@ -218,7 +308,7 @@ export default class ProductDetails extends Component {
                   height: 50,
                   width: 50
                 }}
-                onPress={() => this.onPressHeart()}
+                onPress={() => this.onPressHeart(this.state.product.id)}
               >
                 <Icon
                   style={{ marginHorizontal: 5 }}
@@ -245,7 +335,7 @@ export default class ProductDetails extends Component {
                     fontWeight: "300"
                   }}
                 >
-                  {this.state.product.name}
+                  {this.state.titulo}
                 </Text>
               </View>
 
@@ -258,7 +348,7 @@ export default class ProductDetails extends Component {
                     marginBottom: 5
                   }}
                 >
-                  {this.state.product.description}
+                  {this.state.descripcion}
                 </Text>
               </View>
 
@@ -272,7 +362,7 @@ export default class ProductDetails extends Component {
                     marginVertical: 10
                   }}
                 >
-                  Publicado el dia 28/4/2019
+                  Publicado el dia {this.state.fecha}
                 </Text>
               </View>
 
@@ -287,10 +377,10 @@ export default class ProductDetails extends Component {
                     fontWeight: "500"
                   }}
                 >
-                  Pablo Neruda Nº11 3ºZ
+                  {this.state.address}
                 </Text>
 
-                <MapModal />
+                <MapModal mapRegion={this.state.mapRegion} radious={1} />
               </View>
 
               <View style={styles.lineStyle} />
@@ -307,7 +397,9 @@ export default class ProductDetails extends Component {
                 <Avatar
                   rounded
                   onPress={() =>
-                    this.props.navigation.navigate("Perfil", this.state.product)
+                    this.props.navigation.navigate("Perfil", {
+                      id: this.state.product.vendedor
+                    })
                   }
                   size="medium"
                   containerStyle={{ marginHorizontal: 10 }}
@@ -366,7 +458,7 @@ export default class ProductDetails extends Component {
             onPress={() =>
               this.props.navigation.navigate("ChatTabNavigator", {
                 room: this.state.room,
-                user: this.state.user,
+                user: this.state.vendedor,
                 receiver: this.state.receiver,
                 token: this.state.token
               })

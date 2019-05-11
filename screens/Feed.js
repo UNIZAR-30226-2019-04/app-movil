@@ -7,7 +7,9 @@ import {
   StyleSheet,
   Field,
   TouchableHighlight,
-  Dimensions
+  Dimensions,
+  ActivityIndicator,
+  RefreshControl
 } from "react-native";
 import { SearchBar, Button } from "react-native-elements";
 import { Platform, StatusBar, TouchableOpacity } from "react-native";
@@ -21,23 +23,36 @@ import { AsyncStorage } from "react-native";
 import { connect } from "react-redux";
 import { addTag } from "../actions";
 
+import axios from "axios";
+import { API_BASE } from "../config";
 import { Font } from "expo";
 
 import Icon from "react-native-vector-icons/FontAwesome";
+import ProductHorizontal from "../components/ProductHorizontal";
 const width = Dimensions.get("window").width;
 const height = Dimensions.get("window").height;
 class Feed extends Component {
+  constructor(props) {
+    super(props);
+    this.page = 0;
+    this.state = {
+      loading: false, // user list loading
+      isRefreshing: false, //for pull to refresh
+      data: [], //user list
+      error: ""
+    };
+  }
   state = {
     search: "",
     modalVisible: null,
     products: []
   };
 
-  componentDidMount() {
+  componentDidMount = async () => {
     const { setParams } = this.props.navigation;
     const { state } = this.props.navigation;
 
-    this.fetchItems();
+    this.fetchItems(0);
 
     setParams({ modalVisible: false });
 
@@ -50,7 +65,7 @@ class Feed extends Component {
         return state.modalVisible === true;
       }
     });
-  }
+  };
 
   static navigationOptions = ({ navigation }) => {
     const { state } = navigation;
@@ -66,16 +81,55 @@ class Feed extends Component {
     }
   };
 
-  fetchItems() {
-    var list = [];
-    Object.keys(dummy_products).map(name => {
-      var newelement = dummy_products[name];
-      list.push(newelement);
-    });
-    this.setState({
-      products: [...this.state.products, ...list]
-    });
+  handleLoadMore = () => {
+    console.log("handleLoadMore", this.page + 1);
+
+    if (!this.state.loading) {
+      this.page = this.page + 1; // increase page by 1
+      this.fetchItems(this.page); // method for API call
+    }
+  };
+
+  onRefresh() {
+    console.log("onRefresh");
+    this.setState({ isRefreshing: true }); // true isRefreshing flag for enable pull to refresh indicator
+    const URL = `${API_BASE}/producto?number=20&page=0`;
+
+    axios
+      .get(URL)
+      .then(res => {
+        let productos = res.data.productos;
+        console.log("Response  onRefresh productos", productos);
+
+        this.setState({ isRefreshing: false, products: productos }); // false isRefreshing flag for disable pull to refresh indicator, and clear all data and store only first page data
+      })
+      .catch(error => {
+        this.setState({
+          isRefreshing: false,
+          error: "Something just went wrong"
+        }); // false isRefreshing flag for disable pull to refresh
+      });
   }
+
+  fetchItems = page => {
+    const URL = `${API_BASE}/producto?number=20&page=${page}`;
+    console.log(URL);
+
+    axios
+      .get(URL, {
+        headers: {
+          "Content-Type": "application/json"
+        }
+      })
+      .then(res => {
+        productos = res.data.productos;
+        console.log("Response productos", productos);
+
+        this.setState({
+          products: [...this.state.products, ...productos]
+        });
+      });
+  };
   onClick() {
     console.log("navigation searchbar");
     let { navigation } = this.props;
@@ -103,14 +157,23 @@ class Feed extends Component {
   _renderItem = ({ item }) => {
     let { navigation } = this.props;
     console.log("pressed");
+    let thumbnail;
+    for (let i = 0; i < item.multimedia.length; i++) {
+      if (!item.multimedia[i].tipo) {
+        console.log(item.multimedia[i]);
+        thumbnail = item.multimedia[i];
+        break;
+      }
+    }
     return (
-      <TouchableHighlight onPress={() => this._method(item)}>
+      <TouchableHighlight onPress={() => this._method(item.id)}>
         <ProductVertical
           navigation={navigation}
-          imageUri={{ uri: item.multimedia[0].url }}
-          name={item.name}
-          price={item.price}
-          description={item.description}
+          thumbnail={{ uri: thumbnail.path }}
+          titulo={item.titulo}
+          precio={item.precioBase}
+          deseado={item.deseado}
+          descripcion={item.descripcion}
         />
       </TouchableHighlight>
     );
@@ -123,9 +186,19 @@ class Feed extends Component {
     navigation.navigate("SearchResults", { search: "" });
   };
 
+  renderFooter = () => {
+    //it will show indicator at the bottom of the list when data is loading otherwise it returns null
+    if (!this.state.loading) return null;
+    return (
+      <View>
+        <ActivityIndicator style={{ color: "#000" }} />
+      </View>
+    );
+  };
+
   render() {
     const { search } = this.state;
-
+    console.log(categories, this.state.products);
     const list_categories = Object.keys(categories).map(name => {
       return (
         <View
@@ -161,100 +234,127 @@ class Feed extends Component {
         </View>
       );
     });
+    let list_products = [];
 
-    const list_products = Object.keys(dummy_products).map(name => {
-      let product = dummy_products[name];
+    if (this.state.products !== undefined) {
+      this.state.products.map(product => {
+        let thumbnail = {};
+        console.log("Product", product);
+        for (let i = 0; i < product.multimedia.length; i++) {
+          if (!product.multimedia[i].tipo) {
+            thumbnail = product.multimedia[i];
+            break;
+          }
+        }
+
+        return (
+          <View
+            key={product.id}
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              flexWrap: "wrap",
+              justifyContent: "center",
+              alignItems: "center",
+              margin: 0
+            }}
+          >
+            <TouchableHighlight onPress={() => this._method(product.id)}>
+              <Product
+                thumbnail={{ uri: thumbnail.path }}
+                titulo={product.titulo}
+                precio={product.precioBase}
+                deseado={product.deseado}
+              />
+            </TouchableHighlight>
+          </View>
+        );
+      });
+    }
+
+    if (this.state.loading && this.page === 0) {
       return (
         <View
-          key={name}
           style={{
-            display: "flex",
-            flexDirection: "column",
-            flexWrap: "wrap",
-            justifyContent: "center",
-            alignItems: "center",
-            margin: 0
+            width: "100%",
+            height: "100%"
           }}
         >
-          <TouchableHighlight onPress={() => this._method(product)}>
-            <Product
-              imageUri={{ uri: product.multimedia[0].url }}
-              name={product.name}
-              price={product.price}
-            />
-          </TouchableHighlight>
+          <ActivityIndicator style={{ color: "#000" }} />
         </View>
       );
-    });
+    }
 
-    console.log(this.state.products);
-    return (
-      <View>
+    const Header = (
+      <View
+        showsVerticalScrollIndicator={false}
+        style={{
+          backgroundColor: "#F5F5F5",
+          flex: 1
+        }}
+        contentContainerStyle={{ flex: 1 }} // important!
+      >
         <ScrollView
-          showsVerticalScrollIndicator={false}
-          style={{
-            backgroundColor: "#F5F5F5"
-          }}
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+          style={styles.section}
         >
+          {list_categories}
+        </ScrollView>
+
+        <View style={styles.section}>
+          <Text
+            style={{
+              fontSize: 18,
+              fontWeight: "500",
+              paddingHorizontal: 16,
+              margin: 5,
+              fontFamily: "space-mono"
+            }}
+          >
+            Productos Destacados
+          </Text>
+
           <ScrollView
             horizontal={true}
             showsHorizontalScrollIndicator={false}
             style={styles.section}
           >
-            {list_categories}
+            {list_products}
           </ScrollView>
+        </View>
 
-          <View style={styles.section}>
-            <Text
-              style={{
-                fontSize: 18,
-                fontWeight: "500",
-                paddingHorizontal: 16,
-                margin: 5,
-                fontFamily: "space-mono"
-              }}
-            >
-              Productos Destacados
-            </Text>
-
-            <ScrollView
-              horizontal={true}
-              showsHorizontalScrollIndicator={false}
-              style={styles.section}
-            >
-              {list_products}
-            </ScrollView>
-          </View>
-
-          <View style={styles.section}>
-            <Text
-              style={{
-                fontSize: 18,
-                fontWeight: "500",
-                paddingHorizontal: 16,
-                fontFamily: "space-mono",
-                margin: 5
-              }}
-            >
-              Productos cercanos
-            </Text>
-
-            <View style={{ flex: 1, flexDirection: "row" }}>
-              <FlatList
-                data={this.state.products}
-                keyExtractor={this._keyExtractor}
-                renderItem={this._renderItem}
-                numColumns={2}
-                style={{
-                  flex: 1,
-                  flexDirection: "row",
-                  flexWrap: "wrap"
-                }}
-              />
-            </View>
-          </View>
-        </ScrollView>
-
+        <View style={styles.section}>
+          <Text
+            style={{
+              fontSize: 18,
+              fontWeight: "500",
+              paddingHorizontal: 16,
+              fontFamily: "space-mono",
+              margin: 5
+            }}
+          >
+            Productos cercanos
+          </Text>
+        </View>
+      </View>
+    );
+    return (
+      <View style={{ width: "100%", height: "100%" }}>
+        <FlatList
+          data={this.state.products}
+          extraData={this.state}
+          keyExtractor={this._keyExtractor}
+          renderItem={this._renderItem}
+          numColumns={2}
+          style={{
+            width: "100%"
+          }}
+          ListHeaderComponent={Header}
+          ListFooterComponent={this.renderFooter.bind(this)}
+          onEndReachedThreshold={0.1}
+          onEndReached={this.handleLoadMore.bind(this)}
+        />
         <UploadProductModal />
       </View>
     );

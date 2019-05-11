@@ -72,13 +72,23 @@ export default class Profile extends Component {
   }
 
   state = {
-    data: undefined,
+    descripcion: "",
+    cajas_productos: [],
+    radio_ubicacion: 0,
+    valoraciones_recibidas: [],
+    valoraciones_hechas: [],
+    deseados: [],
+    latitud: null,
+    productos_comprados: 0,
     nick: "",
+    longitud: null,
+    productos_vendidos: 0,
+
+    data: undefined,
     nombre: "",
     apellidos: "",
     imagen_perfil: "",
     valoracion: "",
-    telefono: "",
     profile: {},
     index: 0,
     routes: [
@@ -98,19 +108,6 @@ export default class Profile extends Component {
   }
   constructor(props) {
     super(props);
-
-    const id = this.props.navigation.getParam("id", 1);
-    this.state.data = {
-      firstName: "Alberto",
-      lastName: "Garcia",
-      photo:
-        "http://cf.ltkcdn.net/socialnetworking/images/std/168796-281x281-girl-swear-icon.png",
-      postCount: 7,
-      followingCount: 111,
-      followersCount: 99,
-      images:
-        "http://cf.ltkcdn.net/socialnetworking/images/std/168796-281x281-girl-swear-icon.png"
-    };
   }
   formatNumber(num) {
     return num > 999 ? `${(num / 1000).toFixed(1)}k` : num;
@@ -140,7 +137,12 @@ export default class Profile extends Component {
     } catch (error) {
       console.log(error);
     }
+    user = "8e4de80f-d9bf-411c-a696-58e3481a1b36";
+    token =
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE1NTc1ODg1NTEsInN1YiI6MTksImV4cCI6MTU1NzY3NDk1Nn0.rE3VWsRoamkEMPSM48kfnj1c5AfH572v2QjQzpoHxIA";
     const URL = `${API_BASE}/user/${user}`;
+    console.log(URL, user, token);
+
     const res = await axios.get(URL, {
       headers: {
         "Content-Type": "application/json",
@@ -149,14 +151,8 @@ export default class Profile extends Component {
     });
     const perfil = res.data;
     console.log("Response Perfil", perfil);
-    this.setState({
-      nick: perfil.nick,
-      nombre: perfil.nombre,
-      apellidos: perfil.apellidos,
-      valoracion: perfil.valoracion,
-      telefono: perfil.telefono,
-      profile: perfil
-    });
+    this.setState(perfil);
+    this.setState({ profile: perfil });
   };
 
   _renderLabel = scene => {

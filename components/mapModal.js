@@ -30,7 +30,8 @@ export default class MapModal extends Component {
     LATLNG: {
       latitude: 41.4816,
       longitude: -4.055685
-    }
+    },
+    radious: 1
   };
 
   updateSearch = search => {
@@ -41,7 +42,10 @@ export default class MapModal extends Component {
   }
 
   componentDidMount() {
-    this.setState({ mapRegion: this.props.mapRegion });
+    this.setState({
+      mapRegion: this.props.mapRegion,
+      radious: this.props.radious
+    });
   }
 
   componentDidUpdate() {
@@ -90,12 +94,12 @@ export default class MapModal extends Component {
             }
           >
             <MapView.Circle
-              key={"key111".toString()}
+              key={"key1112".toString()}
               center={this.state.LATLNG}
-              radius={RADIUS}
+              radius={RADIUS * this.props.radious}
               strokeWidth={2}
               strokeColor={"#1a66ff"}
-              fillColor={"rgba(230,238,255,0.5)"}
+              fillColor={"rgba(115, 134, 242, 0.45)"}
               //onRegionChangeComplete={this.onRegionChangeComplete.bind(this)}
             />
           </MapView>
@@ -138,10 +142,10 @@ export default class MapModal extends Component {
             <MapView.Circle
               key={"key111".toString()}
               center={this.state.LATLNG}
-              radius={RADIUS}
+              radius={RADIUS * this.props.radious}
               strokeWidth={2}
               strokeColor={"#1a66ff"}
-              fillColor={"#b3cbff"}
+              fillColor={"rgba(115, 134, 242, 0.45)"}
               //onRegionChangeComplete={this.onRegionChangeComplete.bind(this)}
             />
           </MapView>

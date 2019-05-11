@@ -174,27 +174,9 @@ export default class LoginScreen2 extends Component {
         console.log(resp);
         const token = resp.data.Authorization;
         const user = resp.data.user;
-        if (user !== null) {
-          try {
-            AsyncStorage.setItem("token", token + "");
-            AsyncStorage.setItem("user", user + "");
-          } catch (error) {
-            console.log(error);
-          }
-
-          // Add the following line:
-          axios.defaults.headers.common["Authorization"] = token;
-          this.props.navigation.navigate("Dashboard");
-        }
       })
       .catch(err => {
         console.log(err);
-        try {
-          AsyncStorage.removeItem("token");
-          AsyncStorage.removeItem("user");
-        } catch (error) {
-          console.log(error);
-        }
       });
   }
 

@@ -91,7 +91,7 @@ class Settings extends Component {
     confirmPassword: this.user.confirmPassword,
     value: 0,
     language: null,
-    distancia: 0,
+    distancia: 1,
     selectedIndex: null,
     selectedIndexM: null,
     mapRegion: null,
@@ -210,6 +210,18 @@ class Settings extends Component {
       return 50;
     }
   }
+
+  stepFunctionDistance() {
+    if (this.state.distancia < 15) {
+      return 1;
+    } else if (this.state.distancia < 45) {
+      return 5;
+    } else if (this.state.distancia < 90) {
+      return 10;
+    } else {
+      return 50;
+    }
+  }
   render() {
     const buttons = ["24h", "7d", "30d"];
     const modos = ["Compra", "Trueque", "Subasta"];
@@ -284,7 +296,10 @@ class Settings extends Component {
             {this.state.address !== "" ? this.state.address : "Madrid, España"}
           </Text>
 
-          <MapModal mapRegion={this.state.mapRegion} />
+          <MapModal
+            mapRegion={this.state.mapRegion}
+            radious={this.state.distancia}
+          />
         </View>
 
         <View
@@ -297,8 +312,8 @@ class Settings extends Component {
           <Slider
             value={this.state.distancia}
             onValueChange={async distancia => this.setDistancia(distancia)}
-            maximumValue={200}
-            step={1}
+            maximumValue={300}
+            step={this.stepFunctionDistance()}
             thumbTintColor="#01579B"
           />
           <Text>Distancia max: {this.state.distancia} km</Text>
