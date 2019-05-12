@@ -12,8 +12,10 @@ import { Platform, StatusBar, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Button } from "react-native";
 import { AsyncStorage } from "react-native";
+import { connect } from "react-redux";
+import { addTag } from "../actions";
 
-export default class SearchModal extends Component {
+class SearchModal extends Component {
   constructor(props) {
     super(props);
   }
@@ -88,24 +90,10 @@ export default class SearchModal extends Component {
 
               {this.state.search !== "" ? (
                 <TouchableHighlight
-                  onPress={async () => {
+                  onPress={() => {
                     this.setModalVisible(!this.state.modalVisible);
                     console.log("Search ", this.state.search);
-                    let tags = [];
-                    try {
-                      tags = await AsyncStorage.getItem("tags");
-                      if (tags != null) {
-                        //tags = JSON.parse(tags);
-                        tags = [];
-                        console.log("tags", tags);
-                        tags.push({ name: this.state.search, type: "search" });
-                      }
-
-                      await AsyncStorage.setItem("tags", JSON.stringify(tags));
-                      console.log("Search saved", tags);
-                    } catch (error) {
-                      console.log(error);
-                    }
+                    this.props.dispatch(addTag(this.state.search, "search"));
                     this.props.navigation.navigate("SearchResults", {
                       search: this.state.search
                     });
@@ -169,3 +157,4 @@ export default class SearchModal extends Component {
     );
   }
 }
+export default connect()(SearchModal);

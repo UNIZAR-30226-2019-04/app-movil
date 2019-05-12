@@ -10,7 +10,7 @@ export default class Product extends Component {
       <View style={styles.container}>
         <View style={{ flex: 2 }}>
           <Image
-            source={this.props.imageUri}
+            source={this.props.thumbnail}
             style={{
               flex: 1,
               width: null,
