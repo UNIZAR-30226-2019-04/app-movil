@@ -14,10 +14,6 @@ import { Button } from "react-native";
 import { Constants, MapView } from "expo";
 import { Dimensions, PixelRatio } from "react-native";
 
-let updated = false;
-
-RADIUS = 100;
-
 export default class MapModal extends Component {
   constructor(props) {
     super(props);
@@ -25,13 +21,7 @@ export default class MapModal extends Component {
 
   state = {
     modalVisible: false,
-    search: "",
-    mapRegion: null,
-    LATLNG: {
-      latitude: 41.4816,
-      longitude: -4.055685
-    },
-    radious: 1
+    search: ""
   };
 
   updateSearch = search => {
@@ -41,30 +31,10 @@ export default class MapModal extends Component {
     this.setState({ modalVisible: visible });
   }
 
-  componentDidMount() {
-    this.setState({
-      mapRegion: this.props.mapRegion,
-      radious: this.props.radious
-    });
-  }
-
-  componentDidUpdate() {
-    console.log("updated", this.props.mapRegion);
-
-    if (this.props.mapRegion !== null && !updated) {
-      updated = true;
-      this.setState({ mapRegion: this.props.mapRegion });
-      let latlong = {
-        latitude: this.props.mapRegion.latitude,
-        longitude: this.props.mapRegion.longitude
-      };
-      this.setState({ LATLNG: latlong });
-    }
-  }
   render() {
     const { search } = this.state;
     const { width, height } = Dimensions.get("window");
-    console.log("mapRegion", this.state.mapRegion);
+
     return (
       <View style={{ marginTop: 0 }}>
         <Modal
@@ -75,34 +45,13 @@ export default class MapModal extends Component {
         >
           <MapView
             style={{ flex: 1 }}
-            showsUserLocation={true}
             initialRegion={{
-              latitude: 41.4816,
-              longitude: -4.055685,
-              latitudeDelta: 5.0922,
-              longitudeDelta: 5.0421
+              latitude: 37.78825,
+              longitude: -122.4324,
+              latitudeDelta: 0.0922,
+              longitudeDelta: 0.0421
             }}
-            region={
-              this.state.mapRegion !== null
-                ? this.state.mapRegion
-                : {
-                    latitude: 41.4816,
-                    longitude: -4.055685,
-                    latitudeDelta: 5.0922,
-                    longitudeDelta: 5.0421
-                  }
-            }
-          >
-            <MapView.Circle
-              key={"key1112".toString()}
-              center={this.state.LATLNG}
-              radius={RADIUS * this.props.radious}
-              strokeWidth={2}
-              strokeColor={"#1a66ff"}
-              fillColor={"rgba(115, 134, 242, 0.45)"}
-              //onRegionChangeComplete={this.onRegionChangeComplete.bind(this)}
-            />
-          </MapView>
+          />
         </Modal>
 
         <TouchableHighlight
@@ -121,34 +70,13 @@ export default class MapModal extends Component {
         >
           <MapView
             style={{ flex: 1 }}
-            showsUserLocation={true}
             initialRegion={{
-              latitude: 41.4816,
-              longitude: -4.055685,
-              latitudeDelta: 5.0922,
-              longitudeDelta: 5.0421
+              latitude: 37.78825,
+              longitude: -122.4324,
+              latitudeDelta: 0.0922,
+              longitudeDelta: 0.0421
             }}
-            region={
-              this.state.mapRegion !== null
-                ? this.state.mapRegion
-                : {
-                    latitude: 41.4816,
-                    longitude: -4.055685,
-                    latitudeDelta: 5.0922,
-                    longitudeDelta: 5.0421
-                  }
-            }
-          >
-            <MapView.Circle
-              key={"key111".toString()}
-              center={this.state.LATLNG}
-              radius={RADIUS * this.props.radious}
-              strokeWidth={2}
-              strokeColor={"#1a66ff"}
-              fillColor={"rgba(115, 134, 242, 0.45)"}
-              //onRegionChangeComplete={this.onRegionChangeComplete.bind(this)}
-            />
-          </MapView>
+          />
         </TouchableHighlight>
       </View>
     );

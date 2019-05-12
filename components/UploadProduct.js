@@ -20,8 +20,14 @@ import { Avatar, Button } from "react-native-elements";
 import Textarea from "react-native-textarea";
 import UploadMultimedia from "./UploadMultimedia";
 import CameraRollSelect from "./CameraRollSelect";
+import TypePickerModal from "./TypePickerModal";
+import UploadProductModal from "./UploadProductModal";
 import CategoryPickerModal from "./CategoryPickerModal";
+import { addTag } from "../actions";
 import { Constants, MapView, Location, Permissions } from "expo";
+import axios from "axios";
+import { API_BASE } from "../config";
+import { AsyncStorage } from "react-native";
 
 export default class ProfileSettings extends React.Component {
   static navigationOptions = {
@@ -29,17 +35,62 @@ export default class ProfileSettings extends React.Component {
   };
 
   state = {
+    precioBase: 0,
+    precioAux: 0,
+    vendedor: "",
+    fechaExp: "",
+    latitud: "",
+    longitud: "",
     multimedia: [],
     title: "",
+    tipo: "",
     description: "",
     categoria: "",
-    location: "",
-    precio: 0,
     photos: [],
     mapRegion: null,
     hasLocationPermissions: false,
     locationResult: null
   };
+
+  clearAndExit(){
+    thist.setState({
+
+    })
+  }
+
+  uploadProduct() {
+    const { email, password } = this.state;
+
+    axios
+        .post(
+          `${API_BASE}/user/producto`,
+          {
+            titulo: this.state.title,
+            descripcion: this.state.description,
+            precioBase: this.state.precioBase,
+            categoria: this.state.categoria,
+          },
+          {}
+        )
+        this.setState({
+          precioBase: 0,
+          precioAux: 0,
+          vendedor: "",
+          fechaExp: "",
+          latitud: "",
+          longitud: "",
+          multimedia: [],
+          title: "",
+          tipo: "",
+          description: "",
+          categoria: "",
+          photos: [],
+          mapRegion: null,
+          hasLocationPermissions: false,
+          locationResult: null
+        });
+        this.render();
+  }
 
   componentDidMount() {
     this._getLocationAsync();
@@ -49,7 +100,7 @@ export default class ProfileSettings extends React.Component {
     let { status } = await Permissions.askAsync(Permissions.LOCATION);
     if (status !== "granted") {
       this.setState({
-        locationResult: "Permiso para acceder a la localizacion fue rechazado"
+        locationResult: "Permission to access location was denied"
       });
     } else {
       this.setState({ hasLocationPermissions: true });
@@ -66,7 +117,9 @@ export default class ProfileSettings extends React.Component {
         longitude: location.coords.longitude,
         latitudeDelta: 0.0922,
         longitudeDelta: 0.0421
-      }
+      },
+      latitud: location.coords.latitude,
+      longitud: location.coords.longitude
     });
   };
 
@@ -117,16 +170,24 @@ export default class ProfileSettings extends React.Component {
     console.log("saveCategory", category);
     this.setState({ categoria: category });
   };
+
+  saveType = type => {
+    console.log("saveType", type);
+    this.setState({ tipo: type });
+  };
+
   onDescriptionChanged = text => {
     this.setState({ description: text });
   };
 
-  onLocationChanged = text => {
-    this.setState({ location: text });
-  };
   onPrecioChanged = text => {
-    this.setState({ precio: text });
+    this.setState({ precioBase: text });
   };
+
+  onPrecioTruequeChanged = text => {
+    this.setState({ precioAux: text });
+  };
+
   render = () => {
     console.log("Location", this.state.locationResult);
     let image = {};
@@ -168,9 +229,22 @@ export default class ProfileSettings extends React.Component {
                 style={styles.text_input}
                 keyboardType="numeric"
                 onChangeText={this.onPrecioChanged}
-                value={this.state.precio}
+                value={this.state.precioBase}
               />
             </View>
+
+            <View style={styles.row2}>
+              <TypePickerModal saveType={this.saveType} />
+              <Text style={{ marginHorizontal: 5 }}>
+                {this.state.tipo}
+              </Text>
+            </View>
+
+            <script>
+              if (this.state.tipo == "Trueque"){
+                  console.log("wakala")
+              }
+            </script>
 
             <View style={styles.row2}>
               <CategoryPickerModal saveCategory={this.saveCategory} />
@@ -204,6 +278,7 @@ export default class ProfileSettings extends React.Component {
               containerStyle={{ height: 100, marginTop: 100 }}
               style={styles.button}
               title="SUBIR"
+              onPress={ () => this.uploadProduct()}
             />
           </View>
         </RkAvoidKeyboard>

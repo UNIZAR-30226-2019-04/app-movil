@@ -14,7 +14,7 @@ const width = Dimensions.get("window").width / 2 - 20;
 
 export default class ProductVertical extends Component {
   state = {
-    isLiked: this.props.deseado
+    isLiked: false
   };
   onPressHeart() {
     console.log("Like pressed");
@@ -34,7 +34,7 @@ export default class ProductVertical extends Component {
       <View style={styles.container}>
         <View style={{}}>
           <Image
-            source={this.props.thumbnail}
+            source={this.props.imageUri}
             style={{
               width: Dimensions.get("window").width / 2 - 30,
               height: 100,
@@ -47,30 +47,23 @@ export default class ProductVertical extends Component {
           <Text
             style={{ fontSize: 20, fontWeight: "500", paddingHorizontal: 10 }}
           >
-            {this.props.precio}€
+            {this.props.price}€
+          </Text>
+        </View>
+
+        <View style={{ marginBottom: 5 }}>
+          <Text style={{ paddingHorizontal: 10, color: "grey" }}>
+            {this.props.name}
           </Text>
         </View>
 
         <View style={{ marginBottom: 5 }}>
           <Text
-            style={{
-              paddingHorizontal: 10,
-              color: "grey",
-              fontSize: 16,
-              fontWeight: "500"
-            }}
-          >
-            {this.props.titulo}
-          </Text>
-        </View>
-
-        <View style={{ marginVertical: 2 }}>
-          <Text
             ellipsizeMode="tail"
             numberOfLines={6}
             style={{ paddingHorizontal: 10, color: "grey" }}
           >
-            {this.props.descripcion}
+            {this.props.description}
           </Text>
         </View>
 
@@ -79,9 +72,7 @@ export default class ProductVertical extends Component {
             marginBottom: 5,
             marginHorizontal: 2,
             flex: 1,
-            flexDirection: "row",
-            position: "absolute",
-            bottom: 2
+            flexDirection: "row"
           }}
         >
           <TouchableOpacity

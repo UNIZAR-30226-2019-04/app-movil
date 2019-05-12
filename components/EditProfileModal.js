@@ -35,7 +35,7 @@ export default class SearchModal extends Component {
           visible={this.state.modalVisible}
           onRequestClose={() => this.setModalVisible(false)}
         >
-          <ProfileSettings profile={() => this.props.profile()} />
+          <ProfileSettings profile={this.props.profile} />
           <Ionicons
             style={{
               position: "absolute",
