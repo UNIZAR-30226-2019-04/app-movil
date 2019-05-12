@@ -47,49 +47,152 @@ export default class ProfileSettings extends React.Component {
     description: "",
     categoria: "",
     photos: [],
+    radio_ubicacion: 0,
     mapRegion: null,
     hasLocationPermissions: false,
     locationResult: null
   };
 
-  clearAndExit(){
-    thist.setState({
-
-    })
-  }
 
   uploadProduct() {
-    const { email, password } = this.state;
+    axios
+    .post(
+      `${API_BASE}/user/login`,
+      {
+        titulo: this.state.title,
+        descripcion: this.state.description,
+        precioBase: this.state.precioBase,
+        categoria: this.state.categoria,
+        tipo: this.state.tipo,
+        radio_ubicacion: this.state.radio_ubicacion,
+        latitud: this.state.latitud,
+        longitud: this.state.longitud,
+        fechaexpiracion: this.state.fechaExp
+      },
+      {}
+    )
+    .then(resp => {
+      const token = resp.data.Authorization;
+      const public_id = resp.data.public_id;
+      console.log(resp.data);
 
+      try {
+        AsyncStorage.setItem("token", token);
+        AsyncStorage.setItem("user", public_id);
+        
+      } catch (error) {
+        console.log(error);
+      }
+
+      this.setState({ vendedor: public_id });
+      // Add the following line:
+      axios.defaults.headers.common["Authorization"] = token;
+    })
+
+    console.log("Titulo:",this.state.title);
+    console.log("Precio:",this.state.precioBase);
+    console.log("Latitud:",this.state.latitud);
+    console.log("Longitud:",this.state.longitud);
+    console.log("Tipo:",this.state.tipo);
+    console.log("Descripcion:",this.state.description);
+    console.log("Categoria:",this.state.categoria);
+    console.log("Radio_ubicacion:",this.state.radio_ubicacion);
+    console.log("Usuario:",this.state.vendedor);
+
+    if (this.state.tipo == "normal"){
+      this.uploadProductNormal();
+    } else if (this.state.tipo == "trueque"){
+      this.uploadProductTrueque();
+    } else if (this.state.tipo == "subasta"){
+      this.uploadProductSubasta()
+    }
+    this.reset_forms();
+  }
+
+  uploadProductNormal(){
+    const { email, password } = this.state;
     axios
         .post(
-          `${API_BASE}/user/producto`,
+          `${API_BASE}/user/producto/`,
           {
             titulo: this.state.title,
             descripcion: this.state.description,
             precioBase: this.state.precioBase,
             categoria: this.state.categoria,
+            tipo: this.state.tipo,
+            radio_ubicacion: this.state.radio_ubicacion,
+            latitud: this.state.latitud,
+            longitud: this.state.longitud,
+            vendedor: this.state.vendedor
           },
           {}
         )
-        this.setState({
-          precioBase: 0,
-          precioAux: 0,
-          vendedor: "",
-          fechaExp: "",
-          latitud: "",
-          longitud: "",
-          multimedia: [],
-          title: "",
-          tipo: "",
-          description: "",
-          categoria: "",
-          photos: [],
-          mapRegion: null,
-          hasLocationPermissions: false,
-          locationResult: null
-        });
-        this.render();
+
+  }
+
+  uploadProductSubasta(){
+    const { email, password } = this.state;
+    axios
+        .post(
+          `${API_BASE}/user/producto/`,
+          {
+            titulo: this.state.title,
+            descripcion: this.state.description,
+            precioBase: this.state.precioBase,
+            categoria: this.state.categoria,
+            tipo: this.state.tipo,
+            radio_ubicacion: this.state.radio_ubicacion,
+            latitud: this.state.latitud,
+            longitud: this.state.longitud,
+            fechaexpiracion: this.state.fechaExp,
+            vendedor: this.state.vendedor
+          },
+          {}
+        )
+
+  }
+
+  uploadProductNormal(){
+    const { email, password } = this.state;
+    axios
+        .post(
+          `${API_BASE}/user/producto/`,
+          {
+            titulo: this.state.title,
+            descripcion: this.state.description,
+            precioBase: this.state.precioBase,
+            categoria: this.state.categoria,
+            tipo: this.state.tipo,
+            radio_ubicacion: this.state.radio_ubicacion,
+            latitud: this.state.latitud,
+            longitud: this.state.longitud,
+            precioAux: this.state.precioAux,
+            vendedor:this.state.vendedor
+          },
+          {}
+        )
+        
+  }
+
+  reset_forms(){
+    this.setState({
+      precioBase: 0,
+      precioAux: 0,
+      vendedor: "",
+      fechaExp: "",
+      latitud: "",
+      longitud: "",
+      multimedia: [],
+      title: "",
+      tipo: "",
+      description: "",
+      categoria: "",
+      photos: [],
+      mapRegion: null,
+      hasLocationPermissions: false,
+      locationResult: null
+    });
+    this.render();
   }
 
   componentDidMount() {
@@ -172,8 +275,14 @@ export default class ProfileSettings extends React.Component {
   };
 
   saveType = type => {
-    console.log("saveType", type);
-    this.setState({ tipo: type });
+    console.log("saveType",type);
+    if (type == "Normal"){
+      this.setState({ tipo: "normal" });
+    }else if (type == "Trueque"){
+      this.setState({ tipo: "trueque" });
+    }else if (type == "Subasta"){
+      this.setState({ tipo: "subasta" });
+    }
   };
 
   onDescriptionChanged = text => {
@@ -186,6 +295,10 @@ export default class ProfileSettings extends React.Component {
 
   onPrecioTruequeChanged = text => {
     this.setState({ precioAux: text });
+  };
+
+  onRadioUbicacionChanged = text => {
+    this.setState({ radio_ubicacion: text });
   };
 
   render = () => {
@@ -233,18 +346,33 @@ export default class ProfileSettings extends React.Component {
               />
             </View>
 
+            <View style={styles.row}>
+              <Text style={styles.label}>Radio de tu ubicación</Text>
+              <TextInput
+                style={styles.text_input}
+                keyboardType="numeric"
+                onChangeText={this.onRadioUbicacionChanged}
+                value={this.state.precioAux}
+              />
+            </View>
+
+            <View style={styles.row}>
+              <Text style={styles.label}>Precio máx. del trueque</Text>
+              <TextInput
+                style={styles.text_input}
+                keyboardType="numeric"
+                onChangeText={this.onPrecioTruequeChanged}
+                value={this.state.precioAux}
+              />
+            </View>
+
+
             <View style={styles.row2}>
               <TypePickerModal saveType={this.saveType} />
               <Text style={{ marginHorizontal: 5 }}>
                 {this.state.tipo}
               </Text>
             </View>
-
-            <script>
-              if (this.state.tipo == "Trueque"){
-                  console.log("wakala")
-              }
-            </script>
 
             <View style={styles.row2}>
               <CategoryPickerModal saveCategory={this.saveCategory} />
