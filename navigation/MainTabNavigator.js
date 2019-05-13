@@ -7,7 +7,6 @@ import Settings from "../screens/Settings";
 import Profile from "../screens/Profile";
 import Chat from "../screens/Chat";
 import Conversaciones from "../screens/Conversaciones";
-import { Ionicons } from "@expo/vector-icons";
 import Icon from "react-native-vector-icons/FontAwesome";
 import ProductDetails from "../screens/ProductDetails";
 import CustomLeftDrawerComponent from "../components/CustomLeftDrawerComponent";
