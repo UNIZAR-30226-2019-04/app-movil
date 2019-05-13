@@ -52,7 +52,7 @@ export default class ProductVertical extends Component {
         </View>
 
         <View style={{ marginBottom: 5 }}>
-          <Text
+        <Text
             style={{
               paddingHorizontal: 10,
               color: "grey",
@@ -79,9 +79,7 @@ export default class ProductVertical extends Component {
             marginBottom: 5,
             marginHorizontal: 2,
             flex: 1,
-            flexDirection: "row",
-            position: "absolute",
-            bottom: 2
+            flexDirection: "row"
           }}
         >
           <TouchableOpacity

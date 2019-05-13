@@ -21,7 +21,7 @@ export default class ProductHorizontal extends Component {
       <View style={styles.container}>
         <View style={{ flex: 1 }}>
           <Image
-            source={this.props.thumbnail}
+            source={this.props.thumbnail }
             style={{
               width: 80,
               height: 80,

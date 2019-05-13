@@ -4,7 +4,7 @@ import {
   Text,
   TouchableHighlight,
   View,
-  Alert,
+  ScrollView,
   StyleSheet,
   Dimensions
 } from "react-native";
@@ -13,12 +13,12 @@ import { Platform, StatusBar, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Button, Tooltip } from "react-native-elements";
 import Icon from "react-native-vector-icons/FontAwesome";
-import UploadProduct from "./UploadProduct";
+import tipos from "../assets/tipos.json";
 
 const width = Dimensions.get("window").width;
 const height = Dimensions.get("window").height;
 
-export default class UploadProductModalClass extends Component {
+export default class TypePickerModal extends Component {
   constructor(props) {
     super(props);
   }
@@ -34,9 +34,48 @@ export default class UploadProductModalClass extends Component {
   setModalVisible(visible) {
     this.setState({ modalVisible: visible });
   }
-
+  onSelect(type) {
+    this.props.saveType(type);
+    this.setModalVisible(false);
+  }
   render() {
     const { search } = this.state;
+
+    const list_types = Object.keys(tipos).map((name, index) => {
+      return (
+        <TouchableOpacity key={index} onPress={() => this.onSelect(name)}>
+          <View
+            key={name}
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              flexWrap: "wrap",
+              marginLeft: 50,
+
+              marginVertical: 3
+            }}
+          >
+            <Icon
+              //onPress={() => navigation.openDrawer()}
+              name={tipos[name].icon}
+              size={36}
+              color="grey"
+            />
+            <Text
+              style={{
+                marginHorizontal: 10,
+                fontFamily: "space-mono",
+                fontSize: 18,
+                color: "grey"
+              }}
+            >
+              {name}
+            </Text>
+          </View>
+          <View style={styles.lineStyle} />
+        </TouchableOpacity>
+      );
+    });
 
     return (
       <View style={{ marginTop: 0 }}>
@@ -46,7 +85,13 @@ export default class UploadProductModalClass extends Component {
           visible={this.state.modalVisible}
           onRequestClose={() => this.setModalVisible(false)}
         >
-          <UploadProduct />
+          <ScrollView
+            showsHorizontalScrollIndicator={false}
+            style={styles.section}
+          >
+            {list_types}
+          </ScrollView>
+
           <Ionicons
             style={{
               position: "absolute",
@@ -61,14 +106,13 @@ export default class UploadProductModalClass extends Component {
             color="grey"
           />
         </Modal>
-        <View style={styles.buttonView}>
-          <Button
-            icon={<Icon name="plus-circle" size={20} color="white" />}
-            title=" Subir producto"
-            style={styles.floatingButton}
-            onPress={() => this.setModalVisible(true)}
-          />
-        </View>
+
+        <Button
+          icon={<Icon name="plus-circle" size={20} color="white" />}
+          title=" Elegir Tipo"
+          style={styles.floatingButton}
+          onPress={() => this.setModalVisible(true)}
+        />
       </View>
     );
   }
@@ -77,7 +121,7 @@ export default class UploadProductModalClass extends Component {
 const styles = StyleSheet.create({
   section: {
     flex: 1,
-    marginVertical: 2,
+    marginTop: 52,
     backgroundColor: "white",
     borderRadius: 6,
     borderWidth: 2,
@@ -88,11 +132,12 @@ const styles = StyleSheet.create({
     width: 160,
     height: 60
   },
-  buttonView: {
-    position: "absolute",
-    bottom: 10,
-    right: width / 2 - 80,
-    backgroundColor: "blue",
-    borderRadius: 20
+
+  lineStyle: {
+    height: 1,
+    borderWidth: 0.3,
+    borderColor: "grey",
+    margin: 4,
+    marginHorizontal: 24
   }
 });

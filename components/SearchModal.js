@@ -14,6 +14,7 @@ import { Button } from "react-native";
 import { AsyncStorage } from "react-native";
 import { connect } from "react-redux";
 import { addTag } from "../actions";
+
 class SearchModal extends Component {
   constructor(props) {
     super(props);
@@ -156,5 +157,4 @@ class SearchModal extends Component {
     );
   }
 }
-
 export default connect()(SearchModal);

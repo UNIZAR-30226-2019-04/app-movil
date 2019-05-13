@@ -24,13 +24,13 @@ export default class Product extends Component {
           <Text
             style={{ fontSize: 20, fontWeight: "500", paddingHorizontal: 10 }}
           >
-            {this.props.precio}€
+            {this.props.price}€
           </Text>
         </View>
 
         <View style={{ marginBottom: 5 }}>
           <Text style={{ paddingHorizontal: 10, color: "grey" }}>
-            {this.props.titulo}
+            {this.props.name}
           </Text>
         </View>
       </View>

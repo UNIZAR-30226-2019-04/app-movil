@@ -1,0 +1,11 @@
+{
+    "Normal": {
+      "icon": "euro"
+    },
+    "Trueque": {
+      "icon": "wifi"
+    },
+    "Subasta": {
+      "icon": "trophy"
+    }
+}
