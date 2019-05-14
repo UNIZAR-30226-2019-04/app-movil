@@ -18,6 +18,8 @@ import VisibleTags from "../containers/VisibleTags";
 import ProductVertical from "../components/ProductVertical";
 import UploadProductModal from "../components/UploadProductModal";
 import { AsyncStorage } from "react-native";
+import { connect } from "react-redux";
+import store from "../store";
 
 import { Font } from "expo";
 
@@ -27,10 +29,10 @@ const height = Dimensions.get("window").height;
 
 const default_tags = { "24h": { name: "24h" }, "1Km": { name: "1Km" } };
 let first = true;
-export default class Feed extends Component {
+class SearchResults extends Component {
   state = {
     search: "",
-    modalVisible: null,
+    modalVisible: false,
     products: [],
     tags: [],
     updated: false
@@ -40,7 +42,6 @@ export default class Feed extends Component {
     const { setParams } = this.props.navigation;
     const { state } = this.props.navigation;
 
-    this.fetchItems();
     this.fetchTags();
     first = false;
     setParams({
@@ -77,24 +78,6 @@ export default class Feed extends Component {
       return { tags: copy };
     });
   };
-  componentDidUpdate = async () => {
-    const { setParams } = this.props.navigation;
-    const { state } = this.props.navigation;
-
-    let tags = [];
-    try {
-      tags = await AsyncStorage.getItem("tags");
-      //tags = JSON.parse(tags);
-    } catch (error) {
-      console.log(error);
-    }
-
-    if (tags !== JSON.stringify(this.state.tags) && tags !== null) {
-      console.log("UPDATED", tags, this.state.tags);
-      this.fetchTags();
-      this.setState({ updated: true });
-    }
-  };
 
   static navigationOptions = ({ navigation }) => {
     const { state } = navigation;
@@ -111,46 +94,16 @@ export default class Feed extends Component {
     }
   };
 
-  fetchTags = async () => {
+  fetchTags = () => {
     const { state } = this.props.navigation;
 
-    let tags = [];
-    try {
-      tags = await AsyncStorage.getItem("tags");
-      tags = JSON.parse(tags);
-      console.log("fetchTags", tags);
-    } catch (error) {
-      console.log(error);
-    }
-    if (tags !== undefined) {
-      this.setState({
-        search: state.params.search
-      });
+    /// GET TAGS FROM STORE (current state)
+    let currentState = store.getState(store);
+    console.log("DISPATCH", currentState.tags);
 
-      var tags_list = [];
-      Object.keys(tags).map(name => {
-        var newelement = tags[name];
-        tags_list.push(newelement);
-      });
-
-      console.log("Tags list", tags_list);
-      this.setState({
-        tags: [...tags_list]
-      });
-    }
+    let tags = currentState.tags;
   };
 
-  fetchItems() {
-    var list = [];
-
-    Object.keys(dummy_products).map(name => {
-      var newelement = dummy_products[name];
-      list.push(newelement);
-    });
-    this.setState({
-      products: [...this.state.products, ...list]
-    });
-  }
   onClick() {
     console.log("navigation searchbar");
     let { navigation } = this.props;
@@ -236,6 +189,7 @@ export default class Feed extends Component {
     );
   }
 }
+export default connect()(SearchResults);
 
 const styles = StyleSheet.create({
   root: {

@@ -39,14 +39,12 @@ class Feed extends Component {
       loading: false, // user list loading
       isRefreshing: false, //for pull to refresh
       data: [], //user list
-      error: ""
+      error: "",
+      search: "",
+      modalVisible: null,
+      products: []
     };
   }
-  state = {
-    search: "",
-    modalVisible: null,
-    products: []
-  };
 
   componentDidMount = async () => {
     const { setParams } = this.props.navigation;
@@ -123,11 +121,17 @@ class Feed extends Component {
       })
       .then(res => {
         productos = res.data.productos;
+        console.log("State productos", this.state.products);
+
         console.log("Response productos", productos);
 
+        this.setState({ products: this.state.products.concat(productos) });
+
+        /*
         this.setState({
           products: [...this.state.products, ...productos]
         });
+        */
       });
   };
   onClick() {
