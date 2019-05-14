@@ -53,41 +53,31 @@ export default class ProfileSettings extends React.Component {
     locationResult: null
   };
 
+  fetchData = async () => {
+    let token, user;
+    try {
+      user = await AsyncStorage.getItem("user");
+      token = await AsyncStorage.getItem("token");
+      
+    } catch (error) {
+      console.log(error);
+    }
+    user = "8e4de80f-d9bf-411c-a696-58e3481a1b36";
+    token =
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE1NTc1ODg1NTEsInN1YiI6MTksImV4cCI6MTU1NzY3NDk1Nn0.rE3VWsRoamkEMPSM48kfnj1c5AfH572v2QjQzpoHxIA";
+
+      console.log("User", user, token);
+      this.setState({ vendedor: user });
+
+    const res = await axios.get(URL, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token
+      }
+    });
+  };
 
   uploadProduct() {
-    axios
-    .post(
-      `${API_BASE}/user/login`,
-      {
-        titulo: this.state.title,
-        descripcion: this.state.description,
-        precioBase: this.state.precioBase,
-        categoria: this.state.categoria,
-        tipo: this.state.tipo,
-        radio_ubicacion: this.state.radio_ubicacion,
-        latitud: this.state.latitud,
-        longitud: this.state.longitud,
-        fechaexpiracion: this.state.fechaExp
-      },
-      {}
-    )
-    .then(resp => {
-      const token = resp.data.Authorization;
-      const public_id = resp.data.public_id;
-      console.log(resp.data);
-
-      try {
-        AsyncStorage.setItem("token", token);
-        AsyncStorage.setItem("user", public_id);
-        
-      } catch (error) {
-        console.log(error);
-      }
-
-      this.setState({ vendedor: public_id });
-      // Add the following line:
-      axios.defaults.headers.common["Authorization"] = token;
-    })
 
     console.log("Titulo:",this.state.title);
     console.log("Precio:",this.state.precioBase);
@@ -110,10 +100,9 @@ export default class ProfileSettings extends React.Component {
   }
 
   uploadProductNormal(){
-    const { email, password } = this.state;
     axios
         .post(
-          `${API_BASE}/user/producto/`,
+          `${API_BASE}/producto/`,
           {
             titulo: this.state.title,
             descripcion: this.state.description,
@@ -131,10 +120,9 @@ export default class ProfileSettings extends React.Component {
   }
 
   uploadProductSubasta(){
-    const { email, password } = this.state;
     axios
         .post(
-          `${API_BASE}/user/producto/`,
+          `${API_BASE}/producto/`,
           {
             titulo: this.state.title,
             descripcion: this.state.description,
@@ -152,11 +140,10 @@ export default class ProfileSettings extends React.Component {
 
   }
 
-  uploadProductNormal(){
-    const { email, password } = this.state;
+  uploadProductTrueque(){
     axios
         .post(
-          `${API_BASE}/user/producto/`,
+          `${API_BASE}/producto/`,
           {
             titulo: this.state.title,
             descripcion: this.state.description,
@@ -166,8 +153,8 @@ export default class ProfileSettings extends React.Component {
             radio_ubicacion: this.state.radio_ubicacion,
             latitud: this.state.latitud,
             longitud: this.state.longitud,
-            precioAux: this.state.precioAux,
-            vendedor:this.state.vendedor
+            vendedor:this.state.vendedor,
+            precioAux: this.state.precioAux
           },
           {}
         )
@@ -197,6 +184,7 @@ export default class ProfileSettings extends React.Component {
 
   componentDidMount() {
     this._getLocationAsync();
+    this.fetchData();
   }
 
   _getLocationAsync = async () => {
@@ -352,7 +340,7 @@ export default class ProfileSettings extends React.Component {
                 style={styles.text_input}
                 keyboardType="numeric"
                 onChangeText={this.onRadioUbicacionChanged}
-                value={this.state.precioAux}
+                value={this.state.radio_ubicacion}
               />
             </View>
 
