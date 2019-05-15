@@ -37,11 +37,11 @@ export default class Settings extends Component {
 
     var res = {
       _id: data.id,
-      text: data.text,
-      createdAt: data.created_date,
+      text: data.texto,
+      createdAt: data.fecha,
       user: {
-        _id: data.user === user ? 1 : 2,
-        name: data.user === user ? "Me" : "Person",
+        _id: data.usuario === user ? 1 : 2,
+        name: data.usuario === user ? "Me" : "Person",
         avatar: "https://placeimg.com/140/140/any"
       }
     };
@@ -61,21 +61,57 @@ export default class Settings extends Component {
         }
       })
       .then(response => {
-        const msg = response.data.data;
+        const msg = response.data.mensajes;
         const messages = msg.map(m => this.parseMsg(m));
         this.setState({ messages: messages.reverse() });
       });
   };
 
-  componentWillMount() {
-    const { navigation } = this.props;
-    const user = this.props.navigation.state.params.user;
-    const token = navigation.state.params.token;
+  fetchRoomId = (buyer, seller) => {
+    console.log("Fetch", room, token);
+    const URL = `${API_BASE}/conversacion/`;
+    axios
+      .get(URL, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token
+        },
+        body: {
+          comprador: buyer,
+          vendedor: seller
+        }
+      })
+      .then(response => {
+        const id = response.data.id;
+        this.setState({ room: id });
+      });
+  };
 
-    const room = navigation.state.params.room;
+  componentWillMount = async () => {
+    let token, user;
+    try {
+      user = await AsyncStorage.getItem("user");
+      token = await AsyncStorage.getItem("token");
+
+      console.log("User", user, token);
+
+      user = "unzurdo@gmail.com";
+      if (user !== null) {
+        this.setState({ user: user, token: token });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+
+    const { navigation } = this.props;
+    const seller = this.props.navigation.state.params.user;
+
+    //const room = navigation.state.params.room;
     const receiver = navigation.state.params.receiver;
-    console.log("Variables", user, room, receiver, token);
-    this.setState({ user: user, room: room, receiver: receiver, token: token });
+    console.log("Variables", user, receiver, token);
+    this.fetchRoomId();
+
+    this.setState({ user: user, receiver: receiver, token: token });
 
     this.fetchMessages(room, token);
 
@@ -91,7 +127,7 @@ export default class Settings extends Component {
         messages: GiftedChat.append(previousState.messages, msg)
       }));
     });
-  }
+  };
 
   onSend(messages = []) {
     const { navigation } = this.props;
@@ -100,11 +136,11 @@ export default class Settings extends Component {
     console.log("SEND_MESSAGE", messages[0]);
 
     this.socket.emit("SEND_MESSAGE", {
-      user: navigation.getParam("user"),
-      text: msg.text,
+      usuario: navigation.getParam("user"),
+      texto: msg.text,
       conversacion: navigation.getParam("room"),
-      room: navigation.getParam("room"),
-      created_date: msg.createdAt
+      id: navigation.getParam("room"),
+      fecha: msg.createdAt
     });
 
     /*     this.setState(previousState => ({

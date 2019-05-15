@@ -52,7 +52,7 @@ export default class ProductVertical extends Component {
         </View>
 
         <View style={{ marginBottom: 5 }}>
-        <Text
+          <Text
             style={{
               paddingHorizontal: 10,
               color: "grey",
@@ -115,7 +115,9 @@ export default class ProductVertical extends Component {
           <View style={styles.button}>
             <Button
               title="Chat"
-              onPress={() => navigation.navigate("Chat")}
+              onPress={() =>
+                navigation.navigate("Chat", { seller: this.state.ussuario })
+              }
               //buttonStyle={{ height: 38 }}
             />
           </View>

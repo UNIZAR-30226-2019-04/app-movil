@@ -152,7 +152,7 @@ export default class ProductDetails extends Component {
   };
 
   _method = () => {
-    this.props.navigation.navigate("Chat");
+    this.props.navigation.navigate("Chat", { seller: this.state.ussuario });
   };
 
   getAddressFromCoordinates(lat, long) {

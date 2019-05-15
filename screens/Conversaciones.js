@@ -50,14 +50,18 @@ export default class Conversaciones extends Component {
 
       console.log("User", user, token);
 
-      user = "unzurdo@gmail.com";
+      //user = "unzurdo@gmail.com";
+      user = "8e4de80f-d9bf-411c-a696-58e3481a1b36";
+      token =
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE1NTc1ODg1NTEsInN1YiI6MTksImV4cCI6MTU1NzY3NDk1Nn0.rE3VWsRoamkEMPSM48kfnj1c5AfH572v2QjQzpoHxIA";
+
       if (user !== null) {
         this.setState({ user: user, token: token });
       }
     } catch (error) {
       console.log(error);
     }
-    const URL = `${API_BASE}/chat/all/` + this.state.user;
+    const URL = `${API_BASE}/conversacion/all/` + user;
     const res = await axios.get(URL, {
       headers: {
         "Content-Type": "application/json",
