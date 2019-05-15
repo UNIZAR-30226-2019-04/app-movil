@@ -161,7 +161,7 @@ class Feed extends Component {
   _renderItem = ({ item }) => {
     let { navigation } = this.props;
     console.log("pressed");
-    let thumbnail;
+    let thumbnail = {};
     for (let i = 0; i < item.multimedia.length; i++) {
       if (!item.multimedia[i].tipo) {
         console.log(item.multimedia[i]);
