@@ -390,6 +390,7 @@ export default class ProductDetails extends Component {
                       name={"eye"}
                       size={1}
                       color="#d3dae5"
+                      style={{ fontSize: 1 }}
                     />
                     <Text
                       style={{
@@ -414,6 +415,7 @@ export default class ProductDetails extends Component {
                       name={"heart"}
                       size={1}
                       color="#d3dae5"
+                      style={{ fontSize: 1 }}
                     />
                     <Text
                       style={{
