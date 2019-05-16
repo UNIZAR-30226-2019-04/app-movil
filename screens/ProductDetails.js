@@ -18,6 +18,7 @@ import ModalDropdown from "react-native-modal-dropdown";
 import Icon from "react-native-animated-icons";
 import MapModal from "../components/mapModal";
 import ComprarModal from "../components/ComprarModal";
+import ReportModal from "../components/ReportModal";
 
 import Carousel from "react-native-banner-carousel";
 import axios from "axios";
@@ -500,11 +501,17 @@ export default class ProductDetails extends Component {
                     size={16}
                     isDisabled={true}
                   />
+                  <View style={styles.reportButton}>
+                    <ReportModal/>
+                  </View>
+
                 </View>
+                
               </View>
             </View>
           </View>
         </View>
+        
         <View
           style={{
             //width: width,
@@ -551,5 +558,11 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#eeee",
     margin: 4
+  },
+  reportButton: {
+    marginVertical: 30, 
+    marginHorizontal: width/2 - 50,
+    width: width / 2 - 13,
+    height: 30
   }
 });
