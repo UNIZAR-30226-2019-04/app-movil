@@ -53,11 +53,69 @@ export default class ProfileSettings extends React.Component {
     locationResult: null
   };
 
+  fetchData = async () => {
+    let token, user;
+    try {
+      user = await AsyncStorage.getItem("user");
+      token = await AsyncStorage.getItem("token");
+    } catch (error) {
+      console.log(error);
+    }
+    user = "8e4de80f-d9bf-411c-a696-58e3481a1b36";
+    token =
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE1NTc1ODg1NTEsInN1YiI6MTksImV4cCI6MTU1NzY3NDk1Nn0.rE3VWsRoamkEMPSM48kfnj1c5AfH572v2QjQzpoHxIA";
+
+    console.log("User", user, token);
+    this.setState({ vendedor: user });
+  };
 
   uploadProduct() {
+    console.log("Titulo:", this.state.title);
+    console.log("Precio:", this.state.precioBase);
+    console.log("Latitud:", this.state.latitud);
+    console.log("Longitud:", this.state.longitud);
+    console.log("Tipo:", this.state.tipo);
+    console.log("Descripcion:", this.state.description);
+    console.log("Categoria:", this.state.categoria);
+    console.log("Radio_ubicacion:", this.state.radio_ubicacion);
+    console.log("Usuario:", this.state.vendedor);
+
+    if (this.state.tipo == "normal") {
+      this.uploadProductNormal();
+    } else if (this.state.tipo == "trueque") {
+      this.uploadProductTrueque();
+    } else if (this.state.tipo == "subasta") {
+      this.uploadProductSubasta();
+    }
+    // this.reset_forms();
+  }
+
+  uploadProductNormal() {
     axios
-    .post(
-      `${API_BASE}/user/login`,
+      .post(
+        `${API_BASE}/producto/`,
+        {
+          titulo: this.state.title,
+          descripcion: this.state.description,
+          precioBase: this.state.precioBase,
+          categoria: this.state.categoria,
+          tipo: this.state.tipo,
+          radio_ubicacion: this.state.radio_ubicacion,
+          latitud: this.state.latitud,
+          longitud: this.state.longitud,
+          vendedor: this.state.vendedor
+        },
+        {}
+      )
+      .then(res => {
+        console.log("Product Uploaded:", res.data);
+        this.uploadImageAsync(res.data.id);
+      });
+  }
+
+  uploadProductSubasta() {
+    axios.post(
+      `${API_BASE}/producto/`,
       {
         titulo: this.state.title,
         descripcion: this.state.description,
@@ -67,114 +125,33 @@ export default class ProfileSettings extends React.Component {
         radio_ubicacion: this.state.radio_ubicacion,
         latitud: this.state.latitud,
         longitud: this.state.longitud,
-        fechaexpiracion: this.state.fechaExp
+        fechaexpiracion: this.state.fechaExp,
+        vendedor: this.state.vendedor
       },
       {}
-    )
-    .then(resp => {
-      const token = resp.data.Authorization;
-      const public_id = resp.data.public_id;
-      console.log(resp.data);
-
-      try {
-        AsyncStorage.setItem("token", token);
-        AsyncStorage.setItem("user", public_id);
-        
-      } catch (error) {
-        console.log(error);
-      }
-
-      this.setState({ vendedor: public_id });
-      // Add the following line:
-      axios.defaults.headers.common["Authorization"] = token;
-    })
-
-    console.log("Titulo:",this.state.title);
-    console.log("Precio:",this.state.precioBase);
-    console.log("Latitud:",this.state.latitud);
-    console.log("Longitud:",this.state.longitud);
-    console.log("Tipo:",this.state.tipo);
-    console.log("Descripcion:",this.state.description);
-    console.log("Categoria:",this.state.categoria);
-    console.log("Radio_ubicacion:",this.state.radio_ubicacion);
-    console.log("Usuario:",this.state.vendedor);
-
-    if (this.state.tipo == "normal"){
-      this.uploadProductNormal();
-    } else if (this.state.tipo == "trueque"){
-      this.uploadProductTrueque();
-    } else if (this.state.tipo == "subasta"){
-      this.uploadProductSubasta()
-    }
-    this.reset_forms();
+    );
   }
 
-  uploadProductNormal(){
-    const { email, password } = this.state;
-    axios
-        .post(
-          `${API_BASE}/user/producto/`,
-          {
-            titulo: this.state.title,
-            descripcion: this.state.description,
-            precioBase: this.state.precioBase,
-            categoria: this.state.categoria,
-            tipo: this.state.tipo,
-            radio_ubicacion: this.state.radio_ubicacion,
-            latitud: this.state.latitud,
-            longitud: this.state.longitud,
-            vendedor: this.state.vendedor
-          },
-          {}
-        )
-
+  uploadProductTrueque() {
+    axios.post(
+      `${API_BASE}/producto/`,
+      {
+        titulo: this.state.title,
+        descripcion: this.state.description,
+        precioBase: this.state.precioBase,
+        categoria: this.state.categoria,
+        tipo: this.state.tipo,
+        radio_ubicacion: this.state.radio_ubicacion,
+        latitud: this.state.latitud,
+        longitud: this.state.longitud,
+        vendedor: this.state.vendedor,
+        precioAux: this.state.precioAux
+      },
+      {}
+    );
   }
 
-  uploadProductSubasta(){
-    const { email, password } = this.state;
-    axios
-        .post(
-          `${API_BASE}/user/producto/`,
-          {
-            titulo: this.state.title,
-            descripcion: this.state.description,
-            precioBase: this.state.precioBase,
-            categoria: this.state.categoria,
-            tipo: this.state.tipo,
-            radio_ubicacion: this.state.radio_ubicacion,
-            latitud: this.state.latitud,
-            longitud: this.state.longitud,
-            fechaexpiracion: this.state.fechaExp,
-            vendedor: this.state.vendedor
-          },
-          {}
-        )
-
-  }
-
-  uploadProductNormal(){
-    const { email, password } = this.state;
-    axios
-        .post(
-          `${API_BASE}/user/producto/`,
-          {
-            titulo: this.state.title,
-            descripcion: this.state.description,
-            precioBase: this.state.precioBase,
-            categoria: this.state.categoria,
-            tipo: this.state.tipo,
-            radio_ubicacion: this.state.radio_ubicacion,
-            latitud: this.state.latitud,
-            longitud: this.state.longitud,
-            precioAux: this.state.precioAux,
-            vendedor:this.state.vendedor
-          },
-          {}
-        )
-        
-  }
-
-  reset_forms(){
+  reset_forms() {
     this.setState({
       precioBase: 0,
       precioAux: 0,
@@ -197,6 +174,7 @@ export default class ProfileSettings extends React.Component {
 
   componentDidMount() {
     this._getLocationAsync();
+    this.fetchData();
   }
 
   _getLocationAsync = async () => {
@@ -231,38 +209,53 @@ export default class ProfileSettings extends React.Component {
     console.log("Save Images", photos);
   };
 
-  uploadImageAsync = async uri => {
-    let apiUrl = "https://file-upload-example-backend-dkhqoilqqn.now.sh/upload";
+  uploadImageAsync = async product_id => {
+    let photos = this.state.photos;
+    console.log("uploadImageAsync", this.state.photos);
 
-    // Note:
-    // Uncomment this if you want to experiment with local server
-    //
-    // if (Constants.isDevice) {
-    //   apiUrl = `https://your-ngrok-subdomain.ngrok.io/upload`;
-    // } else {
-    //   apiUrl = `http://localhost:3000/upload`
-    // }
+    for (let i = 0; i < this.state.photos.length; i++) {
+      let uri = this.state.photos[i].uri;
+      console.log(uri, product_id);
+      let apiUrl = `${API_BASE}/multimedia/${product_id}`;
 
-    let uriParts = uri.split(".");
-    let fileType = uriParts[uriParts.length - 1];
+      // Note:
+      // Uncomment this if you want to experiment with local server
+      //
+      // if (Constants.isDevice) {
+      //   apiUrl = `https://your-ngrok-subdomain.ngrok.io/upload`;
+      // } else {
+      //   apiUrl = `http://localhost:3000/upload`
+      // }
 
-    let formData = new FormData();
-    formData.append("photo", {
-      uri,
-      name: `photo.${fileType}`,
-      type: `image/${fileType}`
-    });
+      //let uriParts = uri.split(".");
+      //let fileType = uriParts[uriParts.length - 1];
+      let fileType = "jpg";
 
-    let options = {
-      method: "POST",
-      body: formData,
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "multipart/form-data"
-      }
-    };
+      let formData = new FormData();
+      formData.append("file", {
+        uri,
+        name: `photo.${fileType}`,
+        //filename: "imageName.png",
+        type: `image/${fileType}`
+      });
 
-    return fetch(apiUrl, options);
+      let options = {
+        method: "POST",
+        body: formData,
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "multipart/form-data"
+        }
+      };
+
+      fetch(apiUrl, options)
+        .then(res => console.log(res))
+        .catch(error => {
+          console.log(error);
+        });
+
+      this.props.closeModal();
+    }
   };
 
   onTitleChanged = text => {
@@ -275,12 +268,12 @@ export default class ProfileSettings extends React.Component {
   };
 
   saveType = type => {
-    console.log("saveType",type);
-    if (type == "Normal"){
+    console.log("saveType", type);
+    if (type == "Normal") {
       this.setState({ tipo: "normal" });
-    }else if (type == "Trueque"){
+    } else if (type == "Trueque") {
       this.setState({ tipo: "trueque" });
-    }else if (type == "Subasta"){
+    } else if (type == "Subasta") {
       this.setState({ tipo: "subasta" });
     }
   };
@@ -302,10 +295,8 @@ export default class ProfileSettings extends React.Component {
   };
 
   render = () => {
-    console.log("Location", this.state.locationResult);
-    let image = {};
-    image.location =
-      "https://photos5.appleinsider.com/gallery/30510-50255-all-three-goals-apple-watch-xl.jpg";
+    //console.log("Location", this.state.locationResult);
+
     return (
       <ScrollView style={styles.root} style={{ marginTop: 0 }}>
         <RkAvoidKeyboard>
@@ -352,7 +343,7 @@ export default class ProfileSettings extends React.Component {
                 style={styles.text_input}
                 keyboardType="numeric"
                 onChangeText={this.onRadioUbicacionChanged}
-                value={this.state.precioAux}
+                value={this.state.radio_ubicacion}
               />
             </View>
 
@@ -366,12 +357,9 @@ export default class ProfileSettings extends React.Component {
               />
             </View>
 
-
             <View style={styles.row2}>
               <TypePickerModal saveType={this.saveType} />
-              <Text style={{ marginHorizontal: 5 }}>
-                {this.state.tipo}
-              </Text>
+              <Text style={{ marginHorizontal: 5 }}>{this.state.tipo}</Text>
             </View>
 
             <View style={styles.row2}>
@@ -406,7 +394,7 @@ export default class ProfileSettings extends React.Component {
               containerStyle={{ height: 100, marginTop: 100 }}
               style={styles.button}
               title="SUBIR"
-              onPress={ () => this.uploadProduct()}
+              onPress={() => this.uploadProduct()}
             />
           </View>
         </RkAvoidKeyboard>

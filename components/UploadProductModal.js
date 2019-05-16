@@ -46,7 +46,7 @@ export default class UploadProductModalClass extends Component {
           visible={this.state.modalVisible}
           onRequestClose={() => this.setModalVisible(false)}
         >
-          <UploadProduct />
+          <UploadProduct closeModal={() => this.setModalVisible(false)} />
           <Ionicons
             style={{
               position: "absolute",

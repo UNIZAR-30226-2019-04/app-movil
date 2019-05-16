@@ -34,7 +34,7 @@ export default class ProductVertical extends Component {
       <View style={styles.container}>
         <View style={{}}>
           <Image
-            source={this.props.thumbnail}
+            source={{ uri: this.props.thumbnail }}
             style={{
               width: Dimensions.get("window").width / 2 - 30,
               height: 100,
@@ -79,7 +79,9 @@ export default class ProductVertical extends Component {
             marginBottom: 5,
             marginHorizontal: 2,
             flex: 1,
-            flexDirection: "row"
+            flexDirection: "row",
+            bottom: 2,
+            position: "absolute"
           }}
         >
           <TouchableOpacity

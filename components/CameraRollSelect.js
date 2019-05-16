@@ -8,6 +8,7 @@ import {
   Image
 } from "react-native";
 import ImageBrowser from "./ImageBrowser";
+import { ImagePicker, Permissions } from "expo";
 
 export default class CameraRollSelect extends React.Component {
   constructor(props) {
@@ -34,20 +35,43 @@ export default class CameraRollSelect extends React.Component {
     return (
       <Image
         style={{ height: 100, width: 100, marginHorizontal: 2 }}
-        source={{ uri: item.file }}
+        source={{ uri: item.uri }}
         key={i}
       />
     );
   }
-  render() {
-    if (this.state.imageBrowserOpen) {
-      return <ImageBrowser max={4} callback={this.imageBrowserCallback} />;
+
+  _pickImage = async () => {
+    console.log("result", this.state.photos);
+
+    const permissions = Permissions.CAMERA_ROLL;
+    const { status } = await Permissions.askAsync(permissions);
+
+    console.log(`[ pickFromCamera ] ${permissions} access: ${status}`);
+    if (status !== "granted") {
+      return;
+    } else {
+      let result = await ImagePicker.launchImageLibraryAsync({
+        allowsEditing: true,
+        aspect: [4, 3]
+      });
+
+      console.log(result);
+
+      if (!result.cancelled) {
+        //alert(result.uri);
+        this.setState({ photos: [...this.state.photos, result] });
+        this.props.saveImages(this.state.photos);
+      }
     }
+  };
+
+  render() {
     return (
       <View style={styles.container}>
         <Button
           title="Seleccionar Imágenes"
-          onPress={() => this.setState({ imageBrowserOpen: true })}
+          onPress={() => this._pickImage()}
         />
 
         <ScrollView

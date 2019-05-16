@@ -354,16 +354,78 @@ export default class ProductDetails extends Component {
 
               <View style={styles.lineStyle} />
 
-              <View style={{ marginBottom: 0, marginHorizontal: 10 }}>
+              <View
+                style={{
+                  marginBottom: 0,
+                  marginHorizontal: 10,
+                  flex: 1,
+                  flexDirection: "row"
+                }}
+              >
                 <Text
                   style={{
-                    paddingHorizontal: 10,
+                    paddingHorizontal: 30,
                     color: "grey",
                     marginVertical: 10
                   }}
                 >
                   Publicado el dia {this.state.fecha}
                 </Text>
+                <View
+                  style={{
+                    flex: 1,
+                    flexDirection: "row",
+                    justifyContent: "flex-end"
+                  }}
+                >
+                  <View
+                    style={{
+                      flex: 1,
+                      flexDirection: "row",
+                      justifyContent: "flex-end"
+                    }}
+                  >
+                    <Icon
+                      style={{ marginHorizontal: 0 }}
+                      name={"eye"}
+                      size={1}
+                      color="#d3dae5"
+                    />
+                    <Text
+                      style={{
+                        paddingHorizontal: 1,
+                        color: "grey",
+                        marginVertical: 10
+                      }}
+                    >
+                      {this.state.visualizaciones}
+                    </Text>
+                  </View>
+
+                  <View
+                    style={{
+                      flex: 1,
+                      flexDirection: "row",
+                      justifyContent: "flex-end"
+                    }}
+                  >
+                    <Icon
+                      style={{ marginHorizontal: 0 }}
+                      name={"heart"}
+                      size={1}
+                      color="#d3dae5"
+                    />
+                    <Text
+                      style={{
+                        paddingHorizontal: 1,
+                        color: "grey",
+                        marginVertical: 10
+                      }}
+                    >
+                      {this.state.visualizaciones}
+                    </Text>
+                  </View>
+                </View>
               </View>
 
               <View style={styles.lineStyle} />

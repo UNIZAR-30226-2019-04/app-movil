@@ -20,9 +20,9 @@ import UploadProductModal from "../components/UploadProductModal";
 import { AsyncStorage } from "react-native";
 import { connect } from "react-redux";
 import store from "../store";
-
+import { API_BASE } from "../config";
 import { Font } from "expo";
-
+import axios from "axios";
 import Icon from "react-native-vector-icons/FontAwesome";
 const width = Dimensions.get("window").width;
 const height = Dimensions.get("window").height;
@@ -43,6 +43,8 @@ class SearchResults extends Component {
     const { state } = this.props.navigation;
 
     this.fetchTags();
+    this.fetchItems(0);
+
     first = false;
     setParams({
       modalVisible: false
@@ -94,6 +96,39 @@ class SearchResults extends Component {
     }
   };
 
+  fetchItems = page => {
+    const URL = `${API_BASE}/producto?number=20&page=${page}`;
+    axios
+      .get(URL, {
+        headers: {
+          "Content-Type": "application/json"
+        }
+      })
+      .then(res => {
+        productos = res.data.productos;
+
+        this.fetchTags().map(tag => {
+          productos = productos.filter(function(item) {
+            if (tag.ctype === "price" && tag.name !== null) {
+              return item.precioBase == tag.name;
+            } else if (tag.ctype === "category" && tag.name !== null) {
+              return item.categoria == tag.name;
+            } else if (tag.ctype === "fecha" && tag.name !== null) {
+              return item.fecha == tag.name;
+            } else if (tag.ctype === "search" && tag.name !== null) {
+              return item.titulo == tag.name;
+            } else {
+              return item.titulo == item.titulo;
+            }
+          });
+        });
+
+        this.setState({
+          products: [...this.state.products, ...productos]
+        });
+      });
+  };
+
   fetchTags = () => {
     const { state } = this.props.navigation;
 
@@ -101,7 +136,7 @@ class SearchResults extends Component {
     let currentState = store.getState(store);
     console.log("DISPATCH", currentState.tags);
 
-    let tags = currentState.tags;
+    return (tags = currentState.tags);
   };
 
   onClick() {
@@ -129,14 +164,25 @@ class SearchResults extends Component {
     this.props.navigation.navigate("ProductDetails", { product });
   };
   _renderItem = ({ item }) => {
+    let { navigation } = this.props;
     console.log("pressed");
+    let thumbnail = {};
+    for (let i = 0; i < item.multimedia.length; i++) {
+      if (!item.multimedia[i].tipo) {
+        console.log(item.multimedia[i]);
+        thumbnail = item.multimedia[i];
+        break;
+      }
+    }
     return (
-      <TouchableHighlight onPress={() => this._method(item)}>
+      <TouchableHighlight onPress={() => this._method(item.id)}>
         <ProductVertical
-          imageUri={{ uri: item.multimedia[0].url }}
-          name={item.name}
-          price={item.price}
-          description={item.description}
+          navigation={navigation}
+          thumbnail={thumbnail.path}
+          titulo={item.titulo}
+          precio={item.precioBase}
+          deseado={item.deseado}
+          descripcion={item.descripcion}
         />
       </TouchableHighlight>
     );

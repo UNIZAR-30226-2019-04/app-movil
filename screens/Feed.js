@@ -107,6 +107,7 @@ class Feed extends Component {
           error: "Something just went wrong"
         }); // false isRefreshing flag for disable pull to refresh
       });
+    this.setState({ isRefreshing: false }); // true isRefreshing flag for enable pull to refresh indicator
   }
 
   fetchItems = page => {
@@ -161,7 +162,7 @@ class Feed extends Component {
   _renderItem = ({ item }) => {
     let { navigation } = this.props;
     console.log("pressed");
-    let thumbnail;
+    let thumbnail = {};
     for (let i = 0; i < item.multimedia.length; i++) {
       if (!item.multimedia[i].tipo) {
         console.log(item.multimedia[i]);
@@ -173,7 +174,7 @@ class Feed extends Component {
       <TouchableHighlight onPress={() => this._method(item.id)}>
         <ProductVertical
           navigation={navigation}
-          thumbnail={{ uri: thumbnail.path }}
+          thumbnail={thumbnail.path}
           titulo={item.titulo}
           precio={item.precioBase}
           deseado={item.deseado}
@@ -240,10 +241,10 @@ class Feed extends Component {
     });
     let list_products = [];
 
-    if (this.state.products !== undefined) {
-      this.state.products.map(product => {
+    if (this.state.products.length > 0) {
+      list_products = this.state.products.map(product => {
         let thumbnail = {};
-        console.log("Product", product);
+        console.log("Product:", product);
         for (let i = 0; i < product.multimedia.length; i++) {
           if (!product.multimedia[i].tipo) {
             thumbnail = product.multimedia[i];
@@ -265,7 +266,7 @@ class Feed extends Component {
           >
             <TouchableHighlight onPress={() => this._method(product.id)}>
               <Product
-                thumbnail={{ uri: thumbnail.path }}
+                thumbnail={thumbnail.path}
                 titulo={product.titulo}
                 precio={product.precioBase}
                 deseado={product.deseado}
@@ -354,6 +355,12 @@ class Feed extends Component {
           style={{
             width: "100%"
           }}
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.isRefreshing}
+              onRefresh={() => this.onRefresh}
+            />
+          }
           ListHeaderComponent={Header}
           ListFooterComponent={this.renderFooter.bind(this)}
           onEndReachedThreshold={0.1}
