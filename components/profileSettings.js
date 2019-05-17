@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import { ScrollView, View, StyleSheet } from "react-native";
 import {
   RkText,
@@ -8,11 +8,12 @@ import {
   RkStyleSheet
 } from "react-native-ui-kitten";
 import { Avatar, Button } from "react-native-elements";
+import DeleteAccountModal from "../components/DeleteAccountModal";
 
-export default class ProfileSettings extends React.Component {
-  static navigationOptions = {
+export default class ProfileSettings extends Component {
+  static navigationOptions = ({ navigation }) => ({
     title: "Profile Settings".toUpperCase()
-  };
+  });
 
   state = {
     profile_image: this.props.profile.imagen_perfil,
@@ -149,6 +150,9 @@ export default class ProfileSettings extends React.Component {
               onChangeText={this.onConfirmPasswordInputChanged}
             />
           </View>
+          <View style={[styles.row, styles.section]}>
+            <DeleteAccountModal/>
+          </View>
         </View>
 
         <Button
@@ -189,5 +193,9 @@ const styles = RkStyleSheet.create(theme => ({
   button: {
     flex: 1,
     height: 100
+  },
+  button2: {
+    flex: 1,
+    height: 50
   }
 }));
