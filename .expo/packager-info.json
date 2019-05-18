@@ -4,6 +4,6 @@
   "packagerNgrokUrl": "https://packager.dp-6gh.unzurdo.app-movil.exp.direct",
   "ngrokPid": 33346,
   "devToolsPort": 19002,
-  "packagerPort": 19003,
-  "packagerPid": 33323
+  "packagerPort": null,
+  "packagerPid": null
 }

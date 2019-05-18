@@ -7,8 +7,8 @@
 WebStorm
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
 
-node_modules/
 node_modules
+
 .expo/
 # User-specific stuff
 .idea/**/workspace.xml
