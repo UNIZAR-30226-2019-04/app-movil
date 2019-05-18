@@ -14,6 +14,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { Button, Tooltip } from "react-native-elements";
 import Icon from "react-native-vector-icons/FontAwesome";
 import categories from "../assets/categorias.json";
+import Comprar from "./Comprar";
 
 const width = Dimensions.get("window").width;
 const height = Dimensions.get("window").height;
@@ -49,7 +50,7 @@ export default class ComprarModal extends Component {
           visible={this.state.modalVisible}
           onRequestClose={() => this.setModalVisible(false)}
         >
-          <WebView source={{ uri: "https://www.paypal.com/us/home" }} />
+          <Comprar closeModal={() => this.setModalVisible(false)} />
         </Modal>
 
         <Button

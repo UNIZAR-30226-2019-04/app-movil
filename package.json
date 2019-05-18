@@ -14,6 +14,8 @@
     "@expo/samples": "2.1.1",
     "@expo/vector-icons": "^10.0.1",
     "axios": "^0.18.0",
+    "babel-plugin-transform-flow-strip-types": "^6.22.0",
+    "core-util-is": "^1.0.2",
     "expo": "^32.0.0",
     "i": "^0.3.6",
     "npm": "^6.8.0",
@@ -38,7 +40,9 @@
     "socket.io-client": "^2.0.4"
   },
   "devDependencies": {
+    "babel-preset-es2017": "^6.24.1",
     "babel-preset-expo": "^5.0.0",
+    "babel-preset-latest": "^6.24.1",
     "jest-expo": "^32.0.0"
   },
   "private": true

@@ -69,35 +69,37 @@ class Settings extends Component {
     };
   };
 
-  user = {
-    firstName: "Alberto",
-    lastName: "Garcia",
-    email: "alberto@gmail.com",
-    country: "España",
-    phone: "608014003",
-    password: "password",
-    newPassword: "new password",
-    confirmPassword: "new password"
+  fetchItems = () => {
+    const { mapRegion, distancia } = this.state;
+    let lat = mapRegion.latitude;
+    let long = mapRegion.longitude;
+    const URL = `${API_BASE}/producto?latitud=${lat}&longitud=${long}&radioUbicacion=${distancia}`;
+    console.log(URL);
+
+    axios
+      .get(URL, {
+        headers: {
+          "Content-Type": "application/json"
+        }
+      })
+      .then(res => {
+        productos = res.data.productos;
+        console.log("Response productos settings", productos);
+        this.setState({ productos });
+      });
   };
 
   state = {
-    firstName: this.user.firstName,
-    lastName: this.user.lastName,
-    email: this.user.email,
-    country: this.user.country,
-    phone: this.user.phone,
-    password: this.user.password,
-    newPassword: this.user.newPassword,
-    confirmPassword: this.user.confirmPassword,
-    value: 0,
+    value: 200,
     language: null,
-    distancia: 1,
+    distancia: 100,
     selectedIndex: null,
     selectedIndexM: null,
     mapRegion: null,
     categoria: "",
     address: "",
-    coords: null
+    coords: null,
+    productos: []
   };
 
   componentDidMount = async () => {
@@ -185,6 +187,7 @@ class Settings extends Component {
     });
 
     this.getAddressFromCoordinates(lat, long);
+    this.fetchItems();
   };
   saveCategory = category => {
     this.setState({ categoria: category });
@@ -299,6 +302,7 @@ class Settings extends Component {
           <MapModal
             mapRegion={this.state.mapRegion}
             radious={this.state.distancia}
+            products={this.state.productos}
           />
         </View>
 

@@ -1,18 +1,19 @@
 import React, { Component } from "react";
 import {
   Modal,
-  Text,
   TouchableHighlight,
   View,
   ScrollView,
-  Alert
+  Alert,
+  StyleSheet
 } from "react-native";
 import { SearchBar } from "react-native-elements";
 import { Platform, StatusBar, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Button } from "react-native";
-import { Constants, MapView } from "expo";
+import { Constants, MapView, MapCallout } from "expo";
 import { Dimensions, PixelRatio } from "react-native";
+import { Avatar, Tooltip, Text } from "react-native-elements";
 
 let updated = false;
 
@@ -31,7 +32,15 @@ export default class MapModal extends Component {
       latitude: 41.4816,
       longitude: -4.055685
     },
-    radious: 1
+    location: { coords: { latitude: 41.4816, longitude: -4.055685 } },
+
+    radious: 1,
+    markers: [
+      { coordinate: { latitude: 41.4816, longitude: -4.055685 } },
+      { coordinate: { latitude: 41.66988, longitude: -1.097 } },
+
+      { coordinate: { latitude: 42.4816, longitude: -5.355685 } }
+    ]
   };
 
   updateSearch = search => {
@@ -45,6 +54,7 @@ export default class MapModal extends Component {
     this.setState({
       mapRegion: this.props.mapRegion,
       radious: this.props.radious
+      //markers: this.props.products
     });
   }
 
@@ -61,6 +71,10 @@ export default class MapModal extends Component {
       this.setState({ LATLNG: latlong });
     }
   }
+
+  showCallout = () => {
+    this.pickUpMarker.showCallout();
+  };
   render() {
     const { search } = this.state;
     const { width, height } = Dimensions.get("window");
@@ -102,6 +116,31 @@ export default class MapModal extends Component {
               fillColor={"rgba(115, 134, 242, 0.45)"}
               //onRegionChangeComplete={this.onRegionChangeComplete.bind(this)}
             />
+
+            {this.state.markers.map(marker => {
+              return (
+                <MapView.Marker {...marker}>
+                  <View style={styles.marker}>
+                    <Avatar
+                      rounded
+                      onPress={() => console.log("Works!")}
+                      size="small"
+                      containerStyle={{ marginHorizontal: 10 }}
+                      source={{
+                        uri:
+                          "https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg"
+                      }}
+                    />
+                    <MapView.Callout tooltip>
+                      <MapCallout
+                        title="Producto"
+                        description="descripcion del producto"
+                      />
+                    </MapView.Callout>
+                  </View>
+                </MapView.Marker>
+              );
+            })}
           </MapView>
         </Modal>
 
@@ -139,6 +178,25 @@ export default class MapModal extends Component {
                   }
             }
           >
+            {this.state.markers.map(marker => {
+              return (
+                <MapView.Marker {...marker}>
+                  <View style={styles.marker}>
+                    <Avatar
+                      rounded
+                      onPress={() => console.log("Works!")}
+                      size="small"
+                      containerStyle={{ marginHorizontal: 10 }}
+                      source={{
+                        uri:
+                          "https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg"
+                      }}
+                    />
+                    <MapView.Callout tooltip />
+                  </View>
+                </MapView.Marker>
+              );
+            })}
             <MapView.Circle
               key={"key111".toString()}
               center={this.state.LATLNG}
@@ -154,3 +212,88 @@ export default class MapModal extends Component {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  marker: {
+    padding: 5,
+    borderRadius: 5
+  },
+  text: {
+    color: "white",
+    fontWeight: "bold"
+  },
+  container: {
+    flex: 1
+  },
+  sectionVertical: {
+    flex: 1,
+    marginVertical: 2,
+    backgroundColor: "white",
+    borderRadius: 6,
+    borderWidth: 2,
+    borderColor: "#fff"
+  },
+  section: {
+    flex: 1,
+    marginVertical: 2,
+    backgroundColor: "white",
+    borderRadius: 6,
+    borderWidth: 2,
+    borderColor: "#fff"
+  },
+  button: {
+    width: 180
+  },
+  textStyle: {
+    fontSize: 14,
+    alignSelf: "center",
+    padding: 2
+  },
+  button: {
+    width: 80,
+    paddingHorizontal: 12,
+    alignItems: "center",
+    marginHorizontal: 10
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    marginVertical: 20,
+    backgroundColor: "transparent",
+    justifyContent: "center"
+  },
+  viewStyle: {
+    width: 60,
+    height: 100,
+    backgroundColor: "#fff",
+    padding: 2
+  },
+  headerViewStyle: {
+    justifyContent: "center",
+    alignItems: "center",
+    height: 60,
+    backgroundColor: "#f5f5f5",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+    elevation: 3,
+    position: "relative"
+  },
+  headerStyle: {
+    fontSize: 20,
+    fontWeight: "bold"
+  },
+  modalContainerViewStyle: {
+    flex: 1,
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#00000080"
+  },
+  modalViewStyle: {
+    width: 300,
+    height: 380,
+    backgroundColor: "#fff",
+    padding: 20
+  }
+});

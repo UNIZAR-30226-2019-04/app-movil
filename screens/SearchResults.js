@@ -30,8 +30,15 @@ const height = Dimensions.get("window").height;
 const default_tags = { "24h": { name: "24h" }, "1Km": { name: "1Km" } };
 let first = true;
 class SearchResults extends Component {
+  constructor(props){
+    super(props)
+
+    this.deleteTag = this.deleteTag.bind(this)
+  }
+
   state = {
     search: "",
+    isRefreshing: false,
     modalVisible: false,
     products: [],
     tags: [],
@@ -69,10 +76,8 @@ class SearchResults extends Component {
     return false;
   }
 
-  deleteTag = name => {
+  deleteTag = (name) => {
     let copy = [];
-    console.log("tagToDelete");
-
     this.setState(prevState => {
       copy = prevState.tags.filter(tag => tag.name !== name);
       console.log(copy);
@@ -112,7 +117,7 @@ class SearchResults extends Component {
             if (tag.ctype === "price" && tag.name !== null) {
               return item.precioBase == tag.name;
             } else if (tag.ctype === "category" && tag.name !== null) {
-              return item.categoria == tag.name;
+              return item.categoria_nombre == tag.name;
             } else if (tag.ctype === "fecha" && tag.name !== null) {
               return item.fecha == tag.name;
             } else if (tag.ctype === "search" && tag.name !== null) {
@@ -199,7 +204,7 @@ class SearchResults extends Component {
             backgroundColor: "#F5F5F5"
           }}
         >
-          <VisibleTags />
+          <VisibleTags/>
 
           <View style={styles.section}>
             <Text
@@ -229,8 +234,6 @@ class SearchResults extends Component {
             </View>
           </View>
         </ScrollView>
-
-        <UploadProductModal />
       </View>
     );
   }
