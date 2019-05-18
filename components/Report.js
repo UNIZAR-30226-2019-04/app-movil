@@ -45,19 +45,28 @@ class Report extends Component {
 
     _reportUser(descripcion, tipoReporte) { //Falta integrar con backend
         let URL = `${API_BASE}/report/`;
-    
+
+        let body = {
+          descripcion: descripcion,
+          tipoReporte: tipoReporte,
+          reportado: this.props.user
+        };
+        
+        let config = {
+          headers : {
+            'Content-Type': 'application/json'
+          }
+        };
+        
         axios
           .post(
             URL,
-            {
-              descripcion: descripcion,
-              tipoReporte: tipoReporte,
-              reportado: this.state.user
-            },
-            {}
+            JSON.stringify(body),
+            config
           )
           .then(resp => { 
-            console.log(resp);
+            // console.log(resp);
+            console.log("Usuario Reportado");
           })
           .catch(err => {
             console.log(err);
