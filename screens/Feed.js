@@ -22,6 +22,7 @@ import UploadProductModal from "../components/UploadProductModal";
 import { AsyncStorage } from "react-native";
 import { connect } from "react-redux";
 import { addTag } from "../actions";
+import { Permissions, Notifications } from "expo";
 
 import axios from "axios";
 import { API_BASE } from "../config";
@@ -47,6 +48,8 @@ class Feed extends Component {
   }
 
   componentDidMount = async () => {
+    await this.registerForPushNotificationsAsync();
+
     const { setParams } = this.props.navigation;
     const { state } = this.props.navigation;
 
@@ -85,6 +88,37 @@ class Feed extends Component {
     if (!this.state.loading) {
       this.page = this.page + 1; // increase page by 1
       this.fetchItems(this.page); // method for API call
+    }
+  };
+
+  registerForPushNotificationsAsync = async () => {
+    const { status: existingStatus } = await Permissions.getAsync(
+      Permissions.NOTIFICATIONS
+    );
+    let finalStatus = existingStatus;
+
+    // only ask if permissions have not already been determined, because
+    // iOS won't necessarily prompt the user a second time.
+    if (existingStatus !== "granted") {
+      // Android remote notification permissions are granted during the app
+      // install, so this will only ask on iOS
+      const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+      finalStatus = status;
+    }
+
+    // Stop here if the user did not grant permissions
+    if (finalStatus !== "granted") {
+      return;
+    }
+
+    try {
+      // Get the token that uniquely identifies this device
+      let token = await Notifications.getExpoPushTokenAsync();
+      console.log("PUSH TOKEN", token);
+
+      // POST the token to your backend server from where you can retrieve it to send push notifications.
+    } catch (error) {
+      console.log(error);
     }
   };
 

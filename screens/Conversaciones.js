@@ -15,45 +15,44 @@ import axios from "axios";
 import { API_BASE } from "../config";
 import { AsyncStorage } from "react-native";
 
+/* {
+  id: 0,
+  seller: "2592639e-d317-471e-a5a7-7d28fbaed11f",
+  seller_email: "albertoynono@gmail.com",
+  buyer_email: "albert111.garcia@gmail.com",
+  buyer: "a4281df0-16e2-4242-8103-9a22c55d369c",
+  reated_date: "2019-02-15 15:26:52"
+},
+{
+  id: 1,
+  seller: "2592639e-d317-471e-a5a7-7d28fbaed11f",
+  seller_email: "albertoynono@gmail.com",
+  buyer_email: "albert111.garcia@gmail.com",
+  buyer: "a4281df0-16e2-4242-8103-9a22c55d369c",
+  reated_date: "2019-02-15 15:26:52"
+} */
 export default class Conversaciones extends Component {
   state = {
-    conversaciones: [
-      {
-        id: 1,
-        seller: 2,
-        seller_email: "albertoynono@gmail.com",
-        buyer_email: "albert111.garcia@gmail.com",
-        buyer: 2,
-        reated_date: "2019-02-15 15:26:52"
-      },
-      {
-        id: 2,
-        buyer: 1,
-        buyer_email: "albertoynono@gmail.com",
-        seller_email: "albert111.garcia@gmail.com",
-        seller: 2,
-        created_date: "2019-02-15 15:26:52"
-      }
-    ],
+    conversaciones: [],
     user: "",
     token: ""
   };
-  componentWillMount() {
+  componentDidMount() {
     this.fetchData();
   }
 
-  fetchData = async () => {
+  fetchData() {
     let token, user;
     try {
-      user = await AsyncStorage.getItem("user");
-      token = await AsyncStorage.getItem("token");
+      user = AsyncStorage.getItem("user");
+      token = AsyncStorage.getItem("token");
 
       console.log("User", user, token);
 
       //user = "unzurdo@gmail.com";
-      user = "8e4de80f-d9bf-411c-a696-58e3481a1b36";
+      user = "6addcd19-f185-4078-966e-e57cf870046c";
       token =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE1NTc1ODg1NTEsInN1YiI6MTksImV4cCI6MTU1NzY3NDk1Nn0.rE3VWsRoamkEMPSM48kfnj1c5AfH572v2QjQzpoHxIA";
+        "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1NTgyNzgzNzcsInN1YiI6NCwiaWF0IjoxNTU4MTkxOTcyfQ.5komhqF1kxibiUySym0l7x3pPNuqcFzoUG33815SX88";
 
       if (user !== null) {
         this.setState({ user: user, token: token });
@@ -62,25 +61,30 @@ export default class Conversaciones extends Component {
       console.log(error);
     }
     const URL = `${API_BASE}/conversacion/all/` + user;
-    const res = await axios.get(URL, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: token
-      }
-    });
-    const conversaciones = res.data.data;
-    console.log("Conversaciones", conversaciones);
-    this.setState({ conversaciones: conversaciones });
-  };
+    axios
+      .get(URL, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token
+        }
+      })
+      .then(res => {
+        const conversaciones = res.data.data;
+        console.log("Conversaciones response", conversaciones);
+        this.setState({ conversaciones: conversaciones });
+      })
+      .catch(err => console.log(err));
+  }
   _keyExtractor = (item, index) => {
     //console.log(item);
     return item.id.toString();
   };
   _checkUser(item) {
-    if (item.seller_email === this.state.user) {
-      return item.buyer_email;
+    console.log("Conversaciones", this.state.conversaciones);
+    if (item.seller === this.state.user) {
+      return item.email_vendedor;
     } else {
-      return item.seller_email;
+      return item.email_comprador;
     }
   }
   render() {

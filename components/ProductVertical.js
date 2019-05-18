@@ -118,7 +118,7 @@ export default class ProductVertical extends Component {
             <Button
               title="Chat"
               onPress={() =>
-                navigation.navigate("Chat", { seller: this.state.ussuario })
+                navigation.navigate("Chat", { receiver: this.props.vendedor })
               }
               //buttonStyle={{ height: 38 }}
             />

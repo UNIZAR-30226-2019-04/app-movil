@@ -41,8 +41,8 @@ export default class ProductDetails extends Component {
     multimedia: [],
     tipo: "",
     room: 1,
-    user: "unzurdo@gmail.com",
-    receiver: "alberto@gmail.com",
+    user: "",
+    receiver: "",
     token: "",
     isLiked: false,
     mapRegion: null,
@@ -523,7 +523,7 @@ export default class ProductDetails extends Component {
               this.props.navigation.navigate("ChatTabNavigator", {
                 room: this.state.room,
                 user: this.state.vendedor,
-                receiver: this.state.receiver,
+                receiver: this.state.product.vendedor,
                 token: this.state.token
               })
             }

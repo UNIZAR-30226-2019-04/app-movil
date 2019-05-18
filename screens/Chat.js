@@ -1,27 +1,37 @@
 import React, { Component } from "react";
+import { View, Platform } from "react-native";
+
 import { GiftedChat } from "react-native-gifted-chat";
 import { API_BASE } from "../config";
 import axios from "axios";
 import SocketIOClient from "socket.io-client/dist/socket.io";
-import io from "socket.io-client/dist/socket.io";
+import io from "socket.io-client";
+import KeyboardSpacer from "react-native-keyboard-spacer";
+
+import { AsyncStorage } from "react-native";
 
 export default class Settings extends Component {
   constructor(props) {
     super(props);
     // Creating the socket-client instance will automatically connect to the server.
-    this.socket = SocketIOClient(`${API_BASE}/chat`, {
+    this.socket = SocketIOClient("http://34.90.77.95:5000/mychat", {
       transports: ["websocket"]
     });
+
+    /*    this.socket = SocketIOClient(`${API_BASE}/mychat`, {
+      transports: ["websocket"],
+      jsonp: false,
+      reconnect: true
+    }); */
   }
   state = {
     messages: [],
-
     input: "",
-    user: "",
-    room: "",
+    room: 0,
     receiver: "",
-    token: "",
-    conversaciones: []
+    user: "",
+    token:
+      "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1NTgyNzgzNzcsInN1YiI6NCwiaWF0IjoxNTU4MTkxOTcyfQ.5komhqF1kxibiUySym0l7x3pPNuqcFzoUG33815SX88"
   };
 
   static navigationOptions = ({ navigation }) => ({
@@ -33,7 +43,8 @@ export default class Settings extends Component {
   });
 
   parseMsg(data) {
-    const user = this.props.navigation.state.params.user;
+    //const user = this.props.navigation.state.params.user;
+    const user = this.state.user;
 
     var res = {
       _id: data.id,
@@ -61,33 +72,34 @@ export default class Settings extends Component {
         }
       })
       .then(response => {
-        const msg = response.data.mensajes;
+        const msg = response.data.data;
+        console.log(response.data.data);
         const messages = msg.map(m => this.parseMsg(m));
         this.setState({ messages: messages.reverse() });
       });
   };
 
-  fetchRoomId = (buyer, seller) => {
-    console.log("Fetch", room, token);
+  fetchRoomId(buyer, seller) {
+    console.log("--> Fetch", buyer, seller);
     const URL = `${API_BASE}/conversacion/`;
     axios
-      .get(URL, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: token
-        },
-        body: {
-          comprador: buyer,
-          vendedor: seller
-        }
+      .post(URL, {
+        email_vendedor: "email_vendedor",
+        email_comprador: "email_comprador",
+        comprador: buyer,
+        vendedor: seller
       })
       .then(response => {
         const id = response.data.id;
-        this.setState({ room: id });
+        console.log("fetchRoomId", id);
+        // this.setState({ room: id });
+      })
+      .catch(error => {
+        console.log("fetchRoomId ERROR: ", error);
       });
-  };
+  }
 
-  componentWillMount = async () => {
+  componentDidMount = async () => {
     let token, user;
     try {
       user = await AsyncStorage.getItem("user");
@@ -95,7 +107,7 @@ export default class Settings extends Component {
 
       console.log("User", user, token);
 
-      user = "unzurdo@gmail.com";
+      user = "6addcd19-f185-4078-966e-e57cf870046c";
       if (user !== null) {
         this.setState({ user: user, token: token });
       }
@@ -103,22 +115,23 @@ export default class Settings extends Component {
       console.log(error);
     }
 
-    const { navigation } = this.props;
-    const seller = this.props.navigation.state.params.user;
+    const receiver = this.props.navigation.state.params.receiver;
 
-    //const room = navigation.state.params.room;
-    const receiver = navigation.state.params.receiver;
-    console.log("Variables", user, receiver, token);
-    this.fetchRoomId();
+    //const receiver = this.state.receiver;
 
-    this.setState({ user: user, receiver: receiver, token: token });
+    this.fetchRoomId(user, receiver);
 
-    this.fetchMessages(room, token);
-
-    console.log("Params", this.props.navigation.state.params);
+    console.log("connected!");
     this.socket.emit("JOINED", {
-      room: navigation.getParam("room")
+      room: this.state.room
     });
+
+    const { navigation } = this.props;
+
+    //const receiver = navigation.state.params.receiver;
+    console.log("Variables", user, receiver, token);
+    this.setState({ user: user, receiver: receiver, token: token });
+    console.log("Params", this.props.navigation.state.params);
 
     this.socket.on("MESSAGE", data => {
       console.log("MESSAGE", data);
@@ -138,8 +151,8 @@ export default class Settings extends Component {
     this.socket.emit("SEND_MESSAGE", {
       usuario: navigation.getParam("user"),
       texto: msg.text,
-      conversacion: navigation.getParam("room"),
-      id: navigation.getParam("room"),
+      conversacion: this.state.room,
+      id: this.state.room,
       fecha: msg.createdAt
     });
 
@@ -150,14 +163,19 @@ export default class Settings extends Component {
 
   render() {
     return (
-      <GiftedChat
-        inverted={true}
-        messages={this.state.messages}
-        onSend={messages => this.onSend(messages)}
-        user={{
-          _id: 1
-        }}
-      />
+      <View style={{ flex: 1 }}>
+        <GiftedChat
+          //locale={strings.getLanguage()}
+          keyboardShouldPersistTaps="never"
+          inverted={true}
+          messages={this.state.messages}
+          onSend={messages => this.onSend(messages)}
+          user={{
+            _id: 1
+          }}
+        />
+        <KeyboardSpacer style={{ marginVertical: 20 }} />
+      </View>
     );
   }
 }
