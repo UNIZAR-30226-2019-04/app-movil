@@ -42,13 +42,8 @@ export default class ProductDetails extends Component {
     multimedia: [],
     tipo: "",
     room: 1,
-<<<<<<< HEAD
     user: "",
     receiver: "",
-=======
-    user: "bf793321-b23e-4348-9693-ffd8cd0397d6",
-    receiver: "alberto@gmail.com",
->>>>>>> aa7d555cf44d8454f9eaee8c76c69f42d7598902
     token: "",
     isLiked: false,
     mapRegion: null,
@@ -507,16 +502,14 @@ export default class ProductDetails extends Component {
                     isDisabled={true}
                   />
                   <View style={styles.reportButton}>
-                    <ReportModal  user = {this.state.user}/>
+                    <ReportModal user={this.state.user} />
                   </View>
-
                 </View>
-                
               </View>
             </View>
           </View>
         </View>
-        
+
         <View
           style={{
             //width: width,
@@ -565,8 +558,8 @@ const styles = StyleSheet.create({
     margin: 4
   },
   reportButton: {
-    marginVertical: 30, 
-    marginHorizontal: width/2 - 50,
+    marginVertical: 30,
+    marginHorizontal: width / 2 - 50,
     width: width / 2 - 13,
     height: 30
   }
