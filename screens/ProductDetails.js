@@ -42,7 +42,7 @@ export default class ProductDetails extends Component {
     multimedia: [],
     tipo: "",
     room: 1,
-    user: "unzurdo@gmail.com",
+    user: "bf793321-b23e-4348-9693-ffd8cd0397d6",
     receiver: "alberto@gmail.com",
     token: "",
     isLiked: false,
@@ -502,7 +502,7 @@ export default class ProductDetails extends Component {
                     isDisabled={true}
                   />
                   <View style={styles.reportButton}>
-                    <ReportModal/>
+                    <ReportModal  user = {this.state.user}/>
                   </View>
 
                 </View>

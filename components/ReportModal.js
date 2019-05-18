@@ -22,6 +22,7 @@ export default class ReportModalClass extends Component {
   }
 
   state = {
+    user: "",
     modalVisible: false,
     search: ""
   };
@@ -44,7 +45,7 @@ export default class ReportModalClass extends Component {
           visible={this.state.modalVisible}
           onRequestClose={() => this.setModalVisible(false)}
         >
-          <Report closeModal={() => this.setModalVisible(false)} />
+          <Report closeModal={() => this.setModalVisible(false)} user={this.props.user} />
           <Ionicons
             style={{
               position: "absolute",
