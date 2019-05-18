@@ -9,6 +9,7 @@ import {
   ScrollView
 } from "react-native";
 import { Button } from "react-native-elements";
+import SearchResults from "../screens/SearchResults";
 
 import Icon from "react-native-animated-icons";
 

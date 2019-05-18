@@ -43,14 +43,16 @@ class Report extends Component {
         }
     });
 
-    _reportUser() { //Falta integrar con backend
-        /* let URL = `${API_BASE}/user/${this.state.receiver}`;
+    _reportUser(descripcion, tipoReporte) { //Falta integrar con backend
+        let URL = `${API_BASE}/report/`;
     
         axios
-          .put(
+          .post(
             URL,
             {
-              report: this.state.user
+              descripcion: descripcion,
+              tipoReporte: tipoReporte,
+              reportado: this.state.user
             },
             {}
           )
@@ -59,8 +61,7 @@ class Report extends Component {
           })
           .catch(err => {
             console.log(err);
-          }); */
-        console.log("JAJA BUEN REPORTE CRACK");
+          });
       }
 
     render(){
@@ -71,7 +72,7 @@ class Report extends Component {
                     backgroundColor = "crimson"
                 />
                 <Button
-                    onPress = {() => this._reportUser()}
+                    onPress = {() => this._reportUser("Usuario Malo","Mala educación")}
                     buttonStyle={styles.reportButton}
                     type = "clear"
                     title={
@@ -81,7 +82,7 @@ class Report extends Component {
                     }
                 />
                 <Button
-                    onPress = {() => this._reportUser()}
+                    onPress = {() => this._reportUser("Usuario Malo","Producto en mal estado")}
                     buttonStyle={styles.reportButton}
                     type = "clear"
                     title={
@@ -91,7 +92,7 @@ class Report extends Component {
                     }
                 />
                 <Button
-                    onPress = {() => this._reportUser()}
+                    onPress = {() => this._reportUser("Usuario Malo","No me ha vendido")}
                     buttonStyle={styles.reportButton}
                     type = "clear"
                     title={
@@ -101,7 +102,7 @@ class Report extends Component {
                     }
                 />
                 <Button
-                    onPress = {() => this._reportUser()}
+                    onPress = {() => this._reportUser("Usuario Malo","Malas intenciones")}
                     buttonStyle={styles.reportButton}
                     type = "clear"
                     title={

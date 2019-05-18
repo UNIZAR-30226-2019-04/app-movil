@@ -30,6 +30,12 @@ const height = Dimensions.get("window").height;
 const default_tags = { "24h": { name: "24h" }, "1Km": { name: "1Km" } };
 let first = true;
 class SearchResults extends Component {
+  constructor(props){
+    super(props)
+
+    this.deleteTag = this.deleteTag.bind(this)
+  }
+
   state = {
     search: "",
     isRefreshing: false,
@@ -70,7 +76,7 @@ class SearchResults extends Component {
     return false;
   }
 
-  deleteTag = name => {
+  deleteTag = (name) => {
     let copy = [];
     this.setState(prevState => {
       copy = prevState.tags.filter(tag => tag.name !== name);
@@ -198,7 +204,7 @@ class SearchResults extends Component {
             backgroundColor: "#F5F5F5"
           }}
         >
-          <VisibleTags />
+          <VisibleTags/>
 
           <View style={styles.section}>
             <Text
