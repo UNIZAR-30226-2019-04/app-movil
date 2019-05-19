@@ -50,7 +50,8 @@ export default class ProductDetails extends Component {
     address: "",
     valoracion: 3,
     imagen_perfil: "",
-    nick: ""
+    nick: "",
+    vendedor: ""
   };
 
   onPressHeart = async product => {
@@ -243,6 +244,7 @@ export default class ProductDetails extends Component {
 
     console.log("Response producto", producto, id);
     this.setState({ product: producto });
+    this.setState({vendedor: producto.vendedor});
     this.setState(producto);
 
     this.setState({ isLiked: producto.deseado });
@@ -258,6 +260,18 @@ export default class ProductDetails extends Component {
 
     this.getAddressFromCoordinates(producto.latitud, producto.longitud);
     console.log(producto);
+  };
+
+  followUser(){
+    console.log("Siguiendo usuario");
+    axios
+      .post(
+        `${API_BASE}/seguir/${this.state.user}`,
+        {
+          seguido: this.state.vendedor
+        },
+        {}
+      )
   };
 
   renderPage(image, index) {
@@ -517,6 +531,8 @@ export default class ProductDetails extends Component {
                     display: "flex"
                   }}
                 >
+                <View style={{flex: 1, flexDirection: 'row'}}>
+                  <View style={{width:"50%"}} >
                   <Text
                     style={{
                       paddingHorizontal: 10,
@@ -527,7 +543,7 @@ export default class ProductDetails extends Component {
                   >
                     {this.state.nick}
                   </Text>
-
+                  
                   <AirbnbRating
                     count={5}
                     style={{ paddingHorizontal: 10 }}
@@ -536,6 +552,17 @@ export default class ProductDetails extends Component {
                     size={16}
                     isDisabled={true}
                   />
+                  </View>
+                  <View style={{width: "30%"}} >
+                  <Button
+                    title="Seguir"
+                    backgroundColor="#98fb98"
+                    onPress={() => this.followUser()}
+                  />
+                 </View>
+                </View>
+
+                
                   <View style={styles.reportButton}>
                     <ReportModal user={this.state.user} />
                   </View>
@@ -597,5 +624,5 @@ const styles = StyleSheet.create({
     marginHorizontal: width / 2 - 50,
     width: width / 2 - 13,
     height: 30
-  }
+    }
 });
