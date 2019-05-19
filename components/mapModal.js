@@ -131,12 +131,7 @@ export default class MapModal extends Component {
                           "https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg"
                       }}
                     />
-                    <MapView.Callout tooltip>
-                      <MapCallout
-                        title="Producto"
-                        description="descripcion del producto"
-                      />
-                    </MapView.Callout>
+                    <MapView.Callout tooltip />
                   </View>
                 </MapView.Marker>
               );

@@ -43,41 +43,42 @@ export default class ProductDetails extends Component {
     tipo: "",
     room: 1,
     user: "",
-    receiver: "",
     token: "",
+    receiver: "",
     isLiked: false,
     mapRegion: null,
-    address: ""
+    address: "",
+    valoracion: 3,
+    imagen_perfil: "",
+    nick: ""
   };
+
   onPressHeart = async product => {
     console.log("onPressHeart", product);
     this.setState({ isLiked: !this.state.isLiked });
-    let token, user;
-    try {
-      user = await AsyncStorage.getItem("user");
-      token = await AsyncStorage.getItem("token");
-      console.log("User", user, token);
-    } catch (error) {
-      console.log(error);
-    }
-    user = "8e4de80f-d9bf-411c-a696-58e3481a1b36";
-    token =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE1NTc1ODg1NTEsInN1YiI6MTksImV4cCI6MTU1NzY3NDk1Nn0.rE3VWsRoamkEMPSM48kfnj1c5AfH572v2QjQzpoHxIA";
 
+    let user = this.state.user;
+    let token = this.state.token;
     let URL = `${API_BASE}/deseados/${user}`;
-    if (!this.state.isLiked) {
-      URL = `${API_BASE}/deseados/remove${user}`;
+    if (this.state.isLiked) {
+      URL = `${API_BASE}/deseados/${user}/remove`;
     }
+    console.log(URL);
     axios
       .post(
         URL,
         {
           producto_id: product
         },
-        {}
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: token
+          }
+        }
       )
       .then(resp => {
-        console.log(resp);
+        console.log(resp.data);
       })
       .catch(err => {
         console.log(err);
@@ -186,7 +187,7 @@ export default class ProductDetails extends Component {
       />
     );
   }
-  componentDidMount = () => {
+  componentDidMount = async () => {
     _this = this;
 
     const { setParams } = this.props.navigation;
@@ -195,7 +196,39 @@ export default class ProductDetails extends Component {
     this.fetchProduct(state.params.product);
   };
 
+  fetchUser = async user => {
+    const URL = `${API_BASE}/user/${user}`;
+    console.log("fetchUser", URL);
+    const res = await axios.get(URL, {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    });
+    const perfil = res.data;
+    console.log("Response Seller Perfil", perfil);
+    this.setState({
+      valoracion: perfil.valoracion,
+      nick: perfil.nick,
+      imagen_perfil: perfil.imagen_perfil
+    });
+    this.setState({ seller_profile: perfil });
+  };
+
   fetchProduct = async id => {
+    let token, user;
+    try {
+      user = await AsyncStorage.getItem("user");
+      token = await AsyncStorage.getItem("token");
+      console.log("User", user, token);
+    } catch (error) {
+      console.log(error);
+    }
+    user = "8e4de80f-d9bf-411c-a696-58e3481a1b36";
+    token =
+      "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1NTgzMTUwNTksImlhdCI6MTU1ODIyODY1NCwic3ViIjoxOX0.Ef_SHvzsGV11A47eAN5zq9fPAdayr8AXSvEp2FU__00";
+
+    this.setState({ user, token });
+
     const URL = `${API_BASE}/producto/${id}`;
     console.log(URL);
 
@@ -206,6 +239,8 @@ export default class ProductDetails extends Component {
     });
 
     const producto = res.data;
+    this.fetchUser(producto.vendedor);
+
     console.log("Response producto", producto, id);
     this.setState({ product: producto });
     this.setState(producto);
@@ -469,8 +504,7 @@ export default class ProductDetails extends Component {
                   size="medium"
                   containerStyle={{ marginHorizontal: 10 }}
                   source={{
-                    uri:
-                      "https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg"
+                    uri: this.state.imagen_perfil
                   }}
                   showEditButton
                 />
@@ -486,16 +520,17 @@ export default class ProductDetails extends Component {
                   <Text
                     style={{
                       paddingHorizontal: 10,
-                      marginTop: 5
+                      marginTop: 5,
+                      fontSize: 20,
+                      fontWeight: "bold"
                     }}
                   >
-                    USUARIO
+                    {this.state.nick}
                   </Text>
 
                   <AirbnbRating
                     count={5}
                     style={{ paddingHorizontal: 10 }}
-                    //reviews={["Terrible", "Bad", "OK", "Good", "Very Good"]}
                     showRating={false}
                     defaultRating={this.state.valoracion}
                     size={16}

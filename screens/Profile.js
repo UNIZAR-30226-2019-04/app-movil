@@ -10,7 +10,10 @@ import { RkText, RkStyleSheet, RkGallery } from "react-native-ui-kitten";
 import { Rating, AirbnbRating, Button } from "react-native-elements";
 import ModalDropdown from "react-native-modal-dropdown";
 import ReviewTab from "../components/Tabs/ReviewTab";
-import TabsExample from "../components/Tabs/TabsExample";
+import Comprados from "../components/Tabs/Comprados";
+import Venta from "../components/Tabs/Venta";
+import Favoritos from "../components/Tabs/Favoritos";
+
 import axios from "axios";
 import { API_BASE } from "../config";
 import { AsyncStorage } from "react-native";
@@ -83,8 +86,9 @@ export default class Profile extends Component {
     nick: "",
     longitud: null,
     productos_vendidos: 0,
-
+    imagen_perfil: "",
     data: undefined,
+
     nombre: "",
     apellidos: "",
     imagen_perfil: "",
@@ -170,8 +174,7 @@ export default class Profile extends Component {
             size="large"
             containerStyle={{ marginHorizontal: 10 }}
             source={{
-              uri:
-                "https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg"
+              uri: this.state.imagen_perfil
             }}
           />
           <View
@@ -202,9 +205,9 @@ export default class Profile extends Component {
           style={{ backgroundColor: "white", color: "red", fontWeight: "bold" }}
           navigationState={this.state}
           renderScene={SceneMap({
-            first: TabsExample,
-            second: TabsExample,
-            third: TabsExample,
+            first: Venta,
+            second: Comprados,
+            third: Favoritos,
             fourth: ReviewTab
           })}
           renderTabBar={this._renderTabBar}

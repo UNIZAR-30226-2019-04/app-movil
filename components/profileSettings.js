@@ -12,7 +12,7 @@ import axios from "axios";
 import { API_BASE, API_KEY } from "../config";
 import { AsyncStorage } from "react-native";
 import Textarea from "react-native-textarea";
-import { Constants, MapView, Location, Permissions } from "expo";
+import { Constants, MapView, Location, Permissions, ImagePicker } from "expo";
 import DeleteAccountModal from "../components/DeleteAccountModal";
 
 export default class ProfileSettings extends React.Component {
@@ -44,7 +44,68 @@ export default class ProfileSettings extends React.Component {
     localizacion: "",
     userID: 0,
     token: "",
+    user: "",
+    image: {},
     isConfirmPasswordIValid: true
+  };
+
+  _pickImage = async () => {
+    console.log("result", this.state.photos);
+
+    const permissions = Permissions.CAMERA_ROLL;
+    const { status } = await Permissions.askAsync(permissions);
+
+    console.log(`[ pickFromCamera ] ${permissions} access: ${status}`);
+    if (status !== "granted") {
+      return;
+    } else {
+      let result = await ImagePicker.launchImageLibraryAsync({
+        allowsEditing: true,
+        aspect: [4, 3]
+      });
+      console.log(result);
+      if (!result.cancelled) {
+        //alert(result.uri);
+        this.setState({ image: result });
+        this.uploadImageAsync(result.uri);
+      }
+    }
+  };
+
+  uploadImageAsync = async uri => {
+    let user = this.state.user;
+    console.log("uploadImageAsync", uri);
+
+    //let uri = this.state.image.uri;
+    //console.log(uri);
+    this.setState({ imagen_perfil: uri });
+    let apiUrl = `${API_BASE}/user/${user}/fotoperfil/`;
+    console.log(apiUrl);
+
+    let fileType = "jpg";
+
+    let formData = new FormData();
+    formData.append("file", {
+      uri,
+      name: `photo.${fileType}`,
+      //filename: "imageName.png",
+      type: `image/${fileType}`
+    });
+
+    let options = {
+      method: "PUT",
+      body: formData,
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "multipart/form-data"
+      }
+    };
+
+    fetch(apiUrl, options)
+      .then(res => console.log(res))
+      .catch(error => {
+        console.log(error);
+      });
   };
 
   getAddressFromCoordinates(lat, long) {
@@ -136,6 +197,8 @@ export default class ProfileSettings extends React.Component {
     });
     const perfil = res.data;
     this.setState(perfil);
+    this.setState({ user });
+
     this.setState({ userID: user, token: token });
 
     if (perfil.latitud !== null) {
@@ -243,12 +306,14 @@ export default class ProfileSettings extends React.Component {
         <RkAvoidKeyboard>
           <View style={styles.header}>
             <Avatar
-              onPress={() => console.log("Works!")}
+              onPress={() => {
+                console.log("Works!");
+                this._pickImage();
+              }}
               size="large"
               containerStyle={{ flex: 1 }}
               source={{
-                uri:
-                  "https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg"
+                uri: this.state.imagen_perfil
               }}
               showEditButton
             />

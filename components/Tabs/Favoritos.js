@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import ProductHorizontal from "../ProductHorizontal";
 import axios from "axios";
 import { API_BASE } from "../../config";
+import { AsyncStorage } from "react-native";
 
 import {
   View,
@@ -14,14 +15,18 @@ import {
   Field,
   TouchableHighlight
 } from "react-native";
-export default class TabsExample extends Component {
+export default class Favoritos extends Component {
   state = {
     products: [],
     user: "",
     token: ""
   };
 
-  componentDidMount = async () => {
+  componentDidMount = () => {
+    this.fetchItems();
+  };
+
+  fetchItems = async () => {
     let token, user;
     try {
       user = await AsyncStorage.getItem("user");
@@ -35,12 +40,7 @@ export default class TabsExample extends Component {
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE1NTc1ODg1NTEsInN1YiI6MTksImV4cCI6MTU1NzY3NDk1Nn0.rE3VWsRoamkEMPSM48kfnj1c5AfH572v2QjQzpoHxIA";
 
     this.setState({ user, token });
-    this.fetchItems();
-  };
-
-  fetchItems = page => {
-    const user = this.state.user;
-    const URL = `${API_BASE}/producto?usuario=${user}`;
+    const URL = `${API_BASE}/user/${user}`;
     console.log(URL);
 
     axios
@@ -50,8 +50,8 @@ export default class TabsExample extends Component {
         }
       })
       .then(res => {
-        productos = res.data.productos;
-        console.log("Response productos", productos);
+        productos = res.data.deseados;
+        console.log("Response productos deseados", productos);
         this.setState({ products: productos });
       });
   };
@@ -67,7 +67,7 @@ export default class TabsExample extends Component {
   render() {
     let list_products = [];
 
-    if (this.state.products.length > 0) {
+    if (this.state.products !== undefined && this.state.products.length > 0) {
       list_products = this.state.products.map(product => {
         let thumbnail = {};
         console.log("Product:", product);
