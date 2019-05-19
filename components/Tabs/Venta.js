@@ -50,7 +50,7 @@ export default class Venta extends Component {
         }
       })
       .then(res => {
-        productos = res.data.productos;
+        productos = res.data.cajas_productos;
         console.log("Response productos", productos);
         this.setState({ products: productos });
       });

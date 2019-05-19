@@ -392,12 +392,12 @@ class Feed extends Component {
           refreshControl={
             <RefreshControl
               refreshing={this.state.isRefreshing}
-              onRefresh={() => this.onRefresh}
+              onRefresh={this.onRefresh.bind(this)}
             />
           }
           ListHeaderComponent={Header}
           ListFooterComponent={this.renderFooter.bind(this)}
-          onEndReachedThreshold={0.1}
+          onEndReachedThreshold={0.5}
           onEndReached={this.handleLoadMore.bind(this)}
         />
         <UploadProductModal />
