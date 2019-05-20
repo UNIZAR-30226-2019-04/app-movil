@@ -18,6 +18,7 @@ import ModalDropdown from "react-native-modal-dropdown";
 import Icon from "react-native-animated-icons";
 import MapModal from "../components/mapModal";
 import ComprarModal from "../components/ComprarModal";
+import SubastarModal from "../components/SubastarModal";
 import ReportModal from "../components/ReportModal";
 import TimerCountdown from "../components/TimerCountdown";
 import Carousel from "react-native-banner-carousel";
@@ -52,7 +53,9 @@ export default class ProductDetails extends Component {
     imagen_perfil: "",
     nick: "",
     vendedor: "",
-    followed: false
+    followed: false,
+    timer: null,
+    fechaexpiracion: ""
   };
 
   onPressHeart = async product => {
@@ -261,6 +264,17 @@ export default class ProductDetails extends Component {
 
     this.getAddressFromCoordinates(producto.latitud, producto.longitud);
     console.log(producto);
+
+    var f = producto.fechaexpiracion;
+    var list = f.split("/");
+    var f2 = new Date(list[2], list[1], list[0]);
+
+    var now = new Date().getTime();
+    var t = f2.getTime();
+    let timer = Math.abs((t - now) / 1000);
+    console.log("Now: ", now, "t: ", t, "diff: ", timer);
+
+    this.setState({ timer: timer });
   };
 
   followUser() {
@@ -457,8 +471,10 @@ export default class ProductDetails extends Component {
                   >
                     Publicado el dia {this.state.fecha}
                   </Text>
+                ) : this.state.timer !== null ? (
+                  <TimerCountdown initialTime={this.state.timer} />
                 ) : (
-                  <TimerCountdown initialTime={this.state.fecha} />
+                  []
                 )}
                 <View
                   style={{
@@ -628,20 +644,41 @@ export default class ProductDetails extends Component {
             bottom: 0
           }}
         >
-          <ComprarModal />
+          {this.state.tipo === "normal" ? (
+            <ComprarModal />
+          ) : this.state.tipo === "subasta" ? (
+            <SubastarModal />
+          ) : (
+            []
+          )}
 
-          <Button
-            title="Chat"
-            titleStyle={{ margin: 10, width: width / 2 - 20 }}
-            onPress={() =>
-              this.props.navigation.navigate("ChatTabNavigator", {
-                room: this.state.room,
-                user: this.state.vendedor,
-                receiver: this.state.product.vendedor,
-                token: this.state.token
-              })
-            }
-          />
+          {this.state.tipo !== "trueque" ? (
+            <Button
+              title="Chat"
+              titleStyle={{ margin: 10, width: width / 2 - 20, marginTop: 10 }}
+              onPress={() =>
+                this.props.navigation.navigate("ChatTabNavigator", {
+                  room: this.state.room,
+                  user: this.state.vendedor,
+                  receiver: this.state.product.vendedor,
+                  token: this.state.token
+                })
+              }
+            />
+          ) : (
+            <Button
+              title="Chat"
+              titleStyle={{ margin: 10, width: width, marginTop: 10 }}
+              onPress={() =>
+                this.props.navigation.navigate("ChatTabNavigator", {
+                  room: this.state.room,
+                  user: this.state.vendedor,
+                  receiver: this.state.product.vendedor,
+                  token: this.state.token
+                })
+              }
+            />
+          )}
         </View>
       </ScrollView>
     );

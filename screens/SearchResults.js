@@ -30,10 +30,10 @@ const height = Dimensions.get("window").height;
 const default_tags = { "24h": { name: "24h" }, "1Km": { name: "1Km" } };
 let first = true;
 class SearchResults extends Component {
-  constructor(props){
-    super(props)
+  constructor(props) {
+    super(props);
 
-    this.deleteTag = this.deleteTag.bind(this)
+    this.deleteTag = this.deleteTag.bind(this);
   }
 
   state = {
@@ -42,14 +42,14 @@ class SearchResults extends Component {
     modalVisible: false,
     products: [],
     tags: [],
-    updated: false
+    old_tags: []
   };
 
   componentDidMount = async () => {
     const { setParams } = this.props.navigation;
     const { state } = this.props.navigation;
 
-    this.fetchTags();
+    this.setState({ old_tags: this.fetchTags() });
     this.fetchItems(0);
 
     first = false;
@@ -68,15 +68,7 @@ class SearchResults extends Component {
     });
   };
 
-  updated() {
-    if (this.state.uppdated) {
-      this.setState({ updated: false });
-      return true;
-    }
-    return false;
-  }
-
-  deleteTag = (name) => {
+  deleteTag = name => {
     let copy = [];
     this.setState(prevState => {
       copy = prevState.tags.filter(tag => tag.name !== name);
@@ -101,6 +93,10 @@ class SearchResults extends Component {
     }
   };
 
+  updateState() {
+    this.setState({ products: [] });
+    this.fetchItems(0);
+  }
   fetchItems = page => {
     const URL = `${API_BASE}/producto?number=20&page=${page}`;
     axios
@@ -204,7 +200,7 @@ class SearchResults extends Component {
             backgroundColor: "#F5F5F5"
           }}
         >
-          <VisibleTags/>
+          <VisibleTags />
 
           <View style={styles.section}>
             <Text

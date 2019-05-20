@@ -93,6 +93,10 @@ export default class Settings extends Component {
         const id = response.data.id;
         console.log("fetchRoomId", id);
         this.setState({ room: id });
+        console.log("connected!");
+        this.socket.emit("JOINED", {
+          room: id
+        });
       })
       .catch(error => {
         console.log("fetchRoomId ERROR: ", error);
@@ -124,10 +128,10 @@ export default class Settings extends Component {
     this.fetchRoomId(user, receiver);
     this.fetchMessages(this.state.room, token);
 
-    console.log("connected!");
+    /*     console.log("connected!");
     this.socket.emit("JOINED", {
       room: this.state.room
-    });
+    }); */
 
     const { navigation } = this.props;
 
@@ -149,13 +153,14 @@ export default class Settings extends Component {
     const { navigation } = this.props;
 
     const msg = messages[0];
-    console.log("SEND_MESSAGE", messages[0]);
+    console.log("SEND_MESSAGE", messages[0], this.state.room);
 
     this.socket.emit("SEND_MESSAGE", {
-      usuario: navigation.getParam("user"),
+      //usuario: navigation.getParam("user"),
+      usuario: 1,
       texto: msg.text,
       conversacion: this.state.room,
-      id: this.state.room,
+      room: this.state.room,
       fecha: msg.createdAt
     });
 
