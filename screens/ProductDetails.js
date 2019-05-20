@@ -19,7 +19,7 @@ import Icon from "react-native-animated-icons";
 import MapModal from "../components/mapModal";
 import ComprarModal from "../components/ComprarModal";
 import ReportModal from "../components/ReportModal";
-
+import TimerCountdown from "../components/TimerCountdown";
 import Carousel from "react-native-banner-carousel";
 import axios from "axios";
 import { API_BASE, API_KEY } from "../config";
@@ -50,7 +50,9 @@ export default class ProductDetails extends Component {
     address: "",
     valoracion: 3,
     imagen_perfil: "",
-    nick: ""
+    nick: "",
+    vendedor: "",
+    followed: false
   };
 
   onPressHeart = async product => {
@@ -154,7 +156,7 @@ export default class ProductDetails extends Component {
   };
 
   _method = () => {
-    this.props.navigation.navigate("Chat", { seller: this.state.ussuario });
+    this.props.navigation.navigate("Chat", { seller: this.state.vendedor });
   };
 
   getAddressFromCoordinates(lat, long) {
@@ -225,7 +227,7 @@ export default class ProductDetails extends Component {
     }
     user = "8e4de80f-d9bf-411c-a696-58e3481a1b36";
     token =
-      "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1NTgzMTUwNTksImlhdCI6MTU1ODIyODY1NCwic3ViIjoxOX0.Ef_SHvzsGV11A47eAN5zq9fPAdayr8AXSvEp2FU__00";
+      "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1NTgzNDM2MzcsInN1YiI6MTksImV4cCI6MTU1ODQzMDA0Mn0.x6XSXNfP9EOb98T6amrrUCoHH3PUdjiEHYMoqE55JkA";
 
     this.setState({ user, token });
 
@@ -243,6 +245,7 @@ export default class ProductDetails extends Component {
 
     console.log("Response producto", producto, id);
     this.setState({ product: producto });
+    this.setState({ vendedor: producto.vendedor });
     this.setState(producto);
 
     this.setState({ isLiked: producto.deseado });
@@ -259,6 +262,52 @@ export default class ProductDetails extends Component {
     this.getAddressFromCoordinates(producto.latitud, producto.longitud);
     console.log(producto);
   };
+
+  followUser() {
+    if (this.state.followed) {
+      axios
+        .post(
+          `${API_BASE}/seguir/${this.state.user}/remove`,
+          {
+            seguido: this.state.vendedor
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: this.state.token
+            }
+          }
+        )
+        .then(res => {
+          console.log("Siguiendo usuario", this.state.nick, res.data);
+          if (res.data.status === "sucess") {
+            this.setState({ followed: false });
+          }
+        })
+        .catch(err => console.log("Error following user", err));
+    } else {
+      axios
+        .post(
+          `${API_BASE}/seguir/${this.state.user}`,
+          {
+            seguido: this.state.vendedor
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: this.state.token
+            }
+          }
+        )
+        .then(res => {
+          console.log("Siguiendo usuario", this.state.nick, res.data);
+          if (res.data.status === "sucess") {
+            this.setState({ followed: true });
+          }
+        })
+        .catch(err => console.log("Error following user", err));
+    }
+  }
 
   renderPage(image, index) {
     return (
@@ -398,15 +447,19 @@ export default class ProductDetails extends Component {
                   flexDirection: "row"
                 }}
               >
-                <Text
-                  style={{
-                    paddingHorizontal: 30,
-                    color: "grey",
-                    marginVertical: 10
-                  }}
-                >
-                  Publicado el dia {this.state.fecha}
-                </Text>
+                {this.state.tipo !== "subasta" ? (
+                  <Text
+                    style={{
+                      paddingHorizontal: 30,
+                      color: "grey",
+                      marginVertical: 10
+                    }}
+                  >
+                    Publicado el dia {this.state.fecha}
+                  </Text>
+                ) : (
+                  <TimerCountdown initialTime={this.state.fecha} />
+                )}
                 <View
                   style={{
                     flex: 1,
@@ -497,8 +550,8 @@ export default class ProductDetails extends Component {
                 <Avatar
                   rounded
                   onPress={() =>
-                    this.props.navigation.navigate("Perfil", {
-                      id: this.state.product.vendedor
+                    this.props.navigation.navigate("ProfileTabNavigator", {
+                      vendedor: this.state.vendedor
                     })
                   }
                   size="medium"
@@ -517,25 +570,46 @@ export default class ProductDetails extends Component {
                     display: "flex"
                   }}
                 >
-                  <Text
-                    style={{
-                      paddingHorizontal: 10,
-                      marginTop: 5,
-                      fontSize: 20,
-                      fontWeight: "bold"
-                    }}
-                  >
-                    {this.state.nick}
-                  </Text>
+                  <View style={{ flex: 1, flexDirection: "row" }}>
+                    <View style={{ width: "50%" }}>
+                      <Text
+                        style={{
+                          paddingHorizontal: 10,
+                          marginTop: 5,
+                          fontSize: 20,
+                          fontWeight: "bold"
+                        }}
+                      >
+                        {this.state.nick}
+                      </Text>
 
-                  <AirbnbRating
-                    count={5}
-                    style={{ paddingHorizontal: 10 }}
-                    showRating={false}
-                    defaultRating={this.state.valoracion}
-                    size={16}
-                    isDisabled={true}
-                  />
+                      <AirbnbRating
+                        count={5}
+                        style={{ paddingHorizontal: 10 }}
+                        showRating={false}
+                        defaultRating={this.state.valoracion}
+                        size={16}
+                        isDisabled={true}
+                      />
+                    </View>
+                    <View style={{ width: "30%" }}>
+                      {this.state.followed ? (
+                        <Button
+                          title="Dejar de seguir"
+                          style={{ width: 150 }}
+                          backgroundColor="grey"
+                          onPress={() => this.followUser()}
+                        />
+                      ) : (
+                        <Button
+                          title="Seguir"
+                          backgroundColor="#98fb98"
+                          onPress={() => this.followUser()}
+                        />
+                      )}
+                    </View>
+                  </View>
+
                   <View style={styles.reportButton}>
                     <ReportModal user={this.state.user} />
                   </View>

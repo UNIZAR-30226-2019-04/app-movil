@@ -117,9 +117,9 @@ export default class MapModal extends Component {
               //onRegionChangeComplete={this.onRegionChangeComplete.bind(this)}
             />
 
-            {this.state.markers.map(marker => {
+            {this.state.markers.map((marker, index) => {
               return (
-                <MapView.Marker {...marker}>
+                <MapView.Marker {...marker} key={index}>
                   <View style={styles.marker}>
                     <Avatar
                       rounded
@@ -173,9 +173,9 @@ export default class MapModal extends Component {
                   }
             }
           >
-            {this.state.markers.map(marker => {
+            {this.state.markers.map((marker, index) => {
               return (
-                <MapView.Marker {...marker}>
+                <MapView.Marker {...marker} key={index}>
                   <View style={styles.marker}>
                     <Avatar
                       rounded

@@ -35,7 +35,7 @@ export default class Settings extends Component {
   };
 
   static navigationOptions = ({ navigation }) => ({
-    title: navigation.getParam("receiver"),
+    title: navigation.getParam("receiver_email"),
     headerTitleStyle: { textAlign: "center", alignSelf: "center" },
     headerStyle: {
       backgroundColor: "white"
@@ -73,7 +73,7 @@ export default class Settings extends Component {
       })
       .then(response => {
         const msg = response.data.data;
-        console.log(response.data.data);
+        console.log("fetchMessages", response.data.data);
         const messages = msg.map(m => this.parseMsg(m));
         this.setState({ messages: messages.reverse() });
       });
@@ -92,7 +92,7 @@ export default class Settings extends Component {
       .then(response => {
         const id = response.data.id;
         console.log("fetchRoomId", id);
-        // this.setState({ room: id });
+        this.setState({ room: id });
       })
       .catch(error => {
         console.log("fetchRoomId ERROR: ", error);
@@ -117,9 +117,12 @@ export default class Settings extends Component {
 
     const receiver = this.props.navigation.state.params.receiver;
 
+    this.props.navigation.setParams({ receiver_email: receiver });
+
     //const receiver = this.state.receiver;
 
     this.fetchRoomId(user, receiver);
+    this.fetchMessages(this.state.room, token);
 
     console.log("connected!");
     this.socket.emit("JOINED", {

@@ -22,12 +22,38 @@ import UploadProductModal from "../components/UploadProductModal";
 let _this = null;
 
 export default class Profile extends Component {
+  constructor(props) {
+    super(props);
+    let isUser = false;
+  }
+
   componentDidMount() {
     _this = this;
     this.fetchData();
+    this.props.navigation.setParams({ seller: this.state.seller });
   }
 
   static navigationOptions = ({ navigation }) => {
+    const { params = {} } = navigation.state;
+    console.log(" state.params ", params);
+
+    let isUser = false;
+    if (params !== {}) {
+      let user = params.vendedor;
+      let my_user;
+      try {
+        my_user = AsyncStorage.getItem("user");
+      } catch (error) {
+        console.log(error);
+      }
+      my_user = "8e4de80f-d9bf-411c-a696-58e3481a1b36";
+
+      if (my_user === user || true) {
+        console.log(" - SAME USER - ");
+        isUser = true;
+      }
+    }
+
     return {
       // Your custom header
 
@@ -40,11 +66,15 @@ export default class Profile extends Component {
             marginRight: 10
           }}
         >
-          <EditProfileModal
-            profile={() => {
-              this._perfil;
-            }}
-          />
+          {isUser ? (
+            <EditProfileModal
+              profile={() => {
+                this._perfil;
+              }}
+            />
+          ) : (
+            []
+          )}
 
           <ModalDropdown
             options={["Log out"]}
@@ -75,6 +105,7 @@ export default class Profile extends Component {
   }
 
   state = {
+    isUser: false,
     descripcion: "",
     cajas_productos: [],
     radio_ubicacion: 0,
@@ -88,7 +119,8 @@ export default class Profile extends Component {
     productos_vendidos: 0,
     imagen_perfil: "",
     data: undefined,
-
+    productos_comprados: 0,
+    productos_vendidos: 0,
     nombre: "",
     apellidos: "",
     imagen_perfil: "",
@@ -110,9 +142,7 @@ export default class Profile extends Component {
   _perfil() {
     return this.state.profile;
   }
-  constructor(props) {
-    super(props);
-  }
+
   formatNumber(num) {
     return num > 999 ? `${(num / 1000).toFixed(1)}k` : num;
   }
@@ -133,17 +163,22 @@ export default class Profile extends Component {
   };
 
   fetchData = async () => {
-    let token, user;
+    let my_user, token, user;
+    const { state } = this.props.navigation;
     try {
-      user = await AsyncStorage.getItem("user");
+      my_user = await AsyncStorage.getItem("user");
       token = await AsyncStorage.getItem("token");
-      console.log("User", user, token);
     } catch (error) {
       console.log(error);
     }
-    user = "8e4de80f-d9bf-411c-a696-58e3481a1b36";
-    token =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE1NTc1ODg1NTEsInN1YiI6MTksImV4cCI6MTU1NzY3NDk1Nn0.rE3VWsRoamkEMPSM48kfnj1c5AfH572v2QjQzpoHxIA";
+    if (state.params === undefined) {
+      user = my_user;
+      user = "8e4de80f-d9bf-411c-a696-58e3481a1b36";
+    } else {
+      user = state.params.vendedor;
+    }
+
+    console.log("Perfil", user);
     const URL = `${API_BASE}/user/${user}`;
     console.log(URL, user, token);
 
@@ -199,6 +234,16 @@ export default class Profile extends Component {
               size={12}
               isDisabled={true}
             />
+
+            <RkText style={{ fontSize: 12, fontWeight: "300" }}>
+              {` Comprados: ${this.state.productos_comprados}   Vendidos: ${
+                this.state.productos_vendidos
+              }`}
+            </RkText>
+
+            <RkText style={{ fontSize: 12, fontWeight: "400", marginTop: 19 }}>
+              {this.state.descripcion}
+            </RkText>
           </View>
         </View>
         <TabView

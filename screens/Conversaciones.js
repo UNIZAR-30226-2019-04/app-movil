@@ -81,10 +81,10 @@ export default class Conversaciones extends Component {
   };
   _checkUser(item) {
     console.log("Conversaciones", this.state.conversaciones);
-    if (item.seller === this.state.user) {
-      return item.email_vendedor;
+    if (item.vendedor === this.state.user) {
+      return item.comprador;
     } else {
-      return item.email_comprador;
+      return item.vendedor;
     }
   }
   render() {
