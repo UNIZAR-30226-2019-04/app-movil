@@ -13,7 +13,10 @@
     "android": {
       "package": "com.telocamSL.telocam"
     },
-    "platforms": ["ios", "android"],
+    "platforms": [
+      "ios",
+      "android"
+    ],
     "orientation": "portrait",
     "splash": {
       "image": "./assets/images/splash2.png",
@@ -23,7 +26,9 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "description": ""
   }
 }
