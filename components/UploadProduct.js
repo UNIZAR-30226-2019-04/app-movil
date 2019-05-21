@@ -26,7 +26,7 @@ import CategoryPickerModal from "./CategoryPickerModal";
 import { addTag } from "../actions";
 import { Constants, MapView, Location, Permissions } from "expo";
 import axios from "axios";
-import { API_BASE } from "../config";
+import { API_BASE, DEBUG } from "../config";
 import { AsyncStorage } from "react-native";
 
 export default class ProfileSettings extends React.Component {
@@ -61,10 +61,11 @@ export default class ProfileSettings extends React.Component {
     } catch (error) {
       console.log(error);
     }
-    user = "8e4de80f-d9bf-411c-a696-58e3481a1b36";
-    token =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE1NTc1ODg1NTEsInN1YiI6MTksImV4cCI6MTU1NzY3NDk1Nn0.rE3VWsRoamkEMPSM48kfnj1c5AfH572v2QjQzpoHxIA";
-
+    if (DEBUG) {
+      user = "8e4de80f-d9bf-411c-a696-58e3481a1b36";
+      token =
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE1NTc1ODg1NTEsInN1YiI6MTksImV4cCI6MTU1NzY3NDk1Nn0.rE3VWsRoamkEMPSM48kfnj1c5AfH572v2QjQzpoHxIA";
+    }
     console.log("User", user, token);
     this.setState({ vendedor: user });
   };

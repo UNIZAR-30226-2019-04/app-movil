@@ -119,6 +119,7 @@ export default class UploadMultimedia extends Component {
     if (cameraRollPerm === "granted") {
       let pickerResult = await ImagePicker.launchImageLibraryAsync({
         allowsEditing: true,
+        mediaTypes: "video",
         aspect: [4, 3]
       });
 

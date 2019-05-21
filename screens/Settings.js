@@ -1,19 +1,10 @@
 import React, { Component } from "react";
 import { View, StyleSheet, Field } from "react-native";
-import { SearchBar } from "react-native-elements";
 import { Slider, Card } from "react-native-elements";
 import { Picker, Divider, ScrollView } from "react-native";
-import {
-  RkText,
-  RkTextInput,
-  RkAvoidKeyboard,
-  RkTheme,
-  RkStyleSheet
-} from "react-native-ui-kitten";
+import { RkText, RkStyleSheet } from "react-native-ui-kitten";
 import { Avatar, Button, Text, ButtonGroup } from "react-native-elements";
-import categories from "../assets/categorias.json";
 import CategoryPickerModal from "../components/CategoryPickerModal";
-import { AsyncStorage } from "react-native";
 import { connect } from "react-redux";
 import { addTag } from "../actions";
 import MapModal from "../components/mapModal";
@@ -23,7 +14,7 @@ import { API_BASE, API_KEY } from "../config";
 
 const dates = ["24h", "7d", "30d"];
 const modos = ["Compra", "Trueque", "Subasta"];
-
+import store from "../store";
 class Settings extends Component {
   constructor() {
     super();
@@ -103,38 +94,30 @@ class Settings extends Component {
   };
 
   componentDidMount = async () => {
-    let tags = [];
     this._getLocationAsync();
-    try {
-      tags = await AsyncStorage.getItem("tags");
-      if (tags != null) {
-        tags = JSON.parse(tags);
-        console.log("tags", tags);
+    let currentState = store.getState(store);
 
-        const price = tags.filter(tag => tag.type === "price");
-        const category = tags.filter(tag => tag.type === "category");
-        const date = tags.filter(tag => tag.type === "date");
-        const distance = tags.filter(tag => tag.type === "distance");
+    let tags = currentState.tags;
+    const price = tags.filter(tag => tag.type === "price");
+    const category = tags.filter(tag => tag.type === "category");
+    const date = tags.filter(tag => tag.type === "date");
+    const distance = tags.filter(tag => tag.type === "distance");
 
-        if (price.length > 0) {
-          this.setState({ value: price[0].name });
-        }
-        if (category.length > 0) {
-          this.setState({ category: category[0].name });
-        }
-        if (distance.length > 0) {
-          this.setState({ distancia: distance[0].name });
-        }
-        if (date.length > 0) {
-          for (let i = 0; i < dates.length; i++) {
-            if (dates[i] === date[0]) {
-              this.setState({ selectedIndex: i });
-            }
-          }
+    if (price.length > 0) {
+      this.setState({ value: price[0].name });
+    }
+    if (category.length > 0) {
+      this.setState({ category: category[0].name });
+    }
+    if (distance.length > 0) {
+      this.setState({ distancia: distance[0].name });
+    }
+    if (date.length > 0) {
+      for (let i = 0; i < dates.length; i++) {
+        if (dates[i] === date[0]) {
+          this.setState({ selectedIndex: i });
         }
       }
-    } catch (error) {
-      console.log(error);
     }
   };
 

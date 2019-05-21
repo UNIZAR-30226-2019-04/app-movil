@@ -7,8 +7,6 @@ import {
   Dimensions,
   TouchableOpacity
 } from "react-native";
-import { AsyncStorage } from "react-native";
-import { Rating, AirbnbRating, Button } from "react-native-elements";
 import Icon from "react-native-animated-icons";
 const width = Dimensions.get("window").width;
 const height = Dimensions.get("window").height;

@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { View, Text, StyleSheet, Image } from "react-native";
 
 import Icon from "@expo/vector-icons/Ionicons";
-import { AsyncStorage } from "react-native";
 
 export default class Product extends Component {
   render() {

@@ -12,25 +12,9 @@ import { ListItem } from "react-native-elements";
 
 import Icon from "@expo/vector-icons/Ionicons";
 import axios from "axios";
-import { API_BASE } from "../config";
+import { API_BASE, DEBUG } from "../config";
 import { AsyncStorage } from "react-native";
 
-/* {
-  id: 0,
-  seller: "2592639e-d317-471e-a5a7-7d28fbaed11f",
-  seller_email: "albertoynono@gmail.com",
-  buyer_email: "albert111.garcia@gmail.com",
-  buyer: "a4281df0-16e2-4242-8103-9a22c55d369c",
-  reated_date: "2019-02-15 15:26:52"
-},
-{
-  id: 1,
-  seller: "2592639e-d317-471e-a5a7-7d28fbaed11f",
-  seller_email: "albertoynono@gmail.com",
-  buyer_email: "albert111.garcia@gmail.com",
-  buyer: "a4281df0-16e2-4242-8103-9a22c55d369c",
-  reated_date: "2019-02-15 15:26:52"
-} */
 export default class Conversaciones extends Component {
   state = {
     conversaciones: [],
@@ -50,10 +34,11 @@ export default class Conversaciones extends Component {
       console.log("User", user, token);
 
       //user = "unzurdo@gmail.com";
-      user = "6addcd19-f185-4078-966e-e57cf870046c";
-      token =
-        "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1NTgyNzgzNzcsInN1YiI6NCwiaWF0IjoxNTU4MTkxOTcyfQ.5komhqF1kxibiUySym0l7x3pPNuqcFzoUG33815SX88";
-
+      if (DEBUG) {
+        user = "6addcd19-f185-4078-966e-e57cf870046c";
+        token =
+          "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1NTgyNzgzNzcsInN1YiI6NCwiaWF0IjoxNTU4MTkxOTcyfQ.5komhqF1kxibiUySym0l7x3pPNuqcFzoUG33815SX88";
+      }
       if (user !== null) {
         this.setState({ user: user, token: token });
       }

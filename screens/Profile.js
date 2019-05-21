@@ -16,7 +16,7 @@ import Venta from "../components/Tabs/Venta";
 import Favoritos from "../components/Tabs/Favoritos";
 
 import axios from "axios";
-import { API_BASE } from "../config";
+import { API_BASE, DEBUG } from "../config";
 import { AsyncStorage } from "react-native";
 import UploadProductModal from "../components/UploadProductModal";
 
@@ -47,7 +47,7 @@ export default class Profile extends Component {
       } catch (error) {
         console.log(error);
       }
-      my_user = "8e4de80f-d9bf-411c-a696-58e3481a1b36";
+      if (DEBUG) my_user = "8e4de80f-d9bf-411c-a696-58e3481a1b36";
 
       if (my_user === user || true) {
         console.log(" - SAME USER - ");
@@ -175,9 +175,10 @@ export default class Profile extends Component {
     } catch (error) {
       console.log(error);
     }
+    if (DEBUG) user = "8e4de80f-d9bf-411c-a696-58e3481a1b36";
+
     if (state.params === undefined) {
       user = my_user;
-      user = "8e4de80f-d9bf-411c-a696-58e3481a1b36";
     } else {
       user = state.params.vendedor;
     }
@@ -188,8 +189,8 @@ export default class Profile extends Component {
 
     const res = await axios.get(URL, {
       headers: {
-        "Content-Type": "application/json",
-        Authorization: token
+        "Content-Type": "application/json"
+        //Authorization: token
       }
     });
     const perfil = res.data;

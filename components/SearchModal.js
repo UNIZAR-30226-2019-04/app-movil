@@ -10,8 +10,6 @@ import {
 import { SearchBar } from "react-native-elements";
 import { Platform, StatusBar, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { Button } from "react-native";
-import { AsyncStorage } from "react-native";
 import { connect } from "react-redux";
 import { addTag } from "../actions";
 

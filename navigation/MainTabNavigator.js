@@ -11,7 +11,6 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import ProductDetails from "../screens/ProductDetails";
 import CustomLeftDrawerComponent from "../components/CustomLeftDrawerComponent";
 import SearchResults from "../screens/SearchResults";
-
 import {
   createSwitchNavigator,
   createAppContainer,
@@ -232,7 +231,7 @@ const AppDrawerNavigator = createDrawerNavigator(
 */
 const AppSwitchNavigator = createSwitchNavigator({
   // LogIn & Registration
-  //Welcome: { screen: WelcomeScreen },
+  Welcome: { screen: WelcomeScreen },
   Dashboard: { screen: AppDrawerNavigator }
 });
 

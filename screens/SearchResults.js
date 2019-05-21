@@ -10,15 +10,11 @@ import {
   RefreshControl,
   Dimensions
 } from "react-native";
-import { SearchBar, Button } from "react-native-elements";
 import { Platform, StatusBar, TouchableOpacity } from "react-native";
 import SearchModal from "../components/SearchModal";
-import categories from "../assets/categorias.json";
-import dummy_products from "../assets/dummy_products.json";
 import VisibleTags from "../containers/VisibleTags";
 import ProductVertical from "../components/ProductVertical";
 import UploadProductModal from "../components/UploadProductModal";
-import { AsyncStorage } from "react-native";
 import { connect } from "react-redux";
 import store from "../store";
 import { API_BASE } from "../config";
@@ -207,7 +203,8 @@ class SearchResults extends Component {
       <View
         showsVerticalScrollIndicator={false}
         style={{
-          backgroundColor: "#F5F5F5"
+          backgroundColor: "#F5F5F5",
+          width: width
         }}
       >
         <VisibleTags />

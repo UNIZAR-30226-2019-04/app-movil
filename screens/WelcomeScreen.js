@@ -171,7 +171,7 @@ export default class LoginScreen2 extends Component {
         {}
       )
       .then(resp => {
-        console.log(resp);
+        console.log(resp.data);
         const token = resp.data.Authorization;
         const user = resp.data.user;
       })

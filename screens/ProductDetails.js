@@ -23,7 +23,7 @@ import ReportModal from "../components/ReportModal";
 import TimerCountdown from "../components/TimerCountdown";
 import Carousel from "react-native-banner-carousel";
 import axios from "axios";
-import { API_BASE, API_KEY } from "../config";
+import { API_BASE, API_KEY, DEBUG } from "../config";
 
 const width = Dimensions.get("window").width;
 let _this = null;
@@ -228,7 +228,7 @@ export default class ProductDetails extends Component {
     } catch (error) {
       console.log(error);
     }
-    user = "8e4de80f-d9bf-411c-a696-58e3481a1b36";
+    if (DEBUG) user = "8e4de80f-d9bf-411c-a696-58e3481a1b36";
     token =
       "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1NTgzNDM2MzcsInN1YiI6MTksImV4cCI6MTU1ODQzMDA0Mn0.x6XSXNfP9EOb98T6amrrUCoHH3PUdjiEHYMoqE55JkA";
 

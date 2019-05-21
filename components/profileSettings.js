@@ -1,5 +1,7 @@
 import React from "react";
 import { ScrollView, View, StyleSheet } from "react-native";
+import { Input, Button } from "react-native-elements";
+
 import {
   RkText,
   RkTextInput,
@@ -7,9 +9,9 @@ import {
   RkTheme,
   RkStyleSheet
 } from "react-native-ui-kitten";
-import { Avatar, Button } from "react-native-elements";
+import { Avatar } from "react-native-elements";
 import axios from "axios";
-import { API_BASE, API_KEY } from "../config";
+import { API_BASE, API_KEY, DEBUG } from "../config";
 import { AsyncStorage } from "react-native";
 import Textarea from "react-native-textarea";
 import { Constants, MapView, Location, Permissions, ImagePicker } from "expo";
@@ -183,9 +185,11 @@ export default class ProfileSettings extends React.Component {
     } catch (error) {
       console.log(error);
     }
-    user = "8e4de80f-d9bf-411c-a696-58e3481a1b36";
-    token =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE1NTc1ODg1NTEsInN1YiI6MTksImV4cCI6MTU1NzY3NDk1Nn0.rE3VWsRoamkEMPSM48kfnj1c5AfH572v2QjQzpoHxIA";
+    if (DEBUG) {
+      user = "8e4de80f-d9bf-411c-a696-58e3481a1b36";
+      token =
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE1NTc1ODg1NTEsInN1YiI6MTksImV4cCI6MTU1NzY3NDk1Nn0.rE3VWsRoamkEMPSM48kfnj1c5AfH572v2QjQzpoHxIA";
+    }
     const URL = `${API_BASE}/user/${user}`;
     console.log(URL, user, token);
 
@@ -222,7 +226,7 @@ export default class ProfileSettings extends React.Component {
     const res = await axios.post(
       URL,
       {
-        oldpassword: this.state.passowrd,
+        oldpassword: this.state.password,
         password: this.state.newPassword
       },
       {
@@ -236,6 +240,9 @@ export default class ProfileSettings extends React.Component {
     console.log("Response Perfil", perfil);
     this.setState(perfil);
     this.setState({ profile: perfil });
+    if (perfil.status === "success") {
+      this.setState({ password: "", newPassword: "", confirmPassword: "" });
+    }
   };
 
   updateProfile = async () => {
@@ -394,10 +401,9 @@ export default class ProfileSettings extends React.Component {
               />
             </View>
             <View style={styles.row}>
-              <RkTextInput
+              <Input
                 label="Confirmar nueva contraseña"
                 value={this.state.confirmPassword}
-                rkType="right clear"
                 secureTextEntry
                 onChangeText={this.onConfirmPasswordInputChanged}
                 errorMessage={

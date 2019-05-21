@@ -4,51 +4,44 @@ import {
   Text,
   StyleSheet,
   Dimensions,
-  TouchableOpacity,
-  Share
+  TouchableOpacity
 } from "react-native";
-import { connect } from "react-redux";
-import { AsyncStorage, ScrollView } from "react-native";
-import { Button, ButtonGroup, Header } from "react-native-elements";
-import { addTag } from "../actions";
-import Icon from "react-native-animated-icons";
-import {
-    RkText,
-    RkTextInput,
-    RkAvoidKeyboard,
-    RkTheme,
-    RkStyleSheet
-  } from "react-native-ui-kitten";
+import { Button, ButtonGroup, Header, Input } from "react-native-elements";
+
+import { RkStyleSheet } from "react-native-ui-kitten";
 import axios from "axios";
 import { API_BASE, API_KEY } from "../config";
 
 const width = Dimensions.get("window").width;
+const height = Dimensions.get("window").height;
+
 class DeleteAccount extends Component {
-    constructor(props) {
-        super(props);
+  constructor(props) {
+    super(props);
+  }
+
+  state = {
+    email: "",
+    password: "",
+    token: "",
+    selectedIndex: null
+  };
+
+  onPasswordInputChanged = text => {
+    this.setState({ password: text });
+  };
+
+  static navigationOptions = ({ navigation }) => ({
+    title: navigation.getParam("receiver"),
+    headerTitleStyle: { textAlign: "center", alignSelf: "center" },
+    headerStyle: {
+      backgroundColor: "white"
     }
+  });
 
-    state = {
-        email: "",
-        password: "",
-        token: "",
-        selectedIndex: null
-    };
-
-    onPasswordInputChanged = text => {
-        this.setState({ password: text });
-      };
-
-    static navigationOptions = ({ navigation }) => ({
-        title: navigation.getParam("receiver"),
-        headerTitleStyle: { textAlign: "center", alignSelf: "center" },
-        headerStyle: {
-          backgroundColor: "white"
-        }
-    });
-
-    _deleteUser() { //Falta integrar con backend
-        /*     
+  _deleteUser() {
+    //Falta integrar con backend
+    /*     
         const { email, password } = this.state;
         this.setState({ isLoading: true });
         // Simulate an API call
@@ -103,84 +96,87 @@ class DeleteAccount extends Component {
             console.log(error);
             }
         });*/
+  }
 
-      }
-
-    render(){
-        return (
-            <View>
-                <View style={styles.section}>
-                    <Header
-                        centerComponent={{ text: 'BORRAR CUENTA', style: { color: '#fff', fontSize: 30, marginBottom:20  } }}
-                        backgroundColor = "#0864AF"
-                    />
-                    <View style={styles.row}>
-                        <RkTextInput
-                            label="Introduzca su contraseña..."
-                            value={this.state.password}
-                            rkType="right clear"
-                            onChangeText={this.onPasswordInputChanged}
-                        />
-                    </View>
-                </View>
-                <View style={styles2.bottomView}>
-                    <Button
-                        type="clear"
-                        containerStyle={{ height: 60 }}
-                        style={styles.button}
-                        title="BORRAR"
-                        onPress = {()=> this._deleteUser()}
-                    />
-                </View>
-            </View>
-        );
-    }
-}export default connect()(DeleteAccount);
+  render() {
+    return (
+      <View>
+        <View style={styles.section}>
+          <Header
+            centerComponent={{
+              text: "BORRAR CUENTA",
+              style: {
+                color: "#fff",
+                fontSize: 24,
+                marginBottom: 20
+              }
+            }}
+            backgroundColor="#0864AF"
+          />
+          <View style={styles.row}>
+            <Input
+              label="Introduzca su contraseña:"
+              value={this.state.password}
+              //rkType="right clear"
+              onChangeText={this.onPasswordInputChanged}
+            />
+          </View>
+          <Button
+            containerStyle={{ height: 160 }}
+            style={styles.button}
+            title="BORRAR"
+            onPress={() => this._deleteUser()}
+          />
+        </View>
+      </View>
+    );
+  }
+}
+export default DeleteAccount;
 
 const styles = RkStyleSheet.create(theme => ({
-    root: {
-      backgroundColor: theme.colors.screen.base
-    },
-    padding: {
-      padding: 20,
-      height: 200
-    },
-    section: {
-      backgroundColor: "#F5F5F5"
-    }, 
-    reportButton: {
-        width: width / 2 + 30,
-        height: 90,
-        borderRadius: 9,
-        borderWidth: 4,
-        borderColor: "red",
-        marginTop: 35,
-        marginBottom: 35,
-        marginLeft: width/4 - 15,
-        
-    },
-    row: {
-        flexDirection: "row",
-        paddingHorizontal: 17.5,
-        borderBottomWidth: StyleSheet.hairlineWidth,
-        borderColor: theme.colors.border.base,
-        alignItems: "center"
-    },
-    button: {
-        paddingVertical: 30,
-        flex: 1,
-        height: 30
-    }
+  root: {
+    backgroundColor: theme.colors.screen.base
+  },
+  padding: {
+    padding: 20,
+    height: 200
+  },
+  section: {
+    backgroundColor: "#F5F5F5",
+    height: height
+  },
+  reportButton: {
+    width: width / 2 + 30,
+    height: 90,
+    borderRadius: 9,
+    borderWidth: 4,
+    borderColor: "red",
+    marginTop: 35,
+    marginBottom: 35,
+    marginLeft: width / 4 - 15
+  },
+  row: {
+    flexDirection: "row",
+    paddingHorizontal: 17.5,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderColor: theme.colors.border.base,
+    alignItems: "center"
+  },
+  button: {
+    paddingVertical: 30,
+    flex: 1,
+    height: 30
+  }
 }));
 
 const styles2 = StyleSheet.create(theme => ({
-    bottomView:{
- 
-        width: '100%', 
-        height: 50,  
-        justifyContent: 'center', 
-        alignItems: 'center',
-        position: 'absolute',
-        bottom: 0
-      }
+  bottomView: {
+    width: "100%",
+    height: 50,
+    justifyContent: "center",
+    alignItems: "center",
+    position: "absolute",
+    bottom: 0
+  }
 }));

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import ProductHorizontal from "../ProductHorizontal";
 import axios from "axios";
-import { API_BASE } from "../../config";
+import { API_BASE, DEBUG } from "../../config";
 import { AsyncStorage } from "react-native";
 
 import {
@@ -35,9 +35,11 @@ export default class Comprados extends Component {
     } catch (error) {
       console.log(error);
     }
-    user = "8e4de80f-d9bf-411c-a696-58e3481a1b36";
-    token =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE1NTc1ODg1NTEsInN1YiI6MTksImV4cCI6MTU1NzY3NDk1Nn0.rE3VWsRoamkEMPSM48kfnj1c5AfH572v2QjQzpoHxIA";
+    if (DEBUG) {
+      user = "8e4de80f-d9bf-411c-a696-58e3481a1b36";
+      token =
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE1NTc1ODg1NTEsInN1YiI6MTksImV4cCI6MTU1NzY3NDk1Nn0.rE3VWsRoamkEMPSM48kfnj1c5AfH572v2QjQzpoHxIA";
+    }
 
     this.setState({ user, token });
 

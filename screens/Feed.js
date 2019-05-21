@@ -19,7 +19,6 @@ import dummy_products from "../assets/dummy_products.json";
 import Product from "../components/Product";
 import ProductVertical from "../components/ProductVertical";
 import UploadProductModal from "../components/UploadProductModal";
-import { AsyncStorage } from "react-native";
 import { connect } from "react-redux";
 import { addTag } from "../actions";
 import { Permissions, Notifications } from "expo";

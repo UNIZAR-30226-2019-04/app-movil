@@ -1,21 +1,10 @@
 import React, { Component } from "react";
-import {
-  Modal,
-  View,
-  StyleSheet,
-  Dimensions
-} from "react-native";
+import { Modal, View, StyleSheet, Dimensions } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Button, Tooltip } from "react-native-elements";
 import DeleteAccount from "./DeleteAccount";
 
-import {
-    RkText,
-    RkTextInput,
-    RkAvoidKeyboard,
-    RkTheme,
-    RkStyleSheet
-  } from "react-native-ui-kitten";
+import { RkStyleSheet } from "react-native-ui-kitten";
 
 const width = Dimensions.get("window").width;
 const height = Dimensions.get("window").height;
@@ -63,9 +52,9 @@ export default class DeleteAccountModalClass extends Component {
         <View style={[styles.row, styles.section]}>
           <Button
             type="clear"
-            containerStyle={{ height: 60 }}
+            containerStyle={{ height: 40 }}
             style={styles.button2}
-            title="BORRAR CUENTA"
+            title="Borrar Cuenta"
             onPress={() => this.setModalVisible(true)}
           />
         </View>
@@ -75,34 +64,34 @@ export default class DeleteAccountModalClass extends Component {
 }
 
 const styles = RkStyleSheet.create(theme => ({
-    root: {
-      backgroundColor: theme.colors.screen.base
-    },
-    header: {
-      backgroundColor: theme.colors.screen.neutral,
-      paddingVertical: 25,
-      alignItems: "center",
-      justifyContent: "center",
-      flex: 1
-    },
-    section: {
-      marginVertical: 15
-    },
-    heading: {
-      paddingBottom: 12.5
-    },
-    row: {
-      flexDirection: "row",
-      borderBottomWidth: StyleSheet.hairlineWidth,
-      borderColor: theme.colors.border.base,
-      alignItems: "center"
-    },
-    button: {
-      flex: 1,
-      height: 100
-    },
-    button2: {
-      flex: 1,
-      height: 50
-    }
-  }));
+  root: {
+    backgroundColor: theme.colors.screen.base
+  },
+  header: {
+    backgroundColor: theme.colors.screen.neutral,
+    paddingVertical: 25,
+    alignItems: "center",
+    justifyContent: "center",
+    flex: 1
+  },
+  section: {
+    marginVertical: 15
+  },
+  heading: {
+    paddingBottom: 12.5
+  },
+  row: {
+    flexDirection: "row",
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderColor: theme.colors.border.base,
+    alignItems: "center"
+  },
+  button: {
+    flex: 1,
+    height: 100
+  },
+  button2: {
+    flex: 1,
+    height: 50
+  }
+}));

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { View, Platform } from "react-native";
 
 import { GiftedChat } from "react-native-gifted-chat";
-import { API_BASE } from "../config";
+import { API_BASE, DEBUG } from "../config";
 import axios from "axios";
 import SocketIOClient from "socket.io-client/dist/socket.io";
 import io from "socket.io-client";
@@ -111,7 +111,7 @@ export default class Settings extends Component {
 
       console.log("User", user, token);
 
-      user = "6addcd19-f185-4078-966e-e57cf870046c";
+      if (DEBUG) user = "6addcd19-f185-4078-966e-e57cf870046c";
       if (user !== null) {
         this.setState({ user: user, token: token });
       }
