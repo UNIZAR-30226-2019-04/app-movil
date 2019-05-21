@@ -24,7 +24,9 @@ class DeleteAccount extends Component {
     email: "",
     password: "",
     token: "",
-    selectedIndex: null
+    selectedIndex: null,
+    isPasswordValid: true,
+    errorMsg: ""
   };
 
   onPasswordInputChanged = text => {
@@ -40,62 +42,40 @@ class DeleteAccount extends Component {
   });
 
   _deleteUser() {
-    //Falta integrar con backend
-    /*     
-        const { email, password } = this.state;
-        this.setState({ isLoading: true });
-        // Simulate an API call
-        LayoutAnimation.easeInEaseOut();
-        this.setState({
-        isLoading: false,
-        isEmailValid: this.validateEmail(email) || this.emailInput.shake(),
-        isPasswordValid: password.length >= 8 || this.passwordInput.shake()
-        });
+    const { password } = this.state;
+    const public_id = this.props.user;
+    const token = this.props.token;
+    console.log("_deleteUser", public_id, token);
 
-        axios
-        .post(
-            `${API_BASE}/user/login`,
-            {
-            email: email,
-            password: password
-            },
-            {}
-        )
-        .then(resp => {
-            const token = resp.data.Authorization;
-            //const user = resp.data.user;
-            const public_id = resp.data.public_id;
-            console.log(resp.data);
+    axios
+      .post(
+        `${API_BASE}/user/${public_id}/delete`,
+        {
+          password: password
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: token
+          }
+        }
+      )
+      .then(resp => {
+        console.log(resp.data);
+        console.log("_deleteUser", resp.data);
 
-            try {
-            AsyncStorage.setItem("token", token);
-            AsyncStorage.setItem("user", public_id);
-            } catch (error) {
-            console.log(error);
-            }
-
-            // Add the following line:
-            axios.defaults.headers.common["Authorization"] = token;
-            this.props.navigation.navigate("Dashboard");
-
-            //Aquí la parte de borrar
-        })
-        .catch(err => {
-            console.log("Error: ", err.response.status);
-            if (err.response.status == 401 && this.state.isEmailValid) {
-            this.setState({
-                isFormErrorMsg: "Contraseña inválida.",
-                isEmailValid: false
-            });
-            }
-
-            try {
-            AsyncStorage.removeItem("token" + "");
-            AsyncStorage.removeItem("user" + "");
-            } catch (error) {
-            console.log(error);
-            }
-        });*/
+        if (err.response.status !== 200) {
+          this.setState({
+            errorMsg: "Contraseña incorrecta.",
+            isPasswordValid: false
+          });
+        }
+        this.props.navigation.navigate("Welcome");
+        //Aquí la parte de borrar
+      })
+      .catch(err => {
+        console.log("Error: ", err.response.status);
+      });
   }
 
   render() {
@@ -118,11 +98,15 @@ class DeleteAccount extends Component {
               label="Introduzca su contraseña:"
               value={this.state.password}
               //rkType="right clear"
+              secureTextEntry
               onChangeText={this.onPasswordInputChanged}
+              errorMessage={
+                this.state.isPasswordValid ? null : this.state.errorMsg
+              }
             />
           </View>
           <Button
-            containerStyle={{ height: 160 }}
+            containerStyle={{ height: 180, marginHorizontal: 30 }}
             style={styles.button}
             title="BORRAR"
             onPress={() => this._deleteUser()}
@@ -161,22 +145,12 @@ const styles = RkStyleSheet.create(theme => ({
     paddingHorizontal: 17.5,
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderColor: theme.colors.border.base,
-    alignItems: "center"
+    alignItems: "center",
+    marginTop: 50
   },
   button: {
     paddingVertical: 30,
     flex: 1,
     height: 30
-  }
-}));
-
-const styles2 = StyleSheet.create(theme => ({
-  bottomView: {
-    width: "100%",
-    height: 50,
-    justifyContent: "center",
-    alignItems: "center",
-    position: "absolute",
-    bottom: 0
   }
 }));

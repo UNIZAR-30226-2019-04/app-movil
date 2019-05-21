@@ -34,7 +34,11 @@ export default class DeleteAccountModalClass extends Component {
           visible={this.state.modalVisible}
           onRequestClose={() => this.setModalVisible(false)}
         >
-          <DeleteAccount closeModal={() => this.setModalVisible(false)} />
+          <DeleteAccount
+            closeModal={() => this.setModalVisible(false)}
+            user={this.props.user}
+            token={this.props.token}
+          />
           <Ionicons
             style={{
               position: "absolute",

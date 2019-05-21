@@ -375,7 +375,10 @@ export default class ProfileSettings extends React.Component {
           </View>
 
           <View style={[styles.row, styles.section]}>
-            <DeleteAccountModal />
+            <DeleteAccountModal
+              user={this.state.user}
+              token={this.state.token}
+            />
           </View>
 
           <View style={styles.section}>

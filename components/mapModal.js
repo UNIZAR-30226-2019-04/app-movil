@@ -17,7 +17,7 @@ import { Avatar, Tooltip, Text } from "react-native-elements";
 
 let updated = false;
 
-RADIUS = 100;
+RADIUS = 1000;
 
 export default class MapModal extends Component {
   constructor(props) {
