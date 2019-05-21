@@ -7,6 +7,7 @@ import {
   StyleSheet,
   Field,
   TouchableHighlight,
+  RefreshControl,
   Dimensions
 } from "react-native";
 import { SearchBar, Button } from "react-native-elements";
@@ -96,6 +97,17 @@ class SearchResults extends Component {
   updateState() {
     this.setState({ products: [] });
     this.fetchItems(0);
+  }
+
+  onRefresh() {
+    console.log("onRefresh");
+    this.setState({ isRefreshing: true }); // true isRefreshing flag for enable pull to refresh indicator
+
+    this.setState({ products: [] });
+    this.fetchItems(0);
+
+    console.log("CURRENT TAGS: ", this.fetchTags());
+    this.setState({ isRefreshing: false }); // true isRefreshing flag for enable pull to refresh indicator
   }
   fetchItems = page => {
     const URL = `${API_BASE}/producto?number=20&page=${page}`;
@@ -191,46 +203,50 @@ class SearchResults extends Component {
   render() {
     const { search } = this.state;
 
+    const Header = (
+      <View
+        showsVerticalScrollIndicator={false}
+        style={{
+          backgroundColor: "#F5F5F5"
+        }}
+      >
+        <VisibleTags />
+
+        <View style={styles.section}>
+          <Text
+            style={{
+              fontSize: 18,
+              fontWeight: "500",
+              paddingHorizontal: 16,
+              fontFamily: "space-mono",
+              margin: 5
+            }}
+          >
+            Resultados de busqueda
+          </Text>
+        </View>
+      </View>
+    );
     //console.log(this.state.products);
     return (
-      <View>
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          style={{
-            backgroundColor: "#F5F5F5"
-          }}
-        >
-          <VisibleTags />
-
-          <View style={styles.section}>
-            <Text
-              style={{
-                fontSize: 18,
-                fontWeight: "500",
-                paddingHorizontal: 16,
-                fontFamily: "space-mono",
-                margin: 5
-              }}
-            >
-              Resultados de busqueda
-            </Text>
-
-            <View style={{ flex: 1, flexDirection: "row" }}>
-              <FlatList
-                data={this.state.products}
-                keyExtractor={this._keyExtractor}
-                renderItem={this._renderItem}
-                numColumns={2}
-                style={{
-                  flex: 1,
-                  flexDirection: "row",
-                  flexWrap: "wrap"
-                }}
-              />
-            </View>
-          </View>
-        </ScrollView>
-      </View>
+      <FlatList
+        data={this.state.products}
+        refreshControl={
+          <RefreshControl
+            refreshing={this.state.isRefreshing}
+            onRefresh={this.onRefresh.bind(this)}
+          />
+        }
+        keyExtractor={this._keyExtractor}
+        renderItem={this._renderItem}
+        ListHeaderComponent={Header}
+        numColumns={2}
+        style={{
+          flex: 1,
+          flexDirection: "row",
+          flexWrap: "wrap"
+        }}
+      />
     );
   }
 }
