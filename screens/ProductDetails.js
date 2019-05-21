@@ -348,8 +348,11 @@ export default class ProductDetails extends Component {
     console.log("render", this.state);
     const width = Dimensions.get("window").width;
     let red = "rgba(245,60,60,0.8)";
-    let light = "rgba(255,255,255,0.5)";
-
+    console.log("TIPO");
+    console.log(this.state.tipo);
+    console.log("TRUEQUE");
+    let trueque = (this.state.tipo == "trueque");
+    console.log(trueque)
     return (
       <ScrollView style={{ flex: 1 }}>
         <View style={{ flex: 1 }}>
@@ -628,7 +631,7 @@ export default class ProductDetails extends Component {
             bottom: 0
           }}
         >
-          <ComprarModal />
+          <ComprarModal trueque={trueque} />
 
           <Button
             title="Chat"

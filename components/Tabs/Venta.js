@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import ProductHorizontal from "../ProductHorizontal";
+import ProductHorizontal2 from "../ProductHorizontal2";
+import TruequeModal from "../TruequeModal"
 import axios from "axios";
 import { API_BASE } from "../../config";
 import { AsyncStorage } from "react-native";
@@ -15,6 +17,7 @@ import {
   Field,
   TouchableHighlight
 } from "react-native";
+import TruequeModalClass from "../TruequeModal";
 export default class Venta extends Component {
   state = {
     products: [],
@@ -40,7 +43,7 @@ export default class Venta extends Component {
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE1NTc1ODg1NTEsInN1YiI6MTksImV4cCI6MTU1NzY3NDk1Nn0.rE3VWsRoamkEMPSM48kfnj1c5AfH572v2QjQzpoHxIA";
 
     this.setState({ user, token });
-    const URL = `${API_BASE}/user/${user}/vendidos`;
+    const URL = `${API_BASE}/user/${user}/products`;
     console.log(URL);
 
     axios
@@ -79,20 +82,49 @@ export default class Venta extends Component {
         }
         let { navigation } = this.props;
 
-        return (
-          <View
-            key={product.id}
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              flexWrap: "wrap",
-              justifyContent: "center",
-              alignItems: "center",
-              margin: 0
-            }}
-          >
+        if(product.tipo != "trueque"){
+          return (
+            <View
+              
+              key={product.id}
+              style={{
+                flex: 1,
+                display: "flex",
+                flexDirection: "row",
+                flexWrap: "wrap",
+                justifyContent: "center",
+                alignItems: "center",
+                margin: 0
+              }}
+            >
+              <TouchableHighlight onPress={() => this._method(product.id)}>
+                <ProductHorizontal
+                  navigation={navigation}
+                  thumbnail={thumbnail.path}
+                  titulo={product.titulo}
+                  precio={product.precioBase}
+                  deseado={product.deseado}
+                  descripcion={product.descripcion}
+                />
+              </TouchableHighlight>
+            </View>
+          );
+        } else {
+          return (
+            <View
+              key={product.id}
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                flexWrap: "wrap",
+                justifyContent: "center",
+                alignItems: "center",
+                margin: 0
+              }}
+            > 
+            <TruequeModal producto={product.id}/> 
             <TouchableHighlight onPress={() => this._method(product.id)}>
-              <ProductHorizontal
+              <ProductHorizontal2
                 navigation={navigation}
                 thumbnail={thumbnail.path}
                 titulo={product.titulo}
@@ -101,8 +133,11 @@ export default class Venta extends Component {
                 descripcion={product.descripcion}
               />
             </TouchableHighlight>
-          </View>
-        );
+              
+            </View>
+          );
+        }
+        
       });
     }
 
