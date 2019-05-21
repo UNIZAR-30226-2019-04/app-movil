@@ -42,30 +42,35 @@ export default class ComprarModal extends Component {
     this.setState({ modalVisible: visible });
   }
   render = () => {
-    return (
-      <View style={{ marginTop: 0 }}>
-        <Modal
-          animationType="slide"
-          transparent={false}
-          visible={this.state.modalVisible}
-          onRequestClose={() => this.setModalVisible(false)}
-        >
-          <Comprar closeModal={() => this.setModalVisible(false)} />
-        </Modal>
-
-        <Button
-          title="Comprar"
-          titleStyle={{
-            margin: 10,
-            width: width / 2 - 40
-          }}
-          buttonStyle={{
-            backgroundColor: "mediumseagreen"
-          }}
-          onPress={() => this.setModalVisible(true)}
-        />
-      </View>
-    );
+    if(!this.props.trueque){
+      return (
+        <View style={{ marginTop: 0 }}>
+          <Modal
+            animationType="slide"
+            transparent={false}
+            visible={this.state.modalVisible}
+            onRequestClose={() => this.setModalVisible(false)}
+          >
+            <Comprar closeModal={() => this.setModalVisible(false)} />
+          </Modal>
+  
+          <Button
+            title="Comprar"
+            titleStyle={{
+              margin: 10,
+              width: width / 2 - 40
+            }}
+            buttonStyle={{
+              backgroundColor: "mediumseagreen"
+            }}
+            onPress={() => this.setModalVisible(true)}
+          />
+        </View>
+      );
+    } else {
+      return null;
+    }
+    
   };
 }
 

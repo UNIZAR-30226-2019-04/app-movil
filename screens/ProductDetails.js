@@ -362,8 +362,11 @@ export default class ProductDetails extends Component {
     console.log("render", this.state);
     const width = Dimensions.get("window").width;
     let red = "rgba(245,60,60,0.8)";
-    let light = "rgba(255,255,255,0.5)";
-
+    console.log("TIPO");
+    console.log(this.state.tipo);
+    console.log("TRUEQUE");
+    let trueque = (this.state.tipo == "trueque");
+    console.log(trueque)
     return (
       <ScrollView style={{ flex: 1 }}>
         <View style={{ flex: 1 }}>
@@ -644,41 +647,20 @@ export default class ProductDetails extends Component {
             bottom: 0
           }}
         >
-          {this.state.tipo === "normal" ? (
-            <ComprarModal />
-          ) : this.state.tipo === "subasta" ? (
-            <SubastarModal />
-          ) : (
-            []
-          )}
+          <ComprarModal trueque={trueque} />
 
-          {this.state.tipo !== "trueque" ? (
-            <Button
-              title="Chat"
-              titleStyle={{ margin: 10, width: width / 2 - 20, marginTop: 10 }}
-              onPress={() =>
-                this.props.navigation.navigate("ChatTabNavigator", {
-                  room: this.state.room,
-                  user: this.state.vendedor,
-                  receiver: this.state.product.vendedor,
-                  token: this.state.token
-                })
-              }
-            />
-          ) : (
-            <Button
-              title="Chat"
-              titleStyle={{ margin: 10, width: width, marginTop: 10 }}
-              onPress={() =>
-                this.props.navigation.navigate("ChatTabNavigator", {
-                  room: this.state.room,
-                  user: this.state.vendedor,
-                  receiver: this.state.product.vendedor,
-                  token: this.state.token
-                })
-              }
-            />
-          )}
+          <Button
+            title="Chat"
+            titleStyle={{ margin: 10, width: width / 2 - 20 }}
+            onPress={() =>
+              this.props.navigation.navigate("ChatTabNavigator", {
+                room: this.state.room,
+                user: this.state.vendedor,
+                receiver: this.state.product.vendedor,
+                token: this.state.token
+              })
+            }
+          />
         </View>
       </ScrollView>
     );
