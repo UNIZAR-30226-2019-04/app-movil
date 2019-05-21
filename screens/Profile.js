@@ -5,6 +5,7 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import EditProfileModal from "../components/EditProfileModal";
 import { Picker, Divider, Dimensions } from "react-native";
 import { TabView, TabBar, SceneMap } from "react-native-tab-view";
+import { ScrollableTabView } from "@valdio/react-native-scrollable-tabview";
 
 import { RkText, RkStyleSheet, RkGallery } from "react-native-ui-kitten";
 import { Rating, AirbnbRating, Button } from "react-native-elements";
@@ -129,8 +130,11 @@ export default class Profile extends Component {
     index: 0,
     routes: [
       { key: "first", title: "En Venta", navigation: this.props.navigation },
+
       { key: "second", title: "Comprados", navigation: this.props.navigation },
       { key: "third", title: "Favoritos", navigation: this.props.navigation },
+      { key: "fifth", title: "Vendidos", navigation: this.props.navigation },
+
       { key: "fourth", title: "Reviews", navigation: this.props.navigation }
     ]
   };
@@ -253,17 +257,13 @@ export default class Profile extends Component {
             first: Venta,
             second: Comprados,
             third: Favoritos,
-            fourth: ReviewTab
+            fourth: ReviewTab,
+            fifth: Favoritos
           })}
           renderTabBar={this._renderTabBar}
           onIndexChange={index => this.setState({ index })}
           initialLayout={{ width: Dimensions.get("window").width }}
         />
-        {/*       <View style={styles.buttons}>
-        <Button buttonStyle={styles.button} title="FOLLOW" type="outline" />
-        <View style={styles.separator} />
-        <Button buttonStyle={styles.button} title="MESSAGE" type="outline" />
-      </View> */}
       </ScrollView>
       <UploadProductModal />
     </View>

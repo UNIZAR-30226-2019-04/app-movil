@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import { View, Text } from "react-native";
+import * as moment from "moment";
 
 class TimerCountdown extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      timer: new Date(props.initialTime).getSeconds()
+      timer: props.initialTime
     };
   }
 
@@ -26,7 +27,11 @@ class TimerCountdown extends Component {
       1000
     );
   }
-
+  longToDate = millisec => {
+    //var length = millisec.length - 7;
+    //var date = parseInt(millisec.substring(6, length));
+    return new Date(millisec).toUTCString();
+  };
   componentDidUpdate() {
     if (this.state.timer === 1) {
       console.log("-------------------timer count down is leaking");
@@ -41,7 +46,17 @@ class TimerCountdown extends Component {
   }
 
   render() {
-    return <Text> {this.state.timer} </Text>;
+    //var day = moment.unix(this.state.timer).utc();
+
+    var fecha = "";
+    //`${dias}d  ${h}h ${m}m ${s}s`;
+
+    return (
+      <View>
+        <Text>{fecha}</Text>
+        <Text>{this.state.timer}</Text>
+      </View>
+    );
   }
 }
 

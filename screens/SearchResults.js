@@ -7,6 +7,7 @@ import {
   StyleSheet,
   Field,
   TouchableHighlight,
+  RefreshControl,
   Dimensions
 } from "react-native";
 import { SearchBar, Button } from "react-native-elements";
@@ -30,10 +31,10 @@ const height = Dimensions.get("window").height;
 const default_tags = { "24h": { name: "24h" }, "1Km": { name: "1Km" } };
 let first = true;
 class SearchResults extends Component {
-  constructor(props){
-    super(props)
+  constructor(props) {
+    super(props);
 
-    this.deleteTag = this.deleteTag.bind(this)
+    this.deleteTag = this.deleteTag.bind(this);
   }
 
   state = {
@@ -42,14 +43,14 @@ class SearchResults extends Component {
     modalVisible: false,
     products: [],
     tags: [],
-    updated: false
+    old_tags: []
   };
 
   componentDidMount = async () => {
     const { setParams } = this.props.navigation;
     const { state } = this.props.navigation;
 
-    this.fetchTags();
+    this.setState({ old_tags: this.fetchTags() });
     this.fetchItems(0);
 
     first = false;
@@ -68,15 +69,7 @@ class SearchResults extends Component {
     });
   };
 
-  updated() {
-    if (this.state.uppdated) {
-      this.setState({ updated: false });
-      return true;
-    }
-    return false;
-  }
-
-  deleteTag = (name) => {
+  deleteTag = name => {
     let copy = [];
     this.setState(prevState => {
       copy = prevState.tags.filter(tag => tag.name !== name);
@@ -101,6 +94,21 @@ class SearchResults extends Component {
     }
   };
 
+  updateState() {
+    this.setState({ products: [] });
+    this.fetchItems(0);
+  }
+
+  onRefresh() {
+    console.log("onRefresh");
+    this.setState({ isRefreshing: true }); // true isRefreshing flag for enable pull to refresh indicator
+
+    this.setState({ products: [] });
+    this.fetchItems(0);
+
+    console.log("CURRENT TAGS: ", this.fetchTags());
+    this.setState({ isRefreshing: false }); // true isRefreshing flag for enable pull to refresh indicator
+  }
   fetchItems = page => {
     const URL = `${API_BASE}/producto?number=20&page=${page}`;
     axios
@@ -195,46 +203,50 @@ class SearchResults extends Component {
   render() {
     const { search } = this.state;
 
+    const Header = (
+      <View
+        showsVerticalScrollIndicator={false}
+        style={{
+          backgroundColor: "#F5F5F5"
+        }}
+      >
+        <VisibleTags />
+
+        <View style={styles.section}>
+          <Text
+            style={{
+              fontSize: 18,
+              fontWeight: "500",
+              paddingHorizontal: 16,
+              fontFamily: "space-mono",
+              margin: 5
+            }}
+          >
+            Resultados de busqueda
+          </Text>
+        </View>
+      </View>
+    );
     //console.log(this.state.products);
     return (
-      <View>
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          style={{
-            backgroundColor: "#F5F5F5"
-          }}
-        >
-          <VisibleTags/>
-
-          <View style={styles.section}>
-            <Text
-              style={{
-                fontSize: 18,
-                fontWeight: "500",
-                paddingHorizontal: 16,
-                fontFamily: "space-mono",
-                margin: 5
-              }}
-            >
-              Resultados de busqueda
-            </Text>
-
-            <View style={{ flex: 1, flexDirection: "row" }}>
-              <FlatList
-                data={this.state.products}
-                keyExtractor={this._keyExtractor}
-                renderItem={this._renderItem}
-                numColumns={2}
-                style={{
-                  flex: 1,
-                  flexDirection: "row",
-                  flexWrap: "wrap"
-                }}
-              />
-            </View>
-          </View>
-        </ScrollView>
-      </View>
+      <FlatList
+        data={this.state.products}
+        refreshControl={
+          <RefreshControl
+            refreshing={this.state.isRefreshing}
+            onRefresh={this.onRefresh.bind(this)}
+          />
+        }
+        keyExtractor={this._keyExtractor}
+        renderItem={this._renderItem}
+        ListHeaderComponent={Header}
+        numColumns={2}
+        style={{
+          flex: 1,
+          flexDirection: "row",
+          flexWrap: "wrap"
+        }}
+      />
     );
   }
 }
