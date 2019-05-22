@@ -28,6 +28,11 @@ import { Constants, MapView, Location, Permissions } from "expo";
 import axios from "axios";
 import { API_BASE, DEBUG } from "../config";
 import { AsyncStorage } from "react-native";
+import { Calendar, CalendarList, Agenda } from "react-native-calendars";
+import moment from "moment";
+import DateTimePicker from "react-native-modal-datetime-picker";
+
+let calendarDate = moment();
 
 export default class ProfileSettings extends React.Component {
   static navigationOptions = {
@@ -50,8 +55,53 @@ export default class ProfileSettings extends React.Component {
     radio_ubicacion: 0,
     mapRegion: null,
     hasLocationPermissions: false,
-    locationResult: null
+    locationResult: null,
+    fechaexpiracion: null,
+    markedDate: {},
+    isDateTimePickerVisible: false
   };
+
+  handleDatePicked = time => {
+    var time2 = moment(time).format("hh:mm:a");
+
+    let list = time2.split(":");
+
+    // %H:%M:%S'
+    let hour = list[0];
+    if (list[2] == "pm") hour = hour + 12;
+
+    let instant = hour + ":" + list[1] + ":" + "00";
+
+    let fecha = this.state.fechaexpiracion;
+    fecha = fecha + " " + instant;
+    this.setState({ fechaexpiracion: fecha });
+    console.log("A date has been picked: ", time, time2);
+
+    this.setState({ isDateTimePickerVisible: false });
+  };
+  showDateTimePicker = () => {
+    this.setState({ isDateTimePickerVisible: true });
+  };
+
+  hideDateTimePicker = () => {
+    console.log("Close picked: ");
+
+    this.setState({ isDateTimePickerVisible: false });
+  };
+
+  onDayPress(date) {
+    console.log("DateCalendar", date);
+
+    var fechaexpiracion = date.day + "-" + date.month + "-" + date.year;
+    this.setState({ fechaexpiracion: date.dateString });
+    var markedDate = {
+      [date.dateString]: { selected: true }
+    };
+    this.setState({ markedDate });
+    console.log("markedDate", markedDate);
+    console.log("fechaexpiracion", date.dateString);
+    this.setState({ isDateTimePickerVisible: true });
+  }
 
   fetchData = async () => {
     let token, user;
@@ -115,41 +165,53 @@ export default class ProfileSettings extends React.Component {
   }
 
   uploadProductSubasta() {
-    axios.post(
-      `${API_BASE}/producto/`,
-      {
-        titulo: this.state.title,
-        descripcion: this.state.description,
-        precioBase: this.state.precioBase,
-        categoria: this.state.categoria,
-        tipo: this.state.tipo,
-        radio_ubicacion: this.state.radio_ubicacion,
-        latitud: this.state.latitud,
-        longitud: this.state.longitud,
-        fechaexpiracion: this.state.fechaExp,
-        vendedor: this.state.vendedor
-      },
-      {}
-    );
+    axios
+      .post(
+        `${API_BASE}/producto/`,
+        {
+          titulo: this.state.title,
+          descripcion: this.state.description,
+          precioBase: this.state.precioBase,
+          categoria: this.state.categoria,
+          tipo: this.state.tipo,
+          radio_ubicacion: this.state.radio_ubicacion,
+          latitud: this.state.latitud,
+          longitud: this.state.longitud,
+          fechaexpiracion: this.state.fechaexpiracion,
+          vendedor: this.state.vendedor
+        },
+        {}
+      )
+      .then(res => {
+        console.log("Product Uploaded:", res.data);
+        this.uploadImageAsync(res.data.id);
+      })
+      .catch(err => console.log(err));
   }
 
   uploadProductTrueque() {
-    axios.post(
-      `${API_BASE}/producto/`,
-      {
-        titulo: this.state.title,
-        descripcion: this.state.description,
-        precioBase: this.state.precioBase,
-        categoria: this.state.categoria,
-        tipo: this.state.tipo,
-        radio_ubicacion: this.state.radio_ubicacion,
-        latitud: this.state.latitud,
-        longitud: this.state.longitud,
-        vendedor: this.state.vendedor,
-        precioAux: this.state.precioAux
-      },
-      {}
-    );
+    axios
+      .post(
+        `${API_BASE}/producto/`,
+        {
+          titulo: this.state.title,
+          descripcion: this.state.description,
+          precioBase: this.state.precioBase,
+          categoria: this.state.categoria,
+          tipo: this.state.tipo,
+          radio_ubicacion: this.state.radio_ubicacion,
+          latitud: this.state.latitud,
+          longitud: this.state.longitud,
+          vendedor: this.state.vendedor,
+          precioAux: this.state.precioAux
+        },
+        {}
+      )
+      .then(res => {
+        console.log("Product Uploaded:", res.data);
+        this.uploadImageAsync(res.data.id);
+      })
+      .catch(err => console.log(err));
   }
 
   reset_forms() {
@@ -168,7 +230,8 @@ export default class ProfileSettings extends React.Component {
       photos: [],
       mapRegion: null,
       hasLocationPermissions: false,
-      locationResult: null
+      locationResult: null,
+      isDateTimePickerVisible: false
     });
     this.render();
   }
@@ -297,7 +360,6 @@ export default class ProfileSettings extends React.Component {
 
   render = () => {
     //console.log("Location", this.state.locationResult);
-
     return (
       <ScrollView style={styles.root} style={{ marginTop: 0 }}>
         <RkAvoidKeyboard>
@@ -321,7 +383,7 @@ export default class ProfileSettings extends React.Component {
                 style={styles.textarea}
                 onChangeText={this.onDescriptionChanged}
                 defaultValue={this.state.description}
-                maxLength={120}
+                maxLength={1000}
                 placeholder={"Descipción ..."}
                 placeholderTextColor={"#c7c7c7"}
                 underlineColorAndroid={"transparent"}
@@ -348,21 +410,51 @@ export default class ProfileSettings extends React.Component {
               />
             </View>
 
-            <View style={styles.row}>
-              <Text style={styles.label}>Precio máx. del trueque</Text>
-              <TextInput
-                style={styles.text_input}
-                keyboardType="numeric"
-                onChangeText={this.onPrecioTruequeChanged}
-                value={this.state.precioAux}
-              />
-            </View>
-
             <View style={styles.row2}>
               <TypePickerModal saveType={this.saveType} />
               <Text style={{ marginHorizontal: 5 }}>{this.state.tipo}</Text>
             </View>
 
+            {this.state.tipo === "subasta" ? (
+              <View style={styles.row2}>
+                <CalendarList
+                  // Enable horizontal scrolling, default = false
+                  markedDates={this.state.markedDate}
+                  horizontal={true}
+                  minDate={new Date()}
+                  onDayPress={day => this.onDayPress(day)}
+                  // Enable paging on horizontal, default = false
+                  pagingEnabled={true}
+                  // Set custom calendarWidth.
+                  calendarWidth={320}
+                />
+
+                <DateTimePicker
+                  isVisible={this.state.isDateTimePickerVisible}
+                  onConfirm={this.handleDatePicked}
+                  onCancel={this.hideDateTimePicker}
+                  mode={"time"}
+                  is24Hour={true}
+                  minimumDate={new Date()}
+                />
+              </View>
+            ) : (
+              []
+            )}
+
+            {this.state.tipo === "trueque" ? (
+              <View style={styles.row}>
+                <Text style={styles.label}>Precio máx. del trueque</Text>
+                <TextInput
+                  style={styles.text_input}
+                  keyboardType="numeric"
+                  onChangeText={this.onPrecioTruequeChanged}
+                  value={this.state.precioAux}
+                />
+              </View>
+            ) : (
+              []
+            )}
             <View style={styles.row2}>
               <CategoryPickerModal saveCategory={this.saveCategory} />
               <Text style={{ marginHorizontal: 5 }}>

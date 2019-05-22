@@ -9,7 +9,8 @@ import {
   TouchableHighlight,
   Dimensions,
   ActivityIndicator,
-  RefreshControl
+  RefreshControl,
+  AsyncStorage
 } from "react-native";
 import { SearchBar, Button } from "react-native-elements";
 import { Platform, StatusBar, TouchableOpacity } from "react-native";
@@ -24,7 +25,7 @@ import { addTag } from "../actions";
 import { Permissions, Notifications } from "expo";
 
 import axios from "axios";
-import { API_BASE } from "../config";
+import { API_BASE, DEBUG } from "../config";
 import { Font } from "expo";
 
 import Icon from "react-native-vector-icons/FontAwesome";
@@ -51,6 +52,21 @@ class Feed extends Component {
 
     const { setParams } = this.props.navigation;
     const { state } = this.props.navigation;
+
+    let token, user;
+    try {
+      user = await AsyncStorage.getItem("user");
+      token = await AsyncStorage.getItem("token");
+      console.log("User", user, token);
+    } catch (error) {
+      console.log(error);
+    }
+    if (DEBUG) {
+      user = "8e4de80f-d9bf-411c-a696-58e3481a1b36";
+      token =
+        "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1NTgzNDM2MzcsInN1YiI6MTksImV4cCI6MTU1ODQzMDA0Mn0.x6XSXNfP9EOb98T6amrrUCoHH3PUdjiEHYMoqE55JkA";
+    }
+    this.setState({ user, token });
 
     this.fetchItems(0);
 
@@ -123,8 +139,10 @@ class Feed extends Component {
 
   onRefresh() {
     console.log("onRefresh");
+    const user = this.state.user;
+
     this.setState({ isRefreshing: true }); // true isRefreshing flag for enable pull to refresh indicator
-    const URL = `${API_BASE}/producto?number=20&page=0`;
+    const URL = `${API_BASE}/producto?usuario=${user}&number=20&page=0`;
 
     axios
       .get(URL)
@@ -144,7 +162,8 @@ class Feed extends Component {
   }
 
   fetchItems = page => {
-    const URL = `${API_BASE}/producto?number=20&page=${page}`;
+    const user = this.state.user;
+    const URL = `${API_BASE}/producto?usuario=${user}&number=20&page=${page}`;
     console.log(URL);
 
     axios
@@ -190,7 +209,11 @@ class Feed extends Component {
   };
 
   _method = product => {
-    this.props.navigation.navigate("ProductDetails", { product });
+    console.log("ProductDetails", product);
+    this.props.navigation.navigate("ProductDetails", {
+      product: product.id,
+      deseado: product.deseado
+    });
   };
   _renderItem = ({ item }) => {
     let { navigation } = this.props;
@@ -204,14 +227,14 @@ class Feed extends Component {
       }
     }
     return (
-      <TouchableHighlight onPress={() => this._method(item.id)}>
+      <TouchableHighlight onPress={() => this._method(item)}>
         <ProductVertical
           navigation={navigation}
           thumbnail={thumbnail.path}
           titulo={item.titulo}
           precio={item.precioBase}
-          deseado={item.deseado}
           descripcion={item.descripcion}
+          deseado={item.deseado}
         />
       </TouchableHighlight>
     );
@@ -297,7 +320,7 @@ class Feed extends Component {
               margin: 0
             }}
           >
-            <TouchableHighlight onPress={() => this._method(product.id)}>
+            <TouchableHighlight onPress={() => this._method(product)}>
               <Product
                 thumbnail={thumbnail.path}
                 titulo={product.titulo}

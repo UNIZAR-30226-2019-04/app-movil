@@ -5,7 +5,6 @@ import { GiftedChat } from "react-native-gifted-chat";
 import { API_BASE, DEBUG } from "../config";
 import axios from "axios";
 import SocketIOClient from "socket.io-client/dist/socket.io";
-import io from "socket.io-client";
 import KeyboardSpacer from "react-native-keyboard-spacer";
 
 import { AsyncStorage } from "react-native";
@@ -17,12 +16,6 @@ export default class Settings extends Component {
     this.socket = SocketIOClient("http://34.90.77.95:5000/mychat", {
       transports: ["websocket"]
     });
-
-    /*    this.socket = SocketIOClient(`${API_BASE}/mychat`, {
-      transports: ["websocket"],
-      jsonp: false,
-      reconnect: true
-    }); */
   }
   state = {
     messages: [],
@@ -30,12 +23,14 @@ export default class Settings extends Component {
     room: 0,
     receiver: "",
     user: "",
+    email_receiver: "",
+    imagen_receiver: "",
     token:
       "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1NTgyNzgzNzcsInN1YiI6NCwiaWF0IjoxNTU4MTkxOTcyfQ.5komhqF1kxibiUySym0l7x3pPNuqcFzoUG33815SX88"
   };
 
   static navigationOptions = ({ navigation }) => ({
-    title: navigation.getParam("receiver_email"),
+    title: navigation.state.params.email_receiver,
     headerTitleStyle: { textAlign: "center", alignSelf: "center" },
     headerStyle: {
       backgroundColor: "white"
@@ -53,10 +48,10 @@ export default class Settings extends Component {
       user: {
         _id: data.usuario === user ? 1 : 2,
         name: data.usuario === user ? "Me" : "Person",
-        avatar: "https://placeimg.com/140/140/any"
+        avatar: this.props.navigation.state.params.imagen_receiver
       }
     };
-    //this.feed.push(res);
+
     console.log(res);
     return res;
   }
@@ -97,6 +92,7 @@ export default class Settings extends Component {
         this.socket.emit("JOINED", {
           room: id
         });
+        this.fetchMessages(id, this.state.token);
       })
       .catch(error => {
         console.log("fetchRoomId ERROR: ", error);
@@ -118,20 +114,22 @@ export default class Settings extends Component {
     } catch (error) {
       console.log(error);
     }
-
     const receiver = this.props.navigation.state.params.receiver;
 
-    this.props.navigation.setParams({ receiver_email: receiver });
+    const email_receiver = this.props.navigation.state.params.email_receiver;
+    const imagen_receiver = this.props.navigation.state.params.imagen_receiver;
 
-    //const receiver = this.state.receiver;
+    this.setState({
+      email_receiver,
+      imagen_receiver,
+      receiver
+    });
+
+    this.props.navigation.setParams({
+      email_receiver
+    });
 
     this.fetchRoomId(user, receiver);
-    this.fetchMessages(this.state.room, token);
-
-    /*     console.log("connected!");
-    this.socket.emit("JOINED", {
-      room: this.state.room
-    }); */
 
     const { navigation } = this.props;
 
@@ -157,16 +155,12 @@ export default class Settings extends Component {
 
     this.socket.emit("SEND_MESSAGE", {
       //usuario: navigation.getParam("user"),
-      usuario: 1,
+      usuario: this.state.user,
       texto: msg.text,
       conversacion: this.state.room,
       room: this.state.room,
       fecha: msg.createdAt
     });
-
-    /*     this.setState(previousState => ({
-      messages: GiftedChat.append(previousState.messages, messages)
-    })); */
   }
 
   render() {

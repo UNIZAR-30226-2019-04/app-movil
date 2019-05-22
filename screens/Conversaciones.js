@@ -13,23 +13,35 @@ import { ListItem } from "react-native-elements";
 import Icon from "@expo/vector-icons/Ionicons";
 import axios from "axios";
 import { API_BASE, DEBUG } from "../config";
-import { AsyncStorage } from "react-native";
+import { AsyncStorage, RefreshControl } from "react-native";
 
 export default class Conversaciones extends Component {
   state = {
     conversaciones: [],
     user: "",
-    token: ""
+    token: "",
+    isRefreshing: false
   };
   componentDidMount() {
     this.fetchData();
   }
 
-  fetchData() {
+  onRefresh() {
+    console.log("onRefresh");
+    const user = this.state.user;
+
+    this.setState({ isRefreshing: true }); // true isRefreshing flag for enable pull to refresh indicator
+
+    this.fetchData();
+
+    this.setState({ isRefreshing: false }); // true isRefreshing flag for enable pull to refresh indicator
+  }
+
+  fetchData = async () => {
     let token, user;
     try {
-      user = AsyncStorage.getItem("user");
-      token = AsyncStorage.getItem("token");
+      user = await AsyncStorage.getItem("user");
+      token = await AsyncStorage.getItem("token");
 
       console.log("User", user, token);
 
@@ -39,9 +51,8 @@ export default class Conversaciones extends Component {
         token =
           "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1NTgyNzgzNzcsInN1YiI6NCwiaWF0IjoxNTU4MTkxOTcyfQ.5komhqF1kxibiUySym0l7x3pPNuqcFzoUG33815SX88";
       }
-      if (user !== null) {
-        this.setState({ user: user, token: token });
-      }
+
+      this.setState({ user: user, token: token });
     } catch (error) {
       console.log(error);
     }
@@ -56,10 +67,11 @@ export default class Conversaciones extends Component {
       .then(res => {
         const conversaciones = res.data.data;
         console.log("Conversaciones response", conversaciones);
+        //this.setState({ conversaciones });
         this.setState({ conversaciones: conversaciones });
       })
       .catch(err => console.log(err));
-  }
+  };
   _keyExtractor = (item, index) => {
     //console.log(item);
     return item.id.toString();
@@ -72,36 +84,64 @@ export default class Conversaciones extends Component {
       return item.vendedor;
     }
   }
+
+  _checkUserEmail(conversacion) {
+    if (conversacion.vendedor === this.state.user) {
+      return conversacion.email_comprador;
+    } else {
+      return conversacion.email_vendedor;
+    }
+  }
+
+  _checkUserImage(conversacion) {
+    if (conversacion.vendedor === this.state.user) {
+      return conversacion.imagen_comprador;
+    } else {
+      return conversacion.imagen_vendedor;
+    }
+  }
   render() {
+    var user = this.state.user;
+
     return (
-      <ScrollView style={styles.container}>
-        <FlatList
-          data={this.state.conversaciones}
-          extraData={this.state}
-          horizontal={false}
-          renderItem={({ item, index }) => (
-            <ListItem
-              title={this._checkUser(item)}
-              leftAvatar={{
-                source: {
-                  uri:
-                    "https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg"
-                }
-              }}
-              style={{ marginVertical: 3 }}
-              onPress={() =>
-                this.props.navigation.navigate("ChatTabNavigator", {
-                  room: item.id,
-                  user: this.state.user,
-                  receiver: this._checkUser(item),
-                  token: this.state.token
-                })
+      <FlatList
+        refreshControl={
+          <RefreshControl
+            refreshing={this.state.isRefreshing}
+            onRefresh={this.onRefresh.bind(this)}
+          />
+        }
+        data={this.state.conversaciones}
+        extraData={this.state}
+        horizontal={false}
+        renderItem={({ item, index }) => (
+          <ListItem
+            title={this._checkUserEmail(item)}
+            leftAvatar={{
+              source: {
+                uri:
+                  this._checkUserImage(item) !== null
+                    ? this._checkUserImage(item)
+                    : ""
               }
-            />
-          )}
-          keyExtractor={this._keyExtractor}
-        />
-      </ScrollView>
+            }}
+            style={styles.container}
+            onPress={() =>
+              this.props.navigation.navigate("ChatTabNavigator", {
+                room: item.id,
+                user: this.state.user,
+                receiver: this._checkUser(item),
+                email_receiver: this._checkUserEmail(item),
+                imagen_receiver: this._checkUserImage(item),
+
+                comprador: this.state.email_comprador,
+                token: this.state.token
+              })
+            }
+          />
+        )}
+        keyExtractor={this._keyExtractor}
+      />
     );
   }
 }

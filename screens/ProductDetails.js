@@ -46,7 +46,7 @@ export default class ProductDetails extends Component {
     user: "",
     token: "",
     receiver: "",
-    isLiked: false,
+    isLiked: null,
     mapRegion: null,
     address: "",
     valoracion: 3,
@@ -60,14 +60,19 @@ export default class ProductDetails extends Component {
 
   onPressHeart = async product => {
     console.log("onPressHeart", product);
-    this.setState({ isLiked: !this.state.isLiked });
 
     let user = this.state.user;
     let token = this.state.token;
     let URL = `${API_BASE}/deseados/${user}`;
     if (this.state.isLiked) {
+      console.log("isLiked", user, token);
+
       URL = `${API_BASE}/deseados/${user}/remove`;
+    } else {
+      console.log("DisLiked", user, token);
     }
+    this.setState({ isLiked: !this.state.isLiked });
+
     console.log(URL);
     axios
       .post(
@@ -197,7 +202,8 @@ export default class ProductDetails extends Component {
 
     const { setParams } = this.props.navigation;
     const { state } = this.props.navigation;
-
+    console.log("STATE PARAMS: ", state);
+    this.setState({ isLiked: state.params.deseado });
     this.fetchProduct(state.params.product);
   };
 
@@ -228,10 +234,11 @@ export default class ProductDetails extends Component {
     } catch (error) {
       console.log(error);
     }
-    if (DEBUG) user = "8e4de80f-d9bf-411c-a696-58e3481a1b36";
-    token =
-      "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1NTgzNDM2MzcsInN1YiI6MTksImV4cCI6MTU1ODQzMDA0Mn0.x6XSXNfP9EOb98T6amrrUCoHH3PUdjiEHYMoqE55JkA";
-
+    if (DEBUG) {
+      user = "8e4de80f-d9bf-411c-a696-58e3481a1b36";
+      token =
+        "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1NTgzNDM2MzcsInN1YiI6MTksImV4cCI6MTU1ODQzMDA0Mn0.x6XSXNfP9EOb98T6amrrUCoHH3PUdjiEHYMoqE55JkA";
+    }
     this.setState({ user, token });
 
     const URL = `${API_BASE}/producto/${id}`;
@@ -251,7 +258,7 @@ export default class ProductDetails extends Component {
     this.setState({ vendedor: producto.vendedor });
     this.setState(producto);
 
-    this.setState({ isLiked: producto.deseado });
+    //this.setState({ isLiked: producto.deseado });
 
     this.setState({
       mapRegion: {
@@ -279,6 +286,7 @@ export default class ProductDetails extends Component {
 
   followUser() {
     if (this.state.followed) {
+      console.log("UnfollowUser", this.state.vendedor);
       axios
         .post(
           `${API_BASE}/seguir/${this.state.user}/remove`,
@@ -300,6 +308,8 @@ export default class ProductDetails extends Component {
         })
         .catch(err => console.log("Error following user", err));
     } else {
+      console.log("followUser", this.state.vendedor);
+
       axios
         .post(
           `${API_BASE}/seguir/${this.state.user}`,
@@ -365,8 +375,8 @@ export default class ProductDetails extends Component {
     console.log("TIPO");
     console.log(this.state.tipo);
     console.log("TRUEQUE");
-    let trueque = (this.state.tipo == "trueque");
-    console.log(trueque)
+    let trueque = this.state.tipo == "trueque";
+    console.log(trueque);
     return (
       <ScrollView style={{ flex: 1 }}>
         <View style={{ flex: 1 }}>
