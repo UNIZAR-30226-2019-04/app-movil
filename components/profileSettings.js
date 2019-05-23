@@ -11,11 +11,12 @@ import {
 } from "react-native-ui-kitten";
 import { Avatar } from "react-native-elements";
 import axios from "axios";
-import { API_BASE, API_KEY, DEBUG } from "../config";
+import { API_BASE, API_KEY, DEBUG, USER, TOKEN } from "../config";
 import { AsyncStorage } from "react-native";
 import Textarea from "react-native-textarea";
 import { Constants, MapView, Location, Permissions, ImagePicker } from "expo";
 import DeleteAccountModal from "../components/DeleteAccountModal";
+import Profile from "../screens/Profile";
 
 export default class ProfileSettings extends React.Component {
   static navigationOptions = {
@@ -37,7 +38,7 @@ export default class ProfileSettings extends React.Component {
 
     nombre: "",
     apellidos: "",
-    imagen_perfil: "",
+    imagen_perfil: "http://34.90.77.95:10080/user/default.png",
     valoracion: "",
     password: "",
     newPassword: "",
@@ -186,9 +187,8 @@ export default class ProfileSettings extends React.Component {
       console.log(error);
     }
     if (DEBUG) {
-      user = "8e4de80f-d9bf-411c-a696-58e3481a1b36";
-      token =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE1NTc1ODg1NTEsInN1YiI6MTksImV4cCI6MTU1NzY3NDk1Nn0.rE3VWsRoamkEMPSM48kfnj1c5AfH572v2QjQzpoHxIA";
+      user = USER;
+      token = TOKEN;
     }
     const URL = `${API_BASE}/user/${user}`;
     console.log(URL, user, token);

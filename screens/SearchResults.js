@@ -14,18 +14,18 @@ import { Platform, StatusBar, TouchableOpacity } from "react-native";
 import SearchModal from "../components/SearchModal";
 import VisibleTags from "../containers/VisibleTags";
 import ProductVertical from "../components/ProductVertical";
+import FilterMap from "../components/FilterMap";
+import { API_BASE, API_KEY } from "../config";
+
 import UploadProductModal from "../components/UploadProductModal";
 import { connect } from "react-redux";
 import store from "../store";
-import { API_BASE } from "../config";
-import { Font } from "expo";
+import { Font, Permissions, Location } from "expo";
 import axios from "axios";
 import Icon from "react-native-vector-icons/FontAwesome";
 const width = Dimensions.get("window").width;
 const height = Dimensions.get("window").height;
 
-const default_tags = { "24h": { name: "24h" }, "1Km": { name: "1Km" } };
-let first = true;
 class SearchResults extends Component {
   constructor(props) {
     super(props);
@@ -39,15 +39,18 @@ class SearchResults extends Component {
     modalVisible: false,
     products: [],
     tags: [],
-    old_tags: []
+    mapRegion: null,
+    locationResult: null,
+    hasLocationPermissions: false,
+    distancia: 0
   };
 
   componentDidMount = async () => {
     const { setParams } = this.props.navigation;
     const { state } = this.props.navigation;
 
-    this.setState({ old_tags: this.fetchTags() });
     this.fetchItems(0);
+    this._getLocationAsync();
 
     first = false;
     setParams({
@@ -65,6 +68,39 @@ class SearchResults extends Component {
     });
   };
 
+  _getLocationAsync = async () => {
+    let { status } = await Permissions.askAsync(Permissions.LOCATION);
+    console.log("_getLocationAsync", status);
+    if (status !== "granted") {
+      this.setState({
+        locationResult: "Permiso para acceder a la localizacion fue rechazado"
+      });
+      return;
+    } else {
+      this.setState({ hasLocationPermissions: true });
+    }
+
+    let location = await Location.getCurrentPositionAsync({});
+    //this.setState({ locationResult: JSON.stringify(location) });
+    this.setState({ locationResult: location });
+
+    // Center the map on the location we just fetched.
+    let lat = location.coords.latitude;
+    let long = location.coords.longitude;
+
+    this.setState({
+      mapRegion: {
+        latitude: lat,
+        longitude: long,
+        latitudeDelta: 0.0922,
+        longitudeDelta: 0.0421
+      }
+    });
+
+    //this.getAddressFromCoordinates(lat, long);
+    //this.fetchItems();
+  };
+
   deleteTag = name => {
     let copy = [];
     this.setState(prevState => {
@@ -73,6 +109,15 @@ class SearchResults extends Component {
 
       return { tags: copy };
     });
+  };
+
+  getDistancia = () => {
+    let distance = this.tags.filter(tag => tag.ctype === "distance");
+    if (distance === undefined) {
+      distance = 100;
+    }
+
+    return distance;
   };
 
   static navigationOptions = ({ navigation }) => {
@@ -172,6 +217,12 @@ class SearchResults extends Component {
   _method = product => {
     this.props.navigation.navigate("ProductDetails", { product });
   };
+
+  select = product => {
+    console.log("SELECTED", product);
+    // this.setState({ modalVisible: false });
+    this.props.navigation.navigate("ProductDetails", { product });
+  };
   _renderItem = ({ item }) => {
     let { navigation } = this.props;
     console.log("pressed");
@@ -197,6 +248,8 @@ class SearchResults extends Component {
     );
   };
   render() {
+    let { navigation } = this.props;
+
     const { search } = this.state;
 
     const Header = (
@@ -226,24 +279,38 @@ class SearchResults extends Component {
     );
     //console.log(this.state.products);
     return (
-      <FlatList
-        data={this.state.products}
-        refreshControl={
-          <RefreshControl
-            refreshing={this.state.isRefreshing}
-            onRefresh={this.onRefresh.bind(this)}
+      <View style={{ flex: 1 }}>
+        <FlatList
+          data={this.state.products}
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.isRefreshing}
+              onRefresh={this.onRefresh.bind(this)}
+            />
+          }
+          keyExtractor={this._keyExtractor}
+          renderItem={this._renderItem}
+          ListHeaderComponent={Header}
+          numColumns={2}
+          //ListFooterComponent={() => <FilterMap tags={this.state.tags} />}
+          style={{
+            flex: 1,
+            flexDirection: "row",
+            flexWrap: "wrap"
+          }}
+        />
+        <View>
+          <FilterMap
+            tags={this.state.tags}
+            mapRegion={this.state.mapRegion}
+            radious={this.state.distancia}
+            products={this.state.products}
+            navigation={navigation !== undefined ? navigation : null}
+            push={navigation.push}
+            select={product => this.select(product)}
           />
-        }
-        keyExtractor={this._keyExtractor}
-        renderItem={this._renderItem}
-        ListHeaderComponent={Header}
-        numColumns={2}
-        style={{
-          flex: 1,
-          flexDirection: "row",
-          flexWrap: "wrap"
-        }}
-      />
+        </View>
+      </View>
     );
   }
 }

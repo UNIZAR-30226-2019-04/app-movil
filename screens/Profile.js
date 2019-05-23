@@ -16,7 +16,7 @@ import Venta from "../components/Tabs/Venta";
 import Favoritos from "../components/Tabs/Favoritos";
 
 import axios from "axios";
-import { API_BASE, DEBUG } from "../config";
+import { API_BASE, DEBUG, USER, TOKEN } from "../config";
 import { AsyncStorage } from "react-native";
 import UploadProductModal from "../components/UploadProductModal";
 
@@ -31,28 +31,23 @@ export default class Profile extends Component {
   componentDidMount() {
     _this = this;
     this.fetchData();
-    this.props.navigation.setParams({ seller: this.state.seller });
+    const { params = {} } = this.props.navigation.state;
+
+    if (params.vendedor !== undefined) {
+      console.log(" - DIFFERENT USER - ");
+      this.setState({ isUser: false, user: params.vendedor });
+    }
+    //this.props.navigation.setParams({ seller: this.state.seller });
   }
 
   static navigationOptions = ({ navigation }) => {
     const { params = {} } = navigation.state;
     console.log(" state.params ", params);
-
-    let isUser = false;
-    if (params !== {}) {
-      let user = params.vendedor;
-      let my_user;
-      try {
-        my_user = AsyncStorage.getItem("user");
-      } catch (error) {
-        console.log(error);
-      }
-      if (DEBUG) my_user = "8e4de80f-d9bf-411c-a696-58e3481a1b36";
-
-      if (my_user === user || true) {
-        console.log(" - SAME USER - ");
-        isUser = true;
-      }
+    let isUser = true;
+    if (params.vendedor !== undefined) {
+      console.log(" - DIFFERENT USER  navigationOptions- ");
+      this.isUser = false;
+      isUser = false;
     }
 
     return {
@@ -106,7 +101,8 @@ export default class Profile extends Component {
   }
 
   state = {
-    isUser: false,
+    isUser: true,
+    user: null,
     descripcion: "",
     cajas_productos: [],
     radio_ubicacion: 0,
@@ -118,13 +114,12 @@ export default class Profile extends Component {
     nick: "",
     longitud: null,
     productos_vendidos: 0,
-    imagen_perfil: "",
+    imagen_perfil: "http://34.90.77.95:10080/user/default.png",
     data: undefined,
     productos_comprados: 0,
     productos_vendidos: 0,
     nombre: "",
     apellidos: "",
-    imagen_perfil: "",
     valoracion: "",
     profile: {},
     index: 0,
@@ -133,7 +128,6 @@ export default class Profile extends Component {
 
       { key: "second", title: "Comprados", navigation: this.props.navigation },
       { key: "third", title: "Favoritos", navigation: this.props.navigation },
-      { key: "fifth", title: "Vendidos", navigation: this.props.navigation },
 
       { key: "fourth", title: "Reviews", navigation: this.props.navigation }
     ]
@@ -166,6 +160,29 @@ export default class Profile extends Component {
     );
   };
 
+  componentDidUpdate = async () => {
+    let my_user, token, user;
+    const { state } = this.props.navigation;
+    try {
+      my_user = await AsyncStorage.getItem("user");
+      token = await AsyncStorage.getItem("token");
+    } catch (error) {
+      console.log(error);
+    }
+    if (DEBUG) {
+      token = TOKEN;
+      user = USER;
+    }
+
+    if (state.params === undefined) {
+      user = my_user;
+    } else {
+      user = state.params.vendedor;
+    }
+    if (this.state.user !== user) {
+      this.fetchData();
+    }
+  };
   fetchData = async () => {
     let my_user, token, user;
     const { state } = this.props.navigation;
@@ -175,7 +192,10 @@ export default class Profile extends Component {
     } catch (error) {
       console.log(error);
     }
-    if (DEBUG) user = "8e4de80f-d9bf-411c-a696-58e3481a1b36";
+    if (DEBUG) {
+      token = TOKEN;
+      user = USER;
+    }
 
     if (state.params === undefined) {
       user = my_user;
@@ -183,6 +203,7 @@ export default class Profile extends Component {
       user = state.params.vendedor;
     }
 
+    this.setState({ user });
     console.log("Perfil", user);
     const URL = `${API_BASE}/user/${user}`;
     console.log(URL, user, token);
@@ -255,11 +276,10 @@ export default class Profile extends Component {
           style={{ backgroundColor: "white", color: "red", fontWeight: "bold" }}
           navigationState={this.state}
           renderScene={SceneMap({
-            first: Venta,
-            second: Comprados,
-            third: Favoritos,
-            fourth: ReviewTab,
-            fifth: Favoritos
+            first: () => <Venta user={this.state.user} />,
+            second: () => <Comprados user={this.state.user} />,
+            third: () => <Favoritos user={this.state.user} />,
+            fourth: () => <ReviewTab user={this.state.user} />
           })}
           renderTabBar={this._renderTabBar}
           onIndexChange={index => this.setState({ index })}

@@ -306,7 +306,7 @@ class Settings extends Component {
           <Text>Distancia max: {this.state.distancia} km</Text>
         </View>
 
-        <View style={styles.lineStyle} />
+        {/*         <View style={styles.lineStyle} />
 
         <View style={[styles.row, styles.heading]}>
           <RkText style={{ marginTop: 20 }} rkType="header6 primary">
@@ -319,7 +319,7 @@ class Settings extends Component {
           selectedIndex={selectedIndex}
           buttons={buttons}
           containerStyle={{ height: 100 }}
-        />
+        /> */}
         <View style={styles.lineStyle} />
 
         <View style={[styles.row, styles.heading]}>

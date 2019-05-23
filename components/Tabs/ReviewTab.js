@@ -13,6 +13,8 @@ export default class ReviewTab extends Component {
   }
 
   fetchItems() {
+    let user = this.props.user;
+
     var list = [];
     Object.keys(dummy_products).map(name => {
       var newelement = dummy_products[name];

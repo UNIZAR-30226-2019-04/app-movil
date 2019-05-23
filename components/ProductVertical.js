@@ -70,7 +70,7 @@ export default class ProductVertical extends Component {
         <View style={{ marginVertical: 2 }}>
           <Text
             ellipsizeMode="tail"
-            numberOfLines={6}
+            numberOfLines={5}
             style={{ paddingHorizontal: 10, color: "grey" }}
           >
             {this.props.descripcion}

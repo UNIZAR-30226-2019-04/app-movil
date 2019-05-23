@@ -23,7 +23,7 @@ import ReportModal from "../components/ReportModal";
 import TimerCountdown from "../components/TimerCountdown";
 import Carousel from "react-native-banner-carousel";
 import axios from "axios";
-import { API_BASE, API_KEY, DEBUG } from "../config";
+import { API_BASE, API_KEY, DEBUG, USER, TOKEN } from "../config";
 
 const width = Dimensions.get("window").width;
 let _this = null;
@@ -35,7 +35,7 @@ export default class ProductDetails extends Component {
   state = {
     search: "",
     modalVisible: null,
-    product: {},
+    product: null,
     titulo: "",
     precioBase: 0,
     descripcion: "",
@@ -235,9 +235,8 @@ export default class ProductDetails extends Component {
       console.log(error);
     }
     if (DEBUG) {
-      user = "8e4de80f-d9bf-411c-a696-58e3481a1b36";
-      token =
-        "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1NTgzNDM2MzcsInN1YiI6MTksImV4cCI6MTU1ODQzMDA0Mn0.x6XSXNfP9EOb98T6amrrUCoHH3PUdjiEHYMoqE55JkA";
+      user = USER;
+      token = TOKEN;
     }
     this.setState({ user, token });
 
@@ -264,24 +263,13 @@ export default class ProductDetails extends Component {
       mapRegion: {
         latitude: producto.latitud,
         longitude: producto.longitud,
-        latitudeDelta: 0.0922,
-        longitudeDelta: 0.0421
+        latitudeDelta: 5.0922,
+        longitudeDelta: 5.0421
       }
     });
 
     this.getAddressFromCoordinates(producto.latitud, producto.longitud);
     console.log(producto);
-
-    var f = producto.fechaexpiracion;
-    var list = f.split("/");
-    var f2 = new Date(list[2], list[1], list[0]);
-
-    var now = new Date().getTime();
-    var t = f2.getTime();
-    let timer = Math.abs((t - now) / 1000);
-    console.log("Now: ", now, "t: ", t, "diff: ", timer);
-
-    this.setState({ timer: timer });
   };
 
   followUser() {
@@ -302,7 +290,7 @@ export default class ProductDetails extends Component {
         )
         .then(res => {
           console.log("Siguiendo usuario", this.state.nick, res.data);
-          if (res.data.status === "sucess") {
+          if (res.data.status === "success") {
             this.setState({ followed: false });
           }
         })
@@ -325,7 +313,7 @@ export default class ProductDetails extends Component {
         )
         .then(res => {
           console.log("Siguiendo usuario", this.state.nick, res.data);
-          if (res.data.status === "sucess") {
+          if (res.data.status === "success") {
             this.setState({ followed: true });
           }
         })
@@ -484,8 +472,12 @@ export default class ProductDetails extends Component {
                   >
                     Publicado el dia {this.state.fecha}
                   </Text>
-                ) : this.state.timer !== null ? (
-                  <TimerCountdown initialTime={this.state.timer} />
+                ) : this.state.fechaexpiracion !== null ? (
+                  <View style={{ flex: 2 }}>
+                    <TimerCountdown
+                      fechaexpiracion={this.state.fechaexpiracion}
+                    />
+                  </View>
                 ) : (
                   []
                 )}
@@ -562,7 +554,11 @@ export default class ProductDetails extends Component {
                   {this.state.address}
                 </Text>
 
-                <MapModal mapRegion={this.state.mapRegion} radious={1} />
+                <MapModal
+                  mapRegion={this.state.mapRegion}
+                  radious={1}
+                  product={this.state.product}
+                />
               </View>
 
               <View style={styles.lineStyle} />
@@ -626,13 +622,13 @@ export default class ProductDetails extends Component {
                         <Button
                           title="Dejar de seguir"
                           style={{ width: 150 }}
-                          backgroundColor="grey"
+                          backgroundColor={"grey"}
                           onPress={() => this.followUser()}
                         />
                       ) : (
                         <Button
                           title="Seguir"
-                          backgroundColor="#98fb98"
+                          backgroundColor={"#blue"}
                           onPress={() => this.followUser()}
                         />
                       )}
@@ -657,6 +653,52 @@ export default class ProductDetails extends Component {
             bottom: 0
           }}
         >
+          {this.state.tipo === "normal" ? (
+            <ComprarModal />
+          ) : this.state.tipo === "subasta" ? (
+            <SubastarModal />
+          ) : (
+            []
+          )}
+
+          {this.state.tipo !== "trueque" ? (
+            <Button
+              title="Chat"
+              titleStyle={{ margin: 10, width: width / 2 - 20, marginTop: 10 }}
+              onPress={() =>
+                this.props.navigation.navigate("ChatTabNavigator", {
+                  room: this.state.room,
+                  user: this.state.vendedor,
+                  receiver: this.state.product.vendedor,
+                  token: this.state.token
+                })
+              }
+            />
+          ) : (
+            <Button
+              title="Chat"
+              titleStyle={{ margin: 10, width: width, marginTop: 10 }}
+              onPress={() =>
+                this.props.navigation.navigate("ChatTabNavigator", {
+                  room: this.state.room,
+                  user: this.state.vendedor,
+                  receiver: this.state.product.vendedor,
+                  token: this.state.token
+                })
+              }
+            />
+          )}
+        </View>
+
+        {/*         <View
+          style={{
+            //width: width,
+            position: "absolute",
+            flex: 1,
+            flexDirection: "row",
+            bottom: 0
+          }}
+        >
           <ComprarModal trueque={trueque} />
 
           <Button
@@ -671,7 +713,7 @@ export default class ProductDetails extends Component {
               })
             }
           />
-        </View>
+        </View> */}
       </ScrollView>
     );
   }

@@ -25,7 +25,7 @@ import { addTag } from "../actions";
 import { Permissions, Notifications } from "expo";
 
 import axios from "axios";
-import { API_BASE, DEBUG } from "../config";
+import { API_BASE, DEBUG, USER, TOKEN } from "../config";
 import { Font } from "expo";
 
 import Icon from "react-native-vector-icons/FontAwesome";
@@ -62,9 +62,8 @@ class Feed extends Component {
       console.log(error);
     }
     if (DEBUG) {
-      user = "8e4de80f-d9bf-411c-a696-58e3481a1b36";
-      token =
-        "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1NTgzNDM2MzcsInN1YiI6MTksImV4cCI6MTU1ODQzMDA0Mn0.x6XSXNfP9EOb98T6amrrUCoHH3PUdjiEHYMoqE55JkA";
+      user = USER;
+      token = TOKEN;
     }
     this.setState({ user, token });
 

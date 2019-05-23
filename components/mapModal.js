@@ -34,13 +34,9 @@ export default class MapModal extends Component {
     },
     location: { coords: { latitude: 41.4816, longitude: -4.055685 } },
 
-    radious: 1,
-    markers: [
-      { coordinate: { latitude: 41.4816, longitude: -4.055685 } },
-      { coordinate: { latitude: 41.66988, longitude: -1.097 } },
-
-      { coordinate: { latitude: 42.4816, longitude: -5.355685 } }
-    ]
+    radious: 0,
+    markers: [],
+    product: null
   };
 
   updateSearch = search => {
@@ -51,15 +47,56 @@ export default class MapModal extends Component {
   }
 
   componentDidMount() {
+    let product = this.props.product;
+
     this.setState({
       mapRegion: this.props.mapRegion,
       radious: this.props.radious
-      //markers: this.props.products
+      //markers: this.props.product
     });
+    if (this.props.mapRegion !== null && this.props.mapRegion !== undefined) {
+      let latlong = {
+        latitude: this.props.mapRegion.latitude,
+        longitude: this.props.mapRegion.longitude
+      };
+      this.setState({ LATLNG: latlong, product });
+    }
+    console.log("Mounted", product);
+    if (product !== undefined && product !== null && product !== {}) {
+      let marker = [
+        {
+          coordinate: {
+            latitude: product.latitud,
+            longitude: product.longitud
+          }
+        }
+      ];
+      this.setState({ markers: marker });
+    }
   }
 
   componentDidUpdate() {
-    console.log("updated", this.props.mapRegion);
+    let product = this.props.product;
+    console.log("updated", this.state.markers, product);
+
+    if (
+      product !== undefined &&
+      product !== null &&
+      product !== {} &&
+      this.state.markers.length < 1
+    ) {
+      console.log("updatedM", this.state.marker, product);
+
+      let marker = [
+        {
+          coordinate: {
+            latitude: product.latitud,
+            longitude: product.longitud
+          }
+        }
+      ];
+      this.setState({ markers: marker });
+    }
 
     if (this.props.mapRegion !== null && !updated) {
       updated = true;
@@ -68,7 +105,8 @@ export default class MapModal extends Component {
         latitude: this.props.mapRegion.latitude,
         longitude: this.props.mapRegion.longitude
       };
-      this.setState({ LATLNG: latlong });
+
+      //this.setState({ LATLNG: latlong, product });
     }
   }
 
@@ -79,6 +117,8 @@ export default class MapModal extends Component {
     const { search } = this.state;
     const { width, height } = Dimensions.get("window");
     console.log("mapRegion", this.state.mapRegion);
+    console.log("Markers", this.state.markers);
+
     return (
       <View style={{ marginTop: 0 }}>
         <Modal
@@ -118,6 +158,19 @@ export default class MapModal extends Component {
             />
 
             {this.state.markers.map((marker, index) => {
+              let product = this.state.product;
+              let thumbnail = null;
+
+              if (product !== null && product !== undefined) {
+                console.log("Product:", product);
+                for (let i = 0; i < product.multimedia.length; i++) {
+                  if (!product.multimedia[i].tipo) {
+                    thumbnail = product.multimedia[i];
+                    break;
+                  }
+                }
+              }
+
               return (
                 <MapView.Marker {...marker} key={index}>
                   <View style={styles.marker}>
@@ -128,7 +181,9 @@ export default class MapModal extends Component {
                       containerStyle={{ marginHorizontal: 10 }}
                       source={{
                         uri:
-                          "https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg"
+                          thumbnail !== null
+                            ? thumbnail.path
+                            : "https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg"
                       }}
                     />
                     <MapView.Callout tooltip />

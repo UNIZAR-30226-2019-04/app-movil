@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import ProductHorizontal from "../ProductHorizontal";
 import ProductHorizontal2 from "../ProductHorizontal2";
-import TruequeModal from "../TruequeModal"
+import TruequeModal from "../TruequeModal";
 import axios from "axios";
-import { API_BASE, DEBUG } from "../../config";
+import { API_BASE, DEBUG, USER, TOKEN } from "../../config";
 import { AsyncStorage } from "react-native";
 
 import {
@@ -17,7 +17,6 @@ import {
   Field,
   TouchableHighlight
 } from "react-native";
-import TruequeModalClass from "../TruequeModal";
 export default class Venta extends Component {
   state = {
     products: [],
@@ -29,22 +28,11 @@ export default class Venta extends Component {
     this.fetchItems();
   };
 
-  fetchItems = async () => {
-    let token, user;
-    try {
-      user = await AsyncStorage.getItem("user");
-      token = await AsyncStorage.getItem("token");
-      console.log("User", user, token);
-    } catch (error) {
-      console.log(error);
-    }
-    if (DEBUG) {
-      user = "8e4de80f-d9bf-411c-a696-58e3481a1b36";
-      token =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE1NTc1ODg1NTEsInN1YiI6MTksImV4cCI6MTU1NzY3NDk1Nn0.rE3VWsRoamkEMPSM48kfnj1c5AfH572v2QjQzpoHxIA";
-    }
+  fetchItems = () => {
+    console.log("VENTA", this.props);
+    let user = this.props.user;
 
-    this.setState({ user, token });
+    this.setState({ user });
     const URL = `${API_BASE}/user/${user}/products`;
     console.log(URL);
 
@@ -84,10 +72,9 @@ export default class Venta extends Component {
         }
         let { navigation } = this.props;
 
-        if(product.tipo != "trueque"){
+        if (product.tipo != "trueque") {
           return (
             <View
-              
               key={product.id}
               style={{
                 flex: 1,
@@ -123,23 +110,21 @@ export default class Venta extends Component {
                 alignItems: "center",
                 margin: 0
               }}
-            > 
-            <TruequeModal producto={product.id}/> 
-            <TouchableHighlight onPress={() => this._method(product.id)}>
-              <ProductHorizontal2
-                navigation={navigation}
-                thumbnail={thumbnail.path}
-                titulo={product.titulo}
-                precio={product.precioBase}
-                deseado={product.deseado}
-                descripcion={product.descripcion}
-              />
-            </TouchableHighlight>
-              
+            >
+              <TruequeModal producto={product.id} />
+              <TouchableHighlight onPress={() => this._method(product.id)}>
+                <ProductHorizontal2
+                  navigation={navigation}
+                  thumbnail={thumbnail.path}
+                  titulo={product.titulo}
+                  precio={product.precioBase}
+                  deseado={product.deseado}
+                  descripcion={product.descripcion}
+                />
+              </TouchableHighlight>
             </View>
           );
         }
-        
       });
     }
 

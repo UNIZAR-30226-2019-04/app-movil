@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import ProductHorizontal from "../ProductHorizontal";
 import axios from "axios";
-import { API_BASE, DEBUG } from "../../config";
-import { AsyncStorage } from "react-native";
+import { API_BASE, DEBUG, USER, TOKEN } from "../../config";
 
 import {
   View,
@@ -27,21 +26,9 @@ export default class Comprados extends Component {
   };
 
   fetchItems = async () => {
-    let token, user;
-    try {
-      user = await AsyncStorage.getItem("user");
-      token = await AsyncStorage.getItem("token");
-      console.log("User", user, token);
-    } catch (error) {
-      console.log(error);
-    }
-    if (DEBUG) {
-      user = "8e4de80f-d9bf-411c-a696-58e3481a1b36";
-      token =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE1NTc1ODg1NTEsInN1YiI6MTksImV4cCI6MTU1NzY3NDk1Nn0.rE3VWsRoamkEMPSM48kfnj1c5AfH572v2QjQzpoHxIA";
-    }
+    let user = this.props.user;
 
-    this.setState({ user, token });
+    this.setState({ user });
 
     const URL = `${API_BASE}/user/${user}/comprados`;
     console.log(URL);

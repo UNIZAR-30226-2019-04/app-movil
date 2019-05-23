@@ -2,14 +2,14 @@ import React, { Component } from "react";
 import { View, StyleSheet, SafeArea, ScrollView } from "react-native";
 import { Avatar, Tooltip, Text } from "react-native-elements";
 import axios from "axios";
-import { API_BASE, DEBUG } from "../config";
+import { API_BASE, DEBUG, USER, TOKEN } from "../config";
 import { AsyncStorage } from "react-native";
 import { DrawerItems } from "react-navigation";
 
 export default class CustomLeftDrawerComponent extends Component {
   state = {
     profile: {},
-    imagen_perfil: ""
+    imagen_perfil: "http://34.90.77.95:10080/user/default.png"
   };
 
   componentDidMount() {
@@ -25,9 +25,8 @@ export default class CustomLeftDrawerComponent extends Component {
       console.log(error);
     }
     if (DEBUG) {
-      user = "8e4de80f-d9bf-411c-a696-58e3481a1b36";
-      token =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE1NTc1ODg1NTEsInN1YiI6MTksImV4cCI6MTU1NzY3NDk1Nn0.rE3VWsRoamkEMPSM48kfnj1c5AfH572v2QjQzpoHxIA";
+      user = USER;
+      token = TOKEN;
     }
     const URL = `${API_BASE}/user/${user}`;
     const res = await axios.get(URL, {

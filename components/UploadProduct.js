@@ -67,12 +67,16 @@ export default class ProfileSettings extends React.Component {
     let list = time2.split(":");
 
     // %H:%M:%S'
-    let hour = list[0];
-    if (list[2] == "pm") hour = hour + 12;
+    let hour = parseInt(list[0]);
+    if (list[2] === "pm") hour = hour + 12;
 
     let instant = hour + ":" + list[1] + ":" + "00";
 
     let fecha = this.state.fechaexpiracion;
+
+    list = fecha.split("-");
+    fecha = list[2] + "/" + list[1] + "/" + list[0];
+
     fecha = fecha + " " + instant;
     this.setState({ fechaexpiracion: fecha });
     console.log("A date has been picked: ", time, time2);
@@ -130,6 +134,7 @@ export default class ProfileSettings extends React.Component {
     console.log("Categoria:", this.state.categoria);
     console.log("Radio_ubicacion:", this.state.radio_ubicacion);
     console.log("Usuario:", this.state.vendedor);
+    console.log("FechaExp:", this.state.fechaexpiracion);
 
     if (this.state.tipo == "normal") {
       this.uploadProductNormal();

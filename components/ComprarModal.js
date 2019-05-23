@@ -42,7 +42,7 @@ export default class ComprarModal extends Component {
     this.setState({ modalVisible: visible });
   }
   render = () => {
-    if(!this.props.trueque){
+    if (!this.props.trueque) {
       return (
         <View style={{ marginTop: 0 }}>
           <Modal
@@ -52,8 +52,25 @@ export default class ComprarModal extends Component {
             onRequestClose={() => this.setModalVisible(false)}
           >
             <Comprar closeModal={() => this.setModalVisible(false)} />
+
+            <Ionicons
+              style={{
+                position: "absolute",
+                right: 0,
+                marginRight: 20,
+                marginLeft: 20,
+                marginTop: 60
+              }}
+              onPress={() => {
+                console.log("Pressed");
+                this.setModalVisible(false);
+              }}
+              name="md-close"
+              size={38}
+              color="grey"
+            />
           </Modal>
-  
+
           <Button
             title="Comprar"
             titleStyle={{
@@ -70,7 +87,6 @@ export default class ComprarModal extends Component {
     } else {
       return null;
     }
-    
   };
 }
 
