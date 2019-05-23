@@ -83,7 +83,11 @@ export default class FilterMap extends Component {
     });
   };
   scrollToRow(itemIndex) {
-    this._scrollView.scrollTo({ x: itemIndex * ROW_WIDTH });
+    this._scrollView.scrollTo({
+      x: itemIndex * ROW_WIDTH,
+      y: 1,
+      animated: true
+    });
   }
 
   render() {
