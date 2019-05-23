@@ -23,7 +23,7 @@ import CategoryPickerModal from "./CategoryPickerModal";
 import { addTag } from "../actions";
 import { Constants, MapView, Location, Permissions } from "expo";
 import axios from "axios";
-import { API_BASE, DEBUG } from "../config";
+import { API_BASE, DEBUG, TOKEN } from "../config";
 import { AsyncStorage } from "react-native";
 import { Calendar, CalendarList, Agenda } from "react-native-calendars";
 import moment from "moment";
@@ -50,8 +50,8 @@ export default class MakeReview extends React.Component {
     console.log("--------------RATING--------------");
     console.log(this.state.rating.value);
 
-
-    let URL = `${API_BASE}/valoracion/${this.props.receiver}/`;
+    let token = this.state.token;
+    let URL = `${API_BASE}/valoracion/${this.props.user}`;
     let body = {
         titulo: this.state.titulo,
         descripcion: this.state.description,
@@ -61,7 +61,8 @@ export default class MakeReview extends React.Component {
   
     let config = {
         headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            Authorization: this.props.token
         }
     };
 

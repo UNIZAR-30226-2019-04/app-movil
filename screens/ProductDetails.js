@@ -640,7 +640,7 @@ export default class ProductDetails extends Component {
                     <ReportModal user={this.state.user} />
                   </View>
                   <View style={styles.reportButton}>
-                    <ReviewModal user={this.state.user} receiver={this.state.receiver}/>
+                    <ReviewModal user={this.state.user} receiver={this.state.receiver} token={this.state.token}/>
                   </View>
                 </View>
               </View>
