@@ -658,7 +658,7 @@ export default class ProductDetails extends Component {
           }}
         >
           {this.state.tipo === "normal" ? (
-            <ComprarModal />
+            <ComprarModal user={this.state.user} product={this.state.product}/>
           ) : this.state.tipo === "subasta" ? (
             <SubastarModal />
           ) : (

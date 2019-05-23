@@ -51,7 +51,7 @@ export default class ComprarModal extends Component {
             visible={this.state.modalVisible}
             onRequestClose={() => this.setModalVisible(false)}
           >
-            <Comprar closeModal={() => this.setModalVisible(false)} />
+            <Comprar closeModal={() => this.setModalVisible(false)} user={this.props.user} product={this.props.product}/>
 
             <Ionicons
               style={{
