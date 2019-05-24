@@ -61,7 +61,7 @@ export default class MapModal extends Component {
       };
       this.setState({ LATLNG: latlong, product });
     }
-    console.log("Mounted", product);
+    //console.log("Mounted", product);
     if (product !== undefined && product !== null && product !== {}) {
       let marker = [
         {
@@ -77,7 +77,7 @@ export default class MapModal extends Component {
 
   componentDidUpdate() {
     let product = this.props.product;
-    console.log("updated", this.state.markers, product);
+    //console.log("updated", this.state.markers, product);
 
     if (
       product !== undefined &&
@@ -85,7 +85,7 @@ export default class MapModal extends Component {
       product !== {} &&
       this.state.markers.length < 1
     ) {
-      console.log("updatedM", this.state.marker, product);
+      //console.log("updatedM", this.state.marker, product);
 
       let marker = [
         {
@@ -116,8 +116,8 @@ export default class MapModal extends Component {
   render() {
     const { search } = this.state;
     const { width, height } = Dimensions.get("window");
-    console.log("mapRegion", this.state.mapRegion);
-    console.log("Markers", this.state.markers);
+    //console.log("mapRegion", this.state.mapRegion);
+    //console.log("Markers", this.state.markers);
 
     return (
       <View style={{ marginTop: 0 }}>
@@ -162,7 +162,7 @@ export default class MapModal extends Component {
               let thumbnail = null;
 
               if (product !== null && product !== undefined) {
-                console.log("Product:", product);
+                //console.log("Product:", product);
                 for (let i = 0; i < product.multimedia.length; i++) {
                   if (!product.multimedia[i].tipo) {
                     thumbnail = product.multimedia[i];
@@ -176,7 +176,7 @@ export default class MapModal extends Component {
                   <View style={styles.marker}>
                     <Avatar
                       rounded
-                      onPress={() => console.log("Works!")}
+                      //onPress={() => //console.log("Works!")}
                       size="small"
                       containerStyle={{ marginHorizontal: 10 }}
                       source={{
@@ -234,7 +234,7 @@ export default class MapModal extends Component {
                   <View style={styles.marker}>
                     <Avatar
                       rounded
-                      onPress={() => console.log("Works!")}
+                      //onPress={() => //console.log("Works!")}
                       size="small"
                       containerStyle={{ marginHorizontal: 10 }}
                       source={{

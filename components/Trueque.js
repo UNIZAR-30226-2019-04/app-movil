@@ -46,22 +46,22 @@ class Trueque extends Component {
     _hacerTrueque(mi_nick) {
         let URL = `${API_BASE}/user/`;
         let id ="";
-        console.log(mi_nick)
+        //console.log(mi_nick)
         axios
             .get(
                 URL
               )
               .then(resp => { 
                 resp.data.data.map(item => {
-                    console.log(item.nick);
+                    //console.log(item.nick);
                     if(item.nick === mi_nick){
                         id = item.public_id;
                     }
                 })
-                console.log("PRODUCT_ID");
-                console.log(this.props.producto);
-                console.log("ID");
-                console.log(id);
+                //console.log("PRODUCT_ID");
+                //console.log(this.props.producto);
+                //console.log("ID");
+                //console.log(id);
                 URL = `${API_BASE}/producto/?=${this.props.producto}/venta/?=${id}`;
                 
                 axios
@@ -69,15 +69,15 @@ class Trueque extends Component {
                     URL
                 )
                 .then(res => { 
-                    // console.log(resp);
-                    console.log("Trueque realizado");
+                    // //console.log(resp);
+                    //console.log("Trueque realizado");
                 })
                 .catch(err => {
-                    console.log(err);
+                    //console.log(err);
                 });
               })
               .catch(err => {
-                console.log(err);
+                //console.log(err);
               });
       }
 

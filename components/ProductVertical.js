@@ -16,7 +16,7 @@ export default class ProductVertical extends Component {
     isLiked: this.props.deseado
   };
   onPressHeart() {
-    console.log("Like pressed");
+    //console.log("Like pressed");
     this.setState({ isLiked: !this.state.isLiked });
   }
 
@@ -24,7 +24,7 @@ export default class ProductVertical extends Component {
     return this.state.isLiked;
   };
   componentDidMount() {
-    console.log("ProductVertical liked:", this.props.deseado);
+    //console.log("ProductVertical liked:", this.props.deseado);
     this.setState({ isliked: this.props.deseado });
   }
 

@@ -34,18 +34,21 @@ export default class Profile extends Component {
     const { params = {} } = this.props.navigation.state;
 
     if (params.vendedor !== undefined) {
-      console.log(" - DIFFERENT USER - ");
+      //console.log(" - DIFFERENT USER - ");
       this.setState({ isUser: false, user: params.vendedor });
     }
     //this.props.navigation.setParams({ seller: this.state.seller });
+    if(DEBUG){
+      this.state.user = USER;
+    }
   }
 
   static navigationOptions = ({ navigation }) => {
     const { params = {} } = navigation.state;
-    console.log(" state.params ", params);
+    //console.log(" state.params ", params);
     let isUser = true;
     if (params.vendedor !== undefined) {
-      console.log(" - DIFFERENT USER  navigationOptions- ");
+      //console.log(" - DIFFERENT USER  navigationOptions- ");
       this.isUser = false;
       isUser = false;
     }
@@ -90,7 +93,7 @@ export default class Profile extends Component {
   };
 
   _renderRow(rowData, rowID, highlighted) {
-    console.log(rowData, rowID, highlighted);
+    //console.log(rowData, rowID, highlighted);
     return (
       <Button
         title={rowData}
@@ -134,7 +137,7 @@ export default class Profile extends Component {
   };
 
   ratingCompleted(rating) {
-    console.log("Rating is: " + rating);
+    //console.log("Rating is: " + rating);
   }
 
   _perfil() {
@@ -167,7 +170,7 @@ export default class Profile extends Component {
       my_user = await AsyncStorage.getItem("user");
       token = await AsyncStorage.getItem("token");
     } catch (error) {
-      console.log(error);
+      //console.log(error);
     }
     if (DEBUG) {
       token = TOKEN;
@@ -190,7 +193,7 @@ export default class Profile extends Component {
       my_user = await AsyncStorage.getItem("user");
       token = await AsyncStorage.getItem("token");
     } catch (error) {
-      console.log(error);
+      //console.log(error);
     }
     if (DEBUG) {
       token = TOKEN;
@@ -204,9 +207,9 @@ export default class Profile extends Component {
     }
 
     this.setState({ user });
-    console.log("Perfil", user);
+    //console.log("Perfil", user);
     const URL = `${API_BASE}/user/${user}`;
-    console.log(URL, user, token);
+    //console.log(URL, user, token);
 
     const res = await axios.get(URL, {
       headers: {
@@ -215,7 +218,7 @@ export default class Profile extends Component {
       }
     });
     const perfil = res.data;
-    console.log("Response Perfil", perfil);
+    //console.log("Response Perfil", perfil);
     this.setState(perfil);
     this.setState({ profile: perfil });
   };
@@ -231,7 +234,7 @@ export default class Profile extends Component {
         <View style={[styles.header, styles.bordered]}>
           <Avatar
             rounded
-            onPress={() => console.log("Works!")}
+            //onPress={() => //console.log("Works!")}
             size="large"
             containerStyle={{ marginHorizontal: 10 }}
             source={{

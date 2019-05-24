@@ -14,7 +14,7 @@ class TimerCountdown extends Component {
 
   timeLeft = () => {
     var a = moment(this.state.time);
-    console.log("-- Moment: ", this.state.time, a);
+    //console.log("-- Moment: ", this.state.time, a);
 
     var b = moment([]);
     var c = Math.abs(a.diff(b));
@@ -40,7 +40,7 @@ class TimerCountdown extends Component {
 
     time = date + " " + list[1];
     this.setState({ time });
-    console.log("-- Interval: ", time);
+    //console.log("-- Interval: ", time);
     this.interval = setInterval(() => this.timeLeft(), 1000);
   }
   longToDate = millisec => {
@@ -50,7 +50,7 @@ class TimerCountdown extends Component {
   };
   /*   componentDidUpdate() {
     if (this.state.timer === 1) {
-      console.log("-------------------timer count down is leaking");
+      //console.log("-------------------timer count down is leaking");
       clearInterval(this.interval);
       //this.props.onTimerElapsed();
     }

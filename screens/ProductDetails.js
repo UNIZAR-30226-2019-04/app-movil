@@ -60,21 +60,21 @@ export default class ProductDetails extends Component {
   };
 
   onPressHeart = async product => {
-    console.log("onPressHeart", product);
+    //console.log("onPressHeart", product);
 
     let user = this.state.user;
     let token = this.state.token;
     let URL = `${API_BASE}/deseados/${user}`;
     if (this.state.isLiked) {
-      console.log("isLiked", user, token);
+      //console.log("isLiked", user, token);
 
       URL = `${API_BASE}/deseados/${user}/remove`;
     } else {
-      console.log("DisLiked", user, token);
+      //console.log("DisLiked", user, token);
     }
     this.setState({ isLiked: !this.state.isLiked });
 
-    console.log(URL);
+    //console.log(URL);
     axios
       .post(
         URL,
@@ -89,10 +89,10 @@ export default class ProductDetails extends Component {
         }
       )
       .then(resp => {
-        console.log(resp.data);
+        //console.log(resp.data);
       })
       .catch(err => {
-        console.log(err);
+        //console.log(err);
       });
   };
 
@@ -169,7 +169,7 @@ export default class ProductDetails extends Component {
   };
 
   getAddressFromCoordinates(lat, long) {
-    console.log(`latlng=${lat},${long}`);
+    //console.log(`latlng=${lat},${long}`);
 
     axios
       .get(
@@ -179,16 +179,16 @@ export default class ProductDetails extends Component {
       )
       .then(resp => {
         let address = resp.data.results[0].formatted_address;
-        console.log("address", address);
+        //console.log("address", address);
         this.setState({ address });
       })
       .catch(err => {
-        console.log(err);
+        //console.log(err);
       });
   }
 
   _renderRow(rowData, rowID, highlighted) {
-    console.log(rowData, rowID, highlighted);
+    //console.log(rowData, rowID, highlighted);
     return (
       <Button
         title={rowData}
@@ -203,21 +203,21 @@ export default class ProductDetails extends Component {
 
     const { setParams } = this.props.navigation;
     const { state } = this.props.navigation;
-    console.log("STATE PARAMS: ", state);
+    //console.log("STATE PARAMS: ", state);
     this.setState({ isLiked: state.params.deseado });
     this.fetchProduct(state.params.product);
   };
 
   fetchUser = async user => {
     const URL = `${API_BASE}/user/${user}`;
-    console.log("fetchUser", URL);
+    //console.log("fetchUser", URL);
     const res = await axios.get(URL, {
       headers: {
         "Content-Type": "application/json"
       }
     });
     const perfil = res.data;
-    console.log("Response Seller Perfil", perfil);
+    //console.log("Response Seller Perfil", perfil);
     this.setState({
       valoracion: perfil.valoracion,
       nick: perfil.nick,
@@ -231,9 +231,9 @@ export default class ProductDetails extends Component {
     try {
       user = await AsyncStorage.getItem("user");
       token = await AsyncStorage.getItem("token");
-      console.log("User", user, token);
+      //console.log("User", user, token);
     } catch (error) {
-      console.log(error);
+      //console.log(error);
     }
     if (DEBUG) {
       user = USER;
@@ -242,7 +242,7 @@ export default class ProductDetails extends Component {
     this.setState({ user, token });
 
     const URL = `${API_BASE}/producto/${id}`;
-    console.log(URL);
+    //console.log(URL);
 
     const res = await axios.get(URL, {
       headers: {
@@ -253,7 +253,7 @@ export default class ProductDetails extends Component {
     const producto = res.data;
     this.fetchUser(producto.vendedor);
 
-    console.log("Response producto", producto, id);
+    //console.log("Response producto", producto, id);
     this.setState({ product: producto });
     this.setState({ vendedor: producto.vendedor });
     this.setState(producto);
@@ -270,12 +270,12 @@ export default class ProductDetails extends Component {
     });
 
     this.getAddressFromCoordinates(producto.latitud, producto.longitud);
-    console.log(producto);
+    //console.log(producto);
   };
 
   followUser() {
     if (this.state.followed) {
-      console.log("UnfollowUser", this.state.vendedor);
+      //console.log("UnfollowUser", this.state.vendedor);
       axios
         .post(
           `${API_BASE}/seguir/${this.state.user}/remove`,
@@ -290,14 +290,14 @@ export default class ProductDetails extends Component {
           }
         )
         .then(res => {
-          console.log("Siguiendo usuario", this.state.nick, res.data);
+          //console.log("Siguiendo usuario", this.state.nick, res.data);
           if (res.data.status === "success") {
             this.setState({ followed: false });
           }
         })
         .catch(err => console.log("Error following user", err));
     } else {
-      console.log("followUser", this.state.vendedor);
+      //console.log("followUser", this.state.vendedor);
 
       axios
         .post(
@@ -313,7 +313,7 @@ export default class ProductDetails extends Component {
           }
         )
         .then(res => {
-          console.log("Siguiendo usuario", this.state.nick, res.data);
+          //console.log("Siguiendo usuario", this.state.nick, res.data);
           if (res.data.status === "success") {
             this.setState({ followed: true });
           }
@@ -358,14 +358,14 @@ export default class ProductDetails extends Component {
     );
   }
   render() {
-    console.log("render", this.state);
+    //console.log("render", this.state);
     const width = Dimensions.get("window").width;
     let red = "rgba(245,60,60,0.8)";
-    console.log("TIPO");
-    console.log(this.state.tipo);
-    console.log("TRUEQUE");
+    //console.log("TIPO");
+    //console.log(this.state.tipo);
+    //console.log("TRUEQUE");
     let trueque = this.state.tipo == "trueque";
-    console.log(trueque);
+    //console.log(trueque);
     return (
       <ScrollView style={{ flex: 1 }}>
         <View style={{ flex: 1 }}>

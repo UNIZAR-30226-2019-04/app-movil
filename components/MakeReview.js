@@ -43,12 +43,12 @@ export default class MakeReview extends React.Component {
   };
 
   _valorar() {
-    console.log("--------------USER--------------");
-    console.log(this.props.user);
-    console.log("--------------RECEIVER--------------");
-    console.log(this.props.receiver);
-    console.log("--------------RATING--------------");
-    console.log(this.state.rating.value);
+    //console.log("--------------USER--------------");
+    //console.log(this.props.user);
+    //console.log("--------------RECEIVER--------------");
+    //console.log(this.props.receiver);
+    //console.log("--------------RATING--------------");
+    //console.log(this.state.rating.value);
 
     let token = this.state.token;
     let URL = `${API_BASE}/valoracion/${this.props.user}`;
@@ -69,11 +69,11 @@ export default class MakeReview extends React.Component {
     axios
     .post(URL, JSON.stringify(body), config)
     .then(resp => {
-      // console.log(resp);
-      console.log("Usuario Valorado");
+      // //console.log(resp);
+      //console.log("Usuario Valorado");
     })
     .catch(err => {
-      console.log(err);
+      //console.log(err);
     });
   }
 
@@ -90,7 +90,7 @@ export default class MakeReview extends React.Component {
   };
 
   render = () => {
-    //console.log("Location", this.state.locationResult);
+    ////console.log("Location", this.state.locationResult);
     return (
       <ScrollView style={styles.root} style={{ marginTop: 0 }}>
         <RkAvoidKeyboard>

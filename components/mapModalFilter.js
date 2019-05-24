@@ -53,13 +53,13 @@ export default class MapModalFilter extends Component {
   }
 
   componentDidUpdate() {
-    console.log("updated", this.props.mapRegion);
+    //console.log("updated", this.props.mapRegion);
 
     if (this.state.markers.length < 1 && this.props.markers.length > 0) {
       this.setState({ markers: this.props.markers });
       this.setState({ products: this.props.products });
 
-      console.log("componentDidUpdate map", this.props.products);
+      //console.log("componentDidUpdate map", this.props.products);
     }
     if (this.props.mapRegion !== null && !updated) {
       updated = true;
@@ -73,7 +73,7 @@ export default class MapModalFilter extends Component {
   }
 
   onPressedmarker(marker, index) {
-    console.log("OnPressedMarker", marker, index);
+    //console.log("OnPressedMarker", marker, index);
     this.props.scrollToRow(index);
   }
   showCallout = () => {
@@ -82,7 +82,7 @@ export default class MapModalFilter extends Component {
   render() {
     const { search } = this.state;
     const { width, height } = Dimensions.get("window");
-    console.log("mapModalFilter", this.state);
+    //console.log("mapModalFilter", this.state);
     return (
       <MapView
         style={{
@@ -123,7 +123,7 @@ export default class MapModalFilter extends Component {
           if (this.state.products !== undefined) {
             let product = this.state.products[index];
 
-            console.log("Product:", product);
+            //console.log("Product:", product);
             for (let i = 0; i < product.multimedia.length; i++) {
               if (!product.multimedia[i].tipo) {
                 thumbnail = product.multimedia[i];

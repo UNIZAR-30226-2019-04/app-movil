@@ -70,7 +70,7 @@ class SearchResults extends Component {
 
   _getLocationAsync = async () => {
     let { status } = await Permissions.askAsync(Permissions.LOCATION);
-    console.log("_getLocationAsync", status);
+    //console.log("_getLocationAsync", status);
     if (status !== "granted") {
       this.setState({
         locationResult: "Permiso para acceder a la localizacion fue rechazado"
@@ -105,7 +105,7 @@ class SearchResults extends Component {
     let copy = [];
     this.setState(prevState => {
       copy = prevState.tags.filter(tag => tag.name !== name);
-      console.log(copy);
+      //console.log(copy);
 
       return { tags: copy };
     });
@@ -123,7 +123,7 @@ class SearchResults extends Component {
   static navigationOptions = ({ navigation }) => {
     const { state } = navigation;
     if (state.params != undefined) {
-      console.log("Params", state.params);
+      //console.log("Params", state.params);
       return {
         // Your custom header
         headerTitle: (
@@ -141,13 +141,13 @@ class SearchResults extends Component {
   }
 
   onRefresh() {
-    console.log("onRefresh");
+    //console.log("onRefresh");
     this.setState({ isRefreshing: true }); // true isRefreshing flag for enable pull to refresh indicator
 
     this.setState({ products: [] });
     this.fetchItems(0);
 
-    console.log("CURRENT TAGS: ", this.fetchTags());
+    //console.log("CURRENT TAGS: ", this.fetchTags());
     this.setState({ isRefreshing: false }); // true isRefreshing flag for enable pull to refresh indicator
   }
   fetchItems = page => {
@@ -188,24 +188,24 @@ class SearchResults extends Component {
 
     /// GET TAGS FROM STORE (current state)
     let currentState = store.getState(store);
-    console.log("DISPATCH", currentState.tags);
+    //console.log("DISPATCH", currentState.tags);
 
     return (tags = currentState.tags);
   };
 
   onClick() {
-    console.log("navigation searchbar");
+    //console.log("navigation searchbar");
     let { navigation } = this.props;
     navigation.navigate("Settings");
   }
 
   showSearches = () => {
-    console.log(" searching");
+    //console.log(" searching");
     //this.setState({ search });
   };
 
   updateSearch = search => {
-    console.log(" searching");
+    //console.log(" searching");
 
     this.setState({ search });
   };
@@ -219,17 +219,17 @@ class SearchResults extends Component {
   };
 
   select = product => {
-    console.log("SELECTED", product);
+    //console.log("SELECTED", product);
     // this.setState({ modalVisible: false });
     this.props.navigation.navigate("ProductDetails", { product });
   };
   _renderItem = ({ item }) => {
     let { navigation } = this.props;
-    console.log("pressed");
+    //console.log("pressed");
     let thumbnail = {};
     for (let i = 0; i < item.multimedia.length; i++) {
       if (!item.multimedia[i].tipo) {
-        console.log(item.multimedia[i]);
+        //console.log(item.multimedia[i]);
         thumbnail = item.multimedia[i];
         break;
       }
@@ -277,7 +277,7 @@ class SearchResults extends Component {
         </View>
       </View>
     );
-    //console.log(this.state.products);
+    ////console.log(this.state.products);
     return (
       <View style={{ flex: 1 }}>
         <FlatList

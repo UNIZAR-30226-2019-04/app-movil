@@ -53,12 +53,12 @@ export default class ProfileSettings extends React.Component {
   };
 
   _pickImage = async () => {
-    console.log("result", this.state.photos);
+    //console.log("result", this.state.photos);
 
     const permissions = Permissions.CAMERA_ROLL;
     const { status } = await Permissions.askAsync(permissions);
 
-    console.log(`[ pickFromCamera ] ${permissions} access: ${status}`);
+    //console.log(`[ pickFromCamera ] ${permissions} access: ${status}`);
     if (status !== "granted") {
       return;
     } else {
@@ -66,7 +66,7 @@ export default class ProfileSettings extends React.Component {
         allowsEditing: true,
         aspect: [4, 3]
       });
-      console.log(result);
+      //console.log(result);
       if (!result.cancelled) {
         //alert(result.uri);
         this.setState({ image: result });
@@ -77,13 +77,13 @@ export default class ProfileSettings extends React.Component {
 
   uploadImageAsync = async uri => {
     let user = this.state.user;
-    console.log("uploadImageAsync", uri);
+    //console.log("uploadImageAsync", uri);
 
     //let uri = this.state.image.uri;
-    //console.log(uri);
+    ////console.log(uri);
     this.setState({ imagen_perfil: uri });
     let apiUrl = `${API_BASE}/user/${user}/fotoperfil/`;
-    console.log(apiUrl);
+    //console.log(apiUrl);
 
     let fileType = "jpg";
 
@@ -105,14 +105,12 @@ export default class ProfileSettings extends React.Component {
     };
 
     fetch(apiUrl, options)
-      .then(res => console.log(res))
-      .catch(error => {
-        console.log(error);
-      });
+      .then(res => {})//console.log(res))
+      .catch();
   };
 
   getAddressFromCoordinates(lat, long) {
-    console.log(`latlng=${lat},${long}`);
+    //console.log(`latlng=${lat},${long}`);
     axios
       .get(
         `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${long}&key=${API_KEY}`,
@@ -121,16 +119,16 @@ export default class ProfileSettings extends React.Component {
       )
       .then(resp => {
         let localizacion = resp.data.results[0].formatted_address;
-        console.log(localizacion);
+        //console.log(localizacion);
         this.setState({ localizacion });
       })
       .catch(err => {
-        console.log(err);
+        //console.log(err);
       });
   }
 
   getCoordinatesFromAddress(location) {
-    console.log(`address=${location}`);
+    //console.log(`address=${location}`);
     axios
       .get(
         `https://maps.googleapis.com/maps/api/geocode/json?address=${location}&key=${API_KEY}`,
@@ -145,13 +143,13 @@ export default class ProfileSettings extends React.Component {
         });
       })
       .catch(err => {
-        console.log(err);
+        //console.log(err);
       });
   }
 
   _getLocationAsync = async () => {
     let { status } = await Permissions.askAsync(Permissions.LOCATION);
-    console.log("_getLocationAsync", status);
+    //console.log("_getLocationAsync", status);
     if (status !== "granted") {
       this.setState({
         locationResult: "Permiso para acceder a la localizacion fue rechazado"
@@ -182,16 +180,16 @@ export default class ProfileSettings extends React.Component {
     try {
       user = await AsyncStorage.getItem("user");
       token = await AsyncStorage.getItem("token");
-      console.log("User", user, token);
+      //console.log("User", user, token);
     } catch (error) {
-      console.log(error);
+      //console.log(error);
     }
     if (DEBUG) {
       user = USER;
       token = TOKEN;
     }
     const URL = `${API_BASE}/user/${user}`;
-    console.log(URL, user, token);
+    //console.log(URL, user, token);
 
     const res = await axios.get(URL, {
       headers: {
@@ -211,7 +209,7 @@ export default class ProfileSettings extends React.Component {
   };
 
   changePassword = async () => {
-    console.log("changePassword");
+    //console.log("changePassword");
 
     if (this.state.newPassword !== this.state.confirmPassword) {
       this.setState({ isConfirmPasswordIValid: false });
@@ -221,7 +219,7 @@ export default class ProfileSettings extends React.Component {
     const token = this.state.token;
 
     const URL = `${API_BASE}/user/${user}/editpasswd`;
-    console.log(URL, user, token);
+    //console.log(URL, user, token);
 
     const res = await axios.post(
       URL,
@@ -237,7 +235,7 @@ export default class ProfileSettings extends React.Component {
       }
     );
     const perfil = res.data;
-    console.log("Response Perfil", perfil);
+    //console.log("Response Perfil", perfil);
     this.setState(perfil);
     this.setState({ profile: perfil });
     if (perfil.status === "success") {
@@ -246,12 +244,12 @@ export default class ProfileSettings extends React.Component {
   };
 
   updateProfile = async () => {
-    console.log("GUARDAR");
+    //console.log("GUARDAR");
     const user = this.state.userID;
     const token = this.state.token;
 
     const URL = `${API_BASE}/user/${user}`;
-    console.log(URL, user, token);
+    //console.log(URL, user, token);
 
     const res = await axios.put(URL, this.state, {
       headers: {
@@ -260,7 +258,7 @@ export default class ProfileSettings extends React.Component {
       }
     });
     const perfil = res.data;
-    console.log("Response Update Perfil", perfil);
+    //console.log("Response Update Perfil", perfil);
     this.setState(perfil);
   };
 
@@ -307,14 +305,14 @@ export default class ProfileSettings extends React.Component {
   };
 
   render() {
-    console.log(this.state);
+    //console.log(this.state);
     return (
       <ScrollView style={styles.root} style={{ marginTop: 0 }}>
         <RkAvoidKeyboard>
           <View style={styles.header}>
             <Avatar
               onPress={() => {
-                console.log("Works!");
+                //console.log("Works!");
                 this._pickImage();
               }}
               size="large"

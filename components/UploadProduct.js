@@ -79,7 +79,7 @@ export default class ProfileSettings extends React.Component {
 
     fecha = fecha + " " + instant;
     this.setState({ fechaexpiracion: fecha });
-    console.log("A date has been picked: ", time, time2);
+    //console.log("A date has been picked: ", time, time2);
 
     this.setState({ isDateTimePickerVisible: false });
   };
@@ -88,13 +88,13 @@ export default class ProfileSettings extends React.Component {
   };
 
   hideDateTimePicker = () => {
-    console.log("Close picked: ");
+    //console.log("Close picked: ");
 
     this.setState({ isDateTimePickerVisible: false });
   };
 
   onDayPress(date) {
-    console.log("DateCalendar", date);
+    //console.log("DateCalendar", date);
 
     var fechaexpiracion = date.day + "-" + date.month + "-" + date.year;
     this.setState({ fechaexpiracion: date.dateString });
@@ -102,8 +102,8 @@ export default class ProfileSettings extends React.Component {
       [date.dateString]: { selected: true }
     };
     this.setState({ markedDate });
-    console.log("markedDate", markedDate);
-    console.log("fechaexpiracion", date.dateString);
+    //console.log("markedDate", markedDate);
+    //console.log("fechaexpiracion", date.dateString);
     this.setState({ isDateTimePickerVisible: true });
   }
 
@@ -113,28 +113,28 @@ export default class ProfileSettings extends React.Component {
       user = await AsyncStorage.getItem("user");
       token = await AsyncStorage.getItem("token");
     } catch (error) {
-      console.log(error);
+      //console.log(error);
     }
     if (DEBUG) {
       user = "8e4de80f-d9bf-411c-a696-58e3481a1b36";
       token =
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE1NTc1ODg1NTEsInN1YiI6MTksImV4cCI6MTU1NzY3NDk1Nn0.rE3VWsRoamkEMPSM48kfnj1c5AfH572v2QjQzpoHxIA";
     }
-    console.log("User", user, token);
+    //console.log("User", user, token);
     this.setState({ vendedor: user });
   };
 
   uploadProduct() {
-    console.log("Titulo:", this.state.title);
-    console.log("Precio:", this.state.precioBase);
-    console.log("Latitud:", this.state.latitud);
-    console.log("Longitud:", this.state.longitud);
-    console.log("Tipo:", this.state.tipo);
-    console.log("Descripcion:", this.state.description);
-    console.log("Categoria:", this.state.categoria);
-    console.log("Radio_ubicacion:", this.state.radio_ubicacion);
-    console.log("Usuario:", this.state.vendedor);
-    console.log("FechaExp:", this.state.fechaexpiracion);
+    //console.log("Titulo:", this.state.title);
+    //console.log("Precio:", this.state.precioBase);
+    //console.log("Latitud:", this.state.latitud);
+    //console.log("Longitud:", this.state.longitud);
+    //console.log("Tipo:", this.state.tipo);
+    //console.log("Descripcion:", this.state.description);
+    //console.log("Categoria:", this.state.categoria);
+    //console.log("Radio_ubicacion:", this.state.radio_ubicacion);
+    //console.log("Usuario:", this.state.vendedor);
+    //console.log("FechaExp:", this.state.fechaexpiracion);
 
     if (this.state.tipo == "normal") {
       this.uploadProductNormal();
@@ -164,7 +164,7 @@ export default class ProfileSettings extends React.Component {
         {}
       )
       .then(res => {
-        console.log("Product Uploaded:", res.data);
+        //console.log("Product Uploaded:", res.data);
         this.uploadImageAsync(res.data.id);
       });
   }
@@ -188,7 +188,7 @@ export default class ProfileSettings extends React.Component {
         {}
       )
       .then(res => {
-        console.log("Product Uploaded:", res.data);
+        //console.log("Product Uploaded:", res.data);
         this.uploadImageAsync(res.data.id);
       })
       .catch(err => console.log(err));
@@ -213,7 +213,7 @@ export default class ProfileSettings extends React.Component {
         {}
       )
       .then(res => {
-        console.log("Product Uploaded:", res.data);
+        //console.log("Product Uploaded:", res.data);
         this.uploadImageAsync(res.data.id);
       })
       .catch(err => console.log(err));
@@ -275,16 +275,16 @@ export default class ProfileSettings extends React.Component {
 
   saveImages = photos => {
     this.setState({ photos: photos });
-    console.log("Save Images", photos);
+    //console.log("Save Images", photos);
   };
 
   uploadImageAsync = async product_id => {
     let photos = this.state.photos;
-    console.log("uploadImageAsync", this.state.photos);
+    //console.log("uploadImageAsync", this.state.photos);
 
     for (let i = 0; i < this.state.photos.length; i++) {
       let uri = this.state.photos[i].uri;
-      console.log(uri, product_id);
+      //console.log(uri, product_id);
       let apiUrl = `${API_BASE}/multimedia/${product_id}`;
 
       // Note:
@@ -318,7 +318,7 @@ export default class ProfileSettings extends React.Component {
       };
 
       fetch(apiUrl, options)
-        .then(res => console.log(res))
+        .then(res => {})//console.log(res))
         .catch(error => {
           console.log(error);
         });
@@ -332,12 +332,12 @@ export default class ProfileSettings extends React.Component {
   };
 
   saveCategory = category => {
-    console.log("saveCategory", category);
+    //console.log("saveCategory", category);
     this.setState({ categoria: category });
   };
 
   saveType = type => {
-    console.log("saveType", type);
+    //console.log("saveType", type);
     if (type == "Normal") {
       this.setState({ tipo: "normal" });
     } else if (type == "Trueque") {
@@ -364,7 +364,7 @@ export default class ProfileSettings extends React.Component {
   };
 
   render = () => {
-    //console.log("Location", this.state.locationResult);
+    ////console.log("Location", this.state.locationResult);
     return (
       <ScrollView style={styles.root} style={{ marginTop: 0 }}>
         <RkAvoidKeyboard>

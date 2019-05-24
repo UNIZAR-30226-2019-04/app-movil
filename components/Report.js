@@ -61,11 +61,11 @@ class Report extends Component {
     axios
       .post(URL, JSON.stringify(body), config)
       .then(resp => {
-        // console.log(resp);
-        console.log("Usuario Reportado");
+        // //console.log(resp);
+        //console.log("Usuario Reportado");
       })
       .catch(err => {
-        console.log(err);
+        //console.log(err);
       });
   }
 

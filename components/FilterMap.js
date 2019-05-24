@@ -40,7 +40,7 @@ export default class FilterMap extends Component {
   }
 
   getMarkers(products) {
-    console.log("getMarkers products", products);
+    //console.log("getMarkers products", products);
 
     let markers = [];
     products.map((product, index) => {
@@ -49,16 +49,16 @@ export default class FilterMap extends Component {
       };
 
       markers.push(marker);
-      console.log("push", marker, products);
+      //console.log("push", marker, products);
     });
-    console.log("getMarkers", markers);
+    //console.log("getMarkers", markers);
     this.setState({ markers });
   }
   componentDidMount() {
     let products = this.props.products;
     this.setState({ products });
     this.getMarkers(products);
-    console.log("FilterMap", this.props.products);
+    //console.log("FilterMap", this.props.products);
   }
 
   componentDidUpdate() {
@@ -66,16 +66,16 @@ export default class FilterMap extends Component {
       let products = this.props.products;
       this.setState({ products });
       this.getMarkers(products);
-      console.log("FilterMap", this.props.products);
+      //console.log("FilterMap", this.props.products);
     } else if (this.props.products !== this.state.products) {
       let products = this.props.products;
       this.setState({ products });
       this.getMarkers(products);
-      console.log("FilterMap", this.props.products);
+      //console.log("FilterMap", this.props.products);
     }
   }
   _method = product => {
-    console.log("ProductDetails", product);
+    //console.log("ProductDetails", product);
     this.setModalVisible(false);
     this.props.navigation.navigate("ProductDetails", {
       product: product.id,
@@ -92,7 +92,7 @@ export default class FilterMap extends Component {
     if (this.props.products.length > 0) {
       list_products = this.props.products.map(product => {
         let thumbnail = {};
-        console.log("Product:", product);
+        //console.log("Product:", product);
         for (let i = 0; i < product.multimedia.length; i++) {
           if (!product.multimedia[i].tipo) {
             thumbnail = product.multimedia[i];
@@ -101,7 +101,7 @@ export default class FilterMap extends Component {
         }
 
         let category = categories[product.categoria_nombre];
-        console.log("category", category);
+        //console.log("category", category);
         return (
           <View
             key={product.id}

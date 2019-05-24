@@ -29,12 +29,12 @@ export default class Venta extends Component {
   };
 
   fetchItems = () => {
-    console.log("VENTA", this.props);
+    //console.log("VENTA", this.props);
     let user = this.props.user;
 
     this.setState({ user });
     const URL = `${API_BASE}/user/${user}/products`;
-    console.log(URL);
+    //console.log(URL);
 
     axios
       .get(URL, {
@@ -44,7 +44,7 @@ export default class Venta extends Component {
       })
       .then(res => {
         productos = res.data.cajas_productos;
-        console.log("Response productos", productos);
+        //console.log("Response productos", productos);
         this.setState({ products: productos });
       });
   };
@@ -63,7 +63,7 @@ export default class Venta extends Component {
     if (this.state.products !== undefined && this.state.products.length > 0) {
       list_products = this.state.products.map(product => {
         let thumbnail = {};
-        console.log("Product:", product);
+        //console.log("Product:", product);
         for (let i = 0; i < product.multimedia.length; i++) {
           if (!product.multimedia[i].tipo) {
             thumbnail = product.multimedia[i];

@@ -27,7 +27,7 @@ export default class Conversaciones extends Component {
   }
 
   onRefresh() {
-    console.log("onRefresh");
+    //console.log("onRefresh");
     const user = this.state.user;
 
     this.setState({ isRefreshing: true }); // true isRefreshing flag for enable pull to refresh indicator
@@ -43,7 +43,7 @@ export default class Conversaciones extends Component {
       user = await AsyncStorage.getItem("user");
       token = await AsyncStorage.getItem("token");
 
-      console.log("User", user, token);
+      //console.log("User", user, token);
 
       //user = "unzurdo@gmail.com";
       if (DEBUG) {
@@ -54,7 +54,7 @@ export default class Conversaciones extends Component {
 
       this.setState({ user: user, token: token });
     } catch (error) {
-      console.log(error);
+      //console.log(error);
     }
     const URL = `${API_BASE}/conversacion/all/` + user;
     axios
@@ -66,18 +66,18 @@ export default class Conversaciones extends Component {
       })
       .then(res => {
         const conversaciones = res.data.data;
-        console.log("Conversaciones response", conversaciones);
+        //console.log("Conversaciones response", conversaciones);
         //this.setState({ conversaciones });
         this.setState({ conversaciones: conversaciones });
       })
       .catch(err => console.log(err));
   };
   _keyExtractor = (item, index) => {
-    //console.log(item);
+    ////console.log(item);
     return item.id.toString();
   };
   _checkUser(item) {
-    console.log("Conversaciones", this.state.conversaciones);
+    //console.log("Conversaciones", this.state.conversaciones);
     if (item.vendedor === this.state.user) {
       return item.comprador;
     } else {

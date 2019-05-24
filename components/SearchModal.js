@@ -41,7 +41,7 @@ class SearchModal extends Component {
   }
   render() {
     const { search } = this.state;
-    console.log("Navigation", this.props);
+    //console.log("Navigation", this.props);
     return (
       <View style={{ marginTop: 0 }}>
         <Modal
@@ -90,7 +90,7 @@ class SearchModal extends Component {
                 <TouchableHighlight
                   onPress={() => {
                     this.setModalVisible(!this.state.modalVisible);
-                    console.log("Search ", this.state.search);
+                    //console.log("Search ", this.state.search);
                     this.props.dispatch(addTag(this.state.search, "search"));
                     this.props.navigation.navigate("SearchResults", {
                       search: this.state.search

@@ -21,14 +21,14 @@ export default class CameraRollSelect extends React.Component {
   imageBrowserCallback = callback => {
     callback
       .then(photos => {
-        console.log(photos);
+        //console.log(photos);
         this.setState({
           imageBrowserOpen: false,
           photos
         });
         this.props.saveImages(photos);
       })
-      .catch(e => console.log(e));
+      .catch();
   };
 
   renderImage(item, i) {
@@ -42,12 +42,12 @@ export default class CameraRollSelect extends React.Component {
   }
 
   _pickImage = async () => {
-    console.log("result", this.state.photos);
+    //console.log("result", this.state.photos);
 
     const permissions = Permissions.CAMERA_ROLL;
     const { status } = await Permissions.askAsync(permissions);
 
-    console.log(`[ pickFromCamera ] ${permissions} access: ${status}`);
+    //console.log(`[ pickFromCamera ] ${permissions} access: ${status}`);
     if (status !== "granted") {
       return;
     } else {
@@ -56,7 +56,7 @@ export default class CameraRollSelect extends React.Component {
         aspect: [4, 3]
       });
 
-      console.log(result);
+      //console.log(result);
 
       if (!result.cancelled) {
         //alert(result.uri);

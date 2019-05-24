@@ -20,9 +20,9 @@ export default class CustomLeftDrawerComponent extends Component {
     try {
       user = await AsyncStorage.getItem("user");
       token = await AsyncStorage.getItem("token");
-      console.log("User", user, token);
+      //console.log("User", user, token);
     } catch (error) {
-      console.log(error);
+      //console.log(error);
     }
     if (DEBUG) {
       user = USER;
@@ -36,7 +36,7 @@ export default class CustomLeftDrawerComponent extends Component {
       }
     });
     const perfil = res.data;
-    console.log("Response Drawer Perfil", perfil);
+    //console.log("Response Drawer Perfil", perfil);
     this.setState({ profile: perfil, imagen_perfil: perfil.imagen_perfil });
   };
 
@@ -54,7 +54,7 @@ export default class CustomLeftDrawerComponent extends Component {
         >
           <Avatar
             rounded
-            onPress={() => console.log("Works!")}
+            //onPress={() => //console.log("Works!")}
             size="large"
             containerStyle={{ marginHorizontal: 10 }}
             source={{
