@@ -151,36 +151,40 @@ class SearchResults extends Component {
     this.setState({ isRefreshing: false }); // true isRefreshing flag for enable pull to refresh indicator
   }
   fetchItems = page => {
-    const URL = `${API_BASE}/producto?number=20&page=${page}`;
+    const URL = `${API_BASE}/producto/`;
+    let tags = this.fetchTags();
+    let body = {};
+    tags.map(tag =>{
+      if (tag.ctype === "price" && tag.name !== null) {
+        body["preciomin"] = tag.name;
+      } else if (tag.ctype === "category" && tag.name !== null) {
+        body["categorias"]= tag.name;
+      } else if (tag.ctype === "search" && tag.name !== null) {
+        body["textoBusqueda"]= tag.name;
+      } else if (tag.ctype === "distance" && tag.name !== null) {
+        body["radioUbicacion"]= tag.name;
+      } else if (tag.ctype === "mode" && tag.name !== null) {
+        body["tipo"]= tag.name;
+      }
+    })
+
+    let config = {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    };
+
     axios
-      .get(URL, {
-        headers: {
-          "Content-Type": "application/json"
-        }
-      })
-      .then(res => {
-        productos = res.data.productos;
-
-        this.fetchTags().map(tag => {
-          productos = productos.filter(function(item) {
-            if (tag.ctype === "price" && tag.name !== null) {
-              return item.precioBase == tag.name;
-            } else if (tag.ctype === "category" && tag.name !== null) {
-              return item.categoria_nombre == tag.name;
-            } else if (tag.ctype === "fecha" && tag.name !== null) {
-              return item.fecha == tag.name;
-            } else if (tag.ctype === "search" && tag.name !== null) {
-              return item.titulo == tag.name;
-            } else {
-              return item.titulo == item.titulo;
-            }
-          });
-        });
-
-        this.setState({
-          products: [...this.state.products, ...productos]
-        });
+    .get(URL, JSON.stringify(body), config)
+    .then(resp => {
+      this.setState({
+        products: [...this.state.products, ...resp.data.productos]
       });
+    })
+    .catch(err => {
+      console.log(err);
+    });
+        
   };
 
   fetchTags = () => {
