@@ -151,20 +151,47 @@ class SearchResults extends Component {
     this.setState({ isRefreshing: false }); // true isRefreshing flag for enable pull to refresh indicator
   }
   fetchItems = page => {
-    const URL = `${API_BASE}/producto/`;
+    var URL = `${API_BASE}/producto`;
     let tags = this.fetchTags();
     let body = {};
+    var first = true;
     tags.map(tag =>{
       if (tag.ctype === "price" && tag.name !== null) {
-        body["preciomin"] = tag.name;
+        if(first){
+          URL = URL + `?preciomax=${tag.name}`;
+          first = false;
+        } else {
+          URL = URL + `&preciomax=${tag.name}`;
+        }
+          
       } else if (tag.ctype === "category" && tag.name !== null) {
-        body["categorias"]= tag.name;
+        if(first){
+          URL = URL + `?categorias=${tag.name}`;
+          first = false;
+        } else {
+          URL = URL + `&categorias=${tag.name}`;
+        }
       } else if (tag.ctype === "search" && tag.name !== null) {
-        body["textoBusqueda"]= tag.name;
+        if(first){
+          URL = URL + `?textoBusqueda=${tag.name}`;
+          first = false;
+        } else {
+          URL = URL + `&textoBusqueda=${tag.name}`;
+        }
       } else if (tag.ctype === "distance" && tag.name !== null) {
-        body["radioUbicacion"]= tag.name;
+        if(first){
+          URL = URL + `?radioUbicacion=${tag.name}`;
+          first = false;
+        } else {
+          URL = URL + `&radioUbicacion=${tag.name}`;
+        }
       } else if (tag.ctype === "mode" && tag.name !== null) {
-        body["tipo"]= tag.name;
+        if(first){
+          URL = URL + `?tipo=${tag.name}`;
+          first = false;
+        } else {
+          URL = URL + `&tipo=${tag.name}`;
+        }
       }
     })
 
@@ -175,10 +202,10 @@ class SearchResults extends Component {
     };
 
     axios
-    .get(URL, JSON.stringify(body), config)
+    .get(URL)
     .then(resp => {
       this.setState({
-        products: [...this.state.products, ...resp.data.productos]
+        products: resp.data.productos
       });
     })
     .catch(err => {
