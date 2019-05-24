@@ -61,10 +61,15 @@ export default class ReportModalClass extends Component {
           />
         </Modal>
         <View style={styles.buttonView}>
-          <Button
+          <Button 
+            style={{color: "crimson"}}
             title="Reportar Usuario"
-            style={styles.floatingButton}
+            titleStyle={{ margin: 10, width: width / 2 - 20, marginTop: 10 }}
             onPress={() => this.setModalVisible(true)}
+            color = "crimson"
+            buttonStyle={{
+              backgroundColor: "crimson"
+            }}
           />
         </View>
       </View>
@@ -87,6 +92,7 @@ const styles = StyleSheet.create({
     position: "relative",
     right: width / 2 - 80,
     backgroundColor: "crimson",
+    color: "crimson",
     borderRadius: 20,
   }
 });

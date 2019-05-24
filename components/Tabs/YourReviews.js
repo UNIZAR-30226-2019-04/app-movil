@@ -11,7 +11,7 @@ export default class MyReviews extends Component {
     visto: 0
   };
 
-  componentDidMount() {
+  componentDidMount = async () => {
     if(this.state.visto != 1 && this.props.user != null){
       this.state.visto = 1;
       this.fetchItems();

@@ -635,17 +635,25 @@ export default class ProductDetails extends Component {
                       )}
                     </View>
                   </View>
-
-                  <View style={styles.reportButton}>
-                    <ReportModal user={this.state.user} />
-                  </View>
-                  <View style={styles.reportButton}>
-                    <ReviewModal user={this.state.user} receiver={this.state.receiver} token={this.state.token}/>
-                  </View>
                 </View>
               </View>
             </View>
           </View>
+        </View>
+
+        <View
+          style={{
+            //width: width,
+            height: 100,
+            position: "relative",
+            flex: 1,
+            flexDirection: "row",
+            left: 110,
+            bottom: 20
+          }}
+        >
+          <ReportModal user={this.state.user} />
+          <ReviewModal user={this.state.user} receiver={this.state.receiver} token={this.state.token}/>
         </View>
 
         <View
