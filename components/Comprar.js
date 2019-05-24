@@ -8,13 +8,16 @@ import {
     RkTheme,
     RkStyleSheet
   } from "react-native-ui-kitten";
-
+  import { API_BASE } from "../config";
+  import axios from "axios";
 const width = Dimensions.get("window").width;
 
 export default class Comprar extends React.Component {
     state = {
         showModal: false,
-        status: "Pending"
+        status: "Pending",
+        id: "",
+        link: ""
     };
     handleResponse = data => {
         if (data.title === "success") {
@@ -25,6 +28,28 @@ export default class Comprar extends React.Component {
             return;
         }
     };
+
+    componentDidMount = async () =>{
+        console.log("-----------PRODUCT-----------");
+        console.log(this.props.product.id);
+        console.log("-----------USER-----------");
+        console.log(this.props.user);
+        let URL = `${API_BASE}/paypal/venta_producto/${this.props.product.id}/${this.props.user}`;
+        axios
+            .post(URL, {}, {})
+            .then(resp => {
+                console.log("----------ID-----------");
+                console.log(resp.data.id);
+                console.log("----------LINK-----------");
+                console.log(resp.data.link);
+                this.setState({ id: resp.data.id });
+                this.setState({ link: resp.data.link });
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    };
+
     render() {
         return (
             <View style={styles.root} style={{ marginTop: 0 }} >
@@ -35,7 +60,7 @@ export default class Comprar extends React.Component {
                     onRequestClose={() => this.setState({ showModal: false })}
                 >
                     <WebView
-                        source={{ uri: "http://localhost:3000" }}
+                        source={{ uri: this.state.link }}
                         onNavigationStateChange={data =>
                             this.handleResponse(data)
                         }

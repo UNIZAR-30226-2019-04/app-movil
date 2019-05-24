@@ -20,6 +20,7 @@ import MapModal from "../components/mapModal";
 import ComprarModal from "../components/ComprarModal";
 import SubastarModal from "../components/SubastarModal";
 import ReportModal from "../components/ReportModal";
+import ReviewModal from "../components/ReviewModal";
 import TimerCountdown from "../components/TimerCountdown";
 import Carousel from "react-native-banner-carousel";
 import axios from "axios";
@@ -638,6 +639,9 @@ export default class ProductDetails extends Component {
                   <View style={styles.reportButton}>
                     <ReportModal user={this.state.user} />
                   </View>
+                  <View style={styles.reportButton}>
+                    <ReviewModal user={this.state.user} receiver={this.state.receiver} token={this.state.token}/>
+                  </View>
                 </View>
               </View>
             </View>
@@ -654,7 +658,7 @@ export default class ProductDetails extends Component {
           }}
         >
           {this.state.tipo === "normal" ? (
-            <ComprarModal />
+            <ComprarModal user={this.state.user} product={this.state.product}/>
           ) : this.state.tipo === "subasta" ? (
             <SubastarModal />
           ) : (

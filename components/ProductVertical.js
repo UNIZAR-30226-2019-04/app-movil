@@ -13,7 +13,7 @@ const width = Dimensions.get("window").width / 2 - 20;
 
 export default class ProductVertical extends Component {
   state = {
-    isLiked: this.props.deseado
+    isLiked: false
   };
   onPressHeart() {
     console.log("Like pressed");
@@ -27,6 +27,12 @@ export default class ProductVertical extends Component {
     console.log("ProductVertical liked:", this.props.deseado);
     this.setState({ isliked: this.props.deseado });
   }
+
+  /*   componentDidUpdate() {
+    if (this.props.deseado !== this.state.isLiked) {
+      this.setState({ isliked: this.props.deseado });
+    }
+  } */
 
   render() {
     let red = "rgba(245,60,60,0.8)";
