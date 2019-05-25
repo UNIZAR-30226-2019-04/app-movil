@@ -1,9 +1,9 @@
 {
   "expoServerPort": 19000,
-  "expoServerNgrokUrl": "https://dp-6gh.unzurdo.app-movil.exp.direct",
-  "packagerNgrokUrl": "https://packager.dp-6gh.unzurdo.app-movil.exp.direct",
-  "ngrokPid": 54802,
+  "expoServerNgrokUrl": "https://dp-6gh.anonymous.app-movil.exp.direct",
+  "packagerNgrokUrl": "https://packager.dp-6gh.anonymous.app-movil.exp.direct",
+  "ngrokPid": 1152,
   "devToolsPort": 19002,
-  "packagerPort": 19004,
-  "packagerPid": 54772
+  "packagerPort": 19001,
+  "packagerPid": 14376
 }
