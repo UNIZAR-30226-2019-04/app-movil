@@ -5,6 +5,7 @@ import {
   TouchableHighlight,
   View,
   ScrollView,
+  StyleSheet,
   Alert
 } from "react-native";
 import { SearchBar } from "react-native-elements";
@@ -12,6 +13,8 @@ import { Platform, StatusBar, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { connect } from "react-redux";
 import { addTag } from "../actions";
+import { API_BASE, DEBUG, USER, TOKEN } from "../config";
+import axios from "axios";
 
 class SearchModal extends Component {
   constructor(props) {
@@ -20,11 +23,13 @@ class SearchModal extends Component {
 
   state = {
     modalVisible: false,
-    search: ""
+    search: "",
+    products: []
   };
 
   updateSearch = search => {
     this.setState({ search });
+    this.queryResults(search);
   };
   setModalVisible(visible) {
     this.setState({ modalVisible: visible });
@@ -39,9 +44,68 @@ class SearchModal extends Component {
       this.setState({ search: this.props.search });
     }
   }
+
+  queryResults(text) {
+    //console.log("onRefresh");
+    this.setState({ isRefreshing: true }); // true isRefreshing flag for enable pull to refresh indicator
+    const URL = `${API_BASE}/producto?textoBusqueda=${text}&number=20&page=0`;
+
+    axios
+      .get(URL)
+      .then(res => {
+        let productos = res.data.productos;
+        this.setState({ products: productos });
+
+        console.log("Query productos", text, productos);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
+
+  _method(search) {
+    this.setModalVisible(!this.state.modalVisible);
+    if (search == null) {
+      search = this.state.search;
+    }
+    //console.log("Search ", this.state.search);
+    this.props.dispatch(addTag(search, "search"));
+    this.props.navigation.navigate("SearchResults", {
+      search: search
+    });
+  }
   render() {
     const { search } = this.state;
     //console.log("Navigation", this.props);
+
+    let list_products = [];
+
+    if (this.state.products.length > 0) {
+      list_products = this.state.products.map(product => {
+        return (
+          <View
+            key={product.id}
+            style={{
+              margin: 0
+            }}
+          >
+            <TouchableHighlight onPress={() => this._method(product.titulo)}>
+              <Text
+                style={{
+                  color: "white",
+                  fontFamily: "space-mono",
+                  fontSize: 20,
+                  fontWeight: "500"
+                }}
+              >
+                {product.titulo}
+              </Text>
+            </TouchableHighlight>
+          </View>
+        );
+      });
+    }
+
     return (
       <View style={{ marginTop: 0 }}>
         <Modal
@@ -87,27 +151,25 @@ class SearchModal extends Component {
               />
 
               {this.state.search !== "" ? (
-                <TouchableHighlight
-                  onPress={() => {
-                    this.setModalVisible(!this.state.modalVisible);
-                    //console.log("Search ", this.state.search);
-                    this.props.dispatch(addTag(this.state.search, "search"));
-                    this.props.navigation.navigate("SearchResults", {
-                      search: this.state.search
-                    });
-                  }}
-                >
-                  <Text
-                    style={{
-                      color: "white",
-                      fontFamily: "space-mono",
-                      fontSize: 20,
-                      fontWeight: "500"
-                    }}
-                  >
-                    Buscar: "{this.state.search}"
-                  </Text>
-                </TouchableHighlight>
+                <ScrollView>
+                  <TouchableHighlight onPress={() => this._method(null)}>
+                    <View>
+                      <Text
+                        style={{
+                          color: "white",
+                          fontFamily: "space-mono",
+                          fontSize: 20,
+                          fontWeight: "500"
+                        }}
+                      >
+                        Buscar: "{this.state.search}"
+                      </Text>
+                      <View style={[styles.lineStyle, { marginBottom: 0 }]} />
+                    </View>
+                  </TouchableHighlight>
+
+                  {list_products}
+                </ScrollView>
               ) : (
                 []
               )}
@@ -156,3 +218,22 @@ class SearchModal extends Component {
   }
 }
 export default connect()(SearchModal);
+
+const styles = StyleSheet.create({
+  root: {
+    backgroundColor: "#F5F5F5"
+  },
+
+  button: {
+    width: 180
+  },
+
+  scene: {
+    flex: 1
+  },
+  lineStyle: {
+    borderWidth: 0.2,
+    borderColor: "white",
+    margin: 4
+  }
+});
