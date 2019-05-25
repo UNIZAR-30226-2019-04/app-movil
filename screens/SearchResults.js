@@ -57,6 +57,7 @@ class SearchResults extends Component {
       modalVisible: false
     });
 
+    this.getDistancia();
     setParams({
       setModalVisible: visible => {
         setParams({ modalVisible: visible });
@@ -70,7 +71,7 @@ class SearchResults extends Component {
 
   _getLocationAsync = async () => {
     let { status } = await Permissions.askAsync(Permissions.LOCATION);
-    console.log("_getLocationAsync", status);
+    //console.log("_getLocationAsync", status);
     if (status !== "granted") {
       this.setState({
         locationResult: "Permiso para acceder a la localizacion fue rechazado"
@@ -105,25 +106,31 @@ class SearchResults extends Component {
     let copy = [];
     this.setState(prevState => {
       copy = prevState.tags.filter(tag => tag.name !== name);
-      console.log(copy);
+      //console.log(copy);
 
       return { tags: copy };
     });
   };
 
   getDistancia = () => {
-    let distance = this.tags.filter(tag => tag.ctype === "distance");
-    if (distance === undefined) {
+    let tags = this.fetchTags();
+    let distance;
+    let list = tags.filter(tag => tag.ctype === "distance");
+    if (list.length < 1) {
       distance = 100;
+    } else {
+      distance = list[0];
     }
+    console.log("getDistancia", distance, tags);
 
+    this.setState({ distancia: distance });
     return distance;
   };
 
   static navigationOptions = ({ navigation }) => {
     const { state } = navigation;
     if (state.params != undefined) {
-      console.log("Params", state.params);
+      //console.log("Params", state.params);
       return {
         // Your custom header
         headerTitle: (
@@ -141,45 +148,74 @@ class SearchResults extends Component {
   }
 
   onRefresh() {
-    console.log("onRefresh");
+    //console.log("onRefresh");
     this.setState({ isRefreshing: true }); // true isRefreshing flag for enable pull to refresh indicator
 
     this.setState({ products: [] });
     this.fetchItems(0);
 
-    console.log("CURRENT TAGS: ", this.fetchTags());
+    //console.log("CURRENT TAGS: ", this.fetchTags());
     this.setState({ isRefreshing: false }); // true isRefreshing flag for enable pull to refresh indicator
   }
   fetchItems = page => {
-    const URL = `${API_BASE}/producto?number=20&page=${page}`;
-    axios
-      .get(URL, {
-        headers: {
-          "Content-Type": "application/json"
+    var URL = `${API_BASE}/producto`;
+    let tags = this.fetchTags();
+    let body = {};
+    var first = true;
+    tags.map(tag => {
+      if (tag.ctype === "price" && tag.name !== null) {
+        if (first) {
+          URL = URL + `?preciomax=${tag.name}`;
+          first = false;
+        } else {
+          URL = URL + `&preciomax=${tag.name}`;
         }
-      })
-      .then(res => {
-        productos = res.data.productos;
+      } else if (tag.ctype === "category" && tag.name !== null) {
+        if (first) {
+          URL = URL + `?categorias=${tag.name}`;
+          first = false;
+        } else {
+          URL = URL + `&categorias=${tag.name}`;
+        }
+      } else if (tag.ctype === "search" && tag.name !== null) {
+        if (first) {
+          URL = URL + `?textoBusqueda=${tag.name}`;
+          first = false;
+        } else {
+          URL = URL + `&textoBusqueda=${tag.name}`;
+        }
+      } else if (tag.ctype === "distance" && tag.name !== null) {
+        if (first) {
+          URL = URL + `?radioUbicacion=${tag.name}`;
+          first = false;
+        } else {
+          URL = URL + `&radioUbicacion=${tag.name}`;
+        }
+      } else if (tag.ctype === "mode" && tag.name !== null) {
+        if (first) {
+          URL = URL + `?tipo=${tag.name}`;
+          first = false;
+        } else {
+          URL = URL + `&tipo=${tag.name}`;
+        }
+      }
+    });
 
-        this.fetchTags().map(tag => {
-          productos = productos.filter(function(item) {
-            if (tag.ctype === "price" && tag.name !== null) {
-              return item.precioBase == tag.name;
-            } else if (tag.ctype === "category" && tag.name !== null) {
-              return item.categoria_nombre == tag.name;
-            } else if (tag.ctype === "fecha" && tag.name !== null) {
-              return item.fecha == tag.name;
-            } else if (tag.ctype === "search" && tag.name !== null) {
-              return item.titulo == tag.name;
-            } else {
-              return item.titulo == item.titulo;
-            }
-          });
-        });
+    let config = {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    };
 
+    axios
+      .get(URL)
+      .then(resp => {
         this.setState({
-          products: [...this.state.products, ...productos]
+          products: resp.data.productos
         });
+      })
+      .catch(err => {
+        console.log(err);
       });
   };
 
@@ -188,24 +224,24 @@ class SearchResults extends Component {
 
     /// GET TAGS FROM STORE (current state)
     let currentState = store.getState(store);
-    console.log("DISPATCH", currentState.tags);
+    //console.log("DISPATCH", currentState.tags);
 
     return (tags = currentState.tags);
   };
 
   onClick() {
-    console.log("navigation searchbar");
+    //console.log("navigation searchbar");
     let { navigation } = this.props;
     navigation.navigate("Settings");
   }
 
   showSearches = () => {
-    console.log(" searching");
+    //console.log(" searching");
     //this.setState({ search });
   };
 
   updateSearch = search => {
-    console.log(" searching");
+    //console.log(" searching");
 
     this.setState({ search });
   };
@@ -219,17 +255,17 @@ class SearchResults extends Component {
   };
 
   select = product => {
-    console.log("SELECTED", product);
+    //console.log("SELECTED", product);
     // this.setState({ modalVisible: false });
     this.props.navigation.navigate("ProductDetails", { product });
   };
   _renderItem = ({ item }) => {
     let { navigation } = this.props;
-    console.log("pressed");
+    //console.log("pressed");
     let thumbnail = {};
     for (let i = 0; i < item.multimedia.length; i++) {
       if (!item.multimedia[i].tipo) {
-        console.log(item.multimedia[i]);
+        //console.log(item.multimedia[i]);
         thumbnail = item.multimedia[i];
         break;
       }
@@ -277,7 +313,7 @@ class SearchResults extends Component {
         </View>
       </View>
     );
-    //console.log(this.state.products);
+    ////console.log(this.state.products);
     return (
       <View style={{ flex: 1 }}>
         <FlatList

@@ -40,7 +40,7 @@ export default class FilterMap extends Component {
   }
 
   getMarkers(products) {
-    console.log("getMarkers products", products);
+    //console.log("getMarkers products", products);
 
     let markers = [];
     products.map((product, index) => {
@@ -49,16 +49,16 @@ export default class FilterMap extends Component {
       };
 
       markers.push(marker);
-      console.log("push", marker, products);
+      //console.log("push", marker, products);
     });
-    console.log("getMarkers", markers);
+    //console.log("getMarkers", markers);
     this.setState({ markers });
   }
   componentDidMount() {
     let products = this.props.products;
     this.setState({ products });
     this.getMarkers(products);
-    console.log("FilterMap", this.props.products);
+    //console.log("FilterMap", this.props.products);
   }
 
   componentDidUpdate() {
@@ -66,16 +66,16 @@ export default class FilterMap extends Component {
       let products = this.props.products;
       this.setState({ products });
       this.getMarkers(products);
-      console.log("FilterMap", this.props.products);
+      //console.log("FilterMap", this.props.products);
     } else if (this.props.products !== this.state.products) {
       let products = this.props.products;
       this.setState({ products });
       this.getMarkers(products);
-      console.log("FilterMap", this.props.products);
+      //console.log("FilterMap", this.props.products);
     }
   }
   _method = product => {
-    console.log("ProductDetails", product);
+    //console.log("ProductDetails", product);
     this.setModalVisible(false);
     this.props.navigation.navigate("ProductDetails", {
       product: product.id,
@@ -83,6 +83,7 @@ export default class FilterMap extends Component {
     });
   };
   scrollToRow(itemIndex) {
+    //console.log("scrollToRow", this._scrollView);
     this._scrollView.scrollTo({
       x: itemIndex * ROW_WIDTH,
       y: 1,
@@ -96,7 +97,7 @@ export default class FilterMap extends Component {
     if (this.props.products.length > 0) {
       list_products = this.props.products.map(product => {
         let thumbnail = {};
-        console.log("Product:", product);
+        //console.log("Product:", product);
         for (let i = 0; i < product.multimedia.length; i++) {
           if (!product.multimedia[i].tipo) {
             thumbnail = product.multimedia[i];
@@ -105,7 +106,7 @@ export default class FilterMap extends Component {
         }
 
         let category = categories[product.categoria_nombre];
-        console.log("category", category);
+        //console.log("category", category);
         return (
           <View
             key={product.id}
@@ -182,7 +183,8 @@ export default class FilterMap extends Component {
               bottom: 0,
               backgroundColor: "#F5F5F5",
               flex: 1,
-              zIndex: 10
+              zIndex: 10,
+              paddingHorizontal: 20
             }}
             horizontal={true}
             showsHorizontalScrollIndicator={false}
@@ -197,7 +199,7 @@ export default class FilterMap extends Component {
               zIndex: -1
             }}
             mapRegion={this.props.mapRegion}
-            radious={this.props.distancia}
+            radious={this.props.radious}
             products={this.props.products}
             markers={this.state.markers}
             scrollToRow={index => this.scrollToRow(index)}
@@ -208,23 +210,29 @@ export default class FilterMap extends Component {
             position: "absolute",
             right: 0,
             marginRight: 2,
-            bottom: 0
+            bottom: 0,
+            backgroundColor: "white",
+            borderRadius: 30,
+            borderWidth: 2,
+            borderColor: "#fff",
+            position: "absolute",
+            right: 20,
+            bottom: 20,
+            marginRight: 1
           }}
         >
           <Icon
-            style={{
-              position: "absolute",
-              right: 20,
-              bottom: 20,
-              marginRight: 2
-              //marginTop: 30
-            }}
+            style={
+              {
+                //marginTop: 30
+              }
+            }
             onPress={() => this.setModalVisible(true)}
             name="compass"
-            borderRadius="10"
-            backgroundColor="#007AFF"
+            borderRadius="60"
+            backgroundColor="white"
             size={70}
-            color="grey"
+            color="#a6aab2"
           />
         </View>
       </View>

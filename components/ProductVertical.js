@@ -16,7 +16,7 @@ export default class ProductVertical extends Component {
     isLiked: false
   };
   onPressHeart() {
-    console.log("Like pressed");
+    //console.log("Like pressed");
     this.setState({ isLiked: !this.state.isLiked });
   }
 
@@ -24,7 +24,7 @@ export default class ProductVertical extends Component {
     return this.state.isLiked;
   };
   componentDidMount() {
-    console.log("ProductVertical liked:", this.props.deseado);
+    //console.log("ProductVertical liked:", this.props.deseado);
     this.setState({ isliked: this.props.deseado });
   }
 
@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
   container: {
     height: 300,
     width: Dimensions.get("window").width / 2 - 20,
-    marginLeft: 10,
+    marginLeft: 12,
     borderWidth: 0.5,
     borderRadius: 12,
     borderColor: "#dddddd",

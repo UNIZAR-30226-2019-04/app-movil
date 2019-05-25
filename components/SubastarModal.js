@@ -21,6 +21,8 @@ import { Platform, StatusBar, TouchableOpacity, WebView } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Button, Tooltip } from "react-native-elements";
 import Icon from "react-native-vector-icons/FontAwesome";
+import { API_BASE, API_KEY, DEBUG, USER, TOKEN } from "../config";
+import axios from "axios";
 
 const width = Dimensions.get("window").width;
 const height = Dimensions.get("window").height;
@@ -31,10 +33,29 @@ export default class SubastarModal extends Component {
   }
   state = {
     modalVisible: false,
+    updated: false,
     status: "",
-    precioAux: 0
+    precio: null,
+    precioAux: 0,
+
+    titulo: "",
+    user: "",
+    token: "",
+    id: 0
   };
 
+  componentDidMount() {
+    this.setState({ user: this.props.user, token: this.props.token });
+  }
+  componentDidUpdate() {
+    if (this.state.modalVisible && !this.state.updated) {
+      let product = this.props.product;
+      console.log("SubastaModal", product);
+      this.setState({ updated: true });
+
+      this.setState(product);
+    }
+  }
   handleResponse = data => {
     if (data.title == "success") {
       this.setState({ modalVisible: false, status: "Complete" });
@@ -45,8 +66,33 @@ export default class SubastarModal extends Component {
     }
   };
 
-  onPrecioTruequeChanged = text => {
-    this.setState({ precioAux: text });
+  pujar = async () => {
+    let puja = {
+      usuario: this.state.user,
+      producto: this.state.id,
+      valor: parseInt(this.state.precio, 10)
+    };
+    console.log("PUJA SENT", puja);
+    const URL = `${API_BASE}/puja/`;
+    //console.log(URL);
+
+    const res = await axios.post(URL, puja, {
+      headers: {
+        "Content-Type": "application/json",
+
+        Authorization: this.state.token
+      }
+    });
+
+    const data = res.data;
+
+    console.log("Response puja", data);
+
+    //this.setModalVisible(false)
+  };
+
+  onPrecioChanged = text => {
+    this.setState({ precio: text });
   };
   setModalVisible(visible) {
     this.setState({ modalVisible: visible });
@@ -61,18 +107,23 @@ export default class SubastarModal extends Component {
           onRequestClose={() => this.setModalVisible(false)}
         >
           <View style={{ marginTop: 200 }}>
-            <Text />
+            <View style={styles.row}>
+              <Text style={styles.header}>{this.state.titulo}</Text>
+            </View>
           </View>
           <View style={styles.row}>
-            <Text style={styles.label}>Precio actual: </Text>
+            <Text style={styles.label}>
+              Precio actual: {this.state.precioAux}
+            </Text>
           </View>
           <View style={styles.row}>
             <Text style={styles.label}>Pujar: </Text>
             <TextInput
+              autoFocus={true}
               style={styles.text_input}
               keyboardType="numeric"
-              onChangeText={this.onPrecioTruequeChanged}
-              value={this.state.precioAux}
+              onChangeText={this.onPrecioChanged}
+              value={this.state.precio}
             />
           </View>
 
@@ -83,7 +134,7 @@ export default class SubastarModal extends Component {
                 marginHorizontal: 10,
                 margin: 10
               }}
-              onPress={() => this.setModalVisible(false)}
+              onPress={() => this.pujar()}
             />
           </View>
 

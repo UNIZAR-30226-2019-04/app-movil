@@ -65,7 +65,7 @@ class Settings extends Component {
     let lat = mapRegion.latitude;
     let long = mapRegion.longitude;
     const URL = `${API_BASE}/producto?latitud=${lat}&longitud=${long}&radioUbicacion=${distancia}`;
-    console.log(URL);
+    //console.log(URL);
 
     axios
       .get(URL, {
@@ -75,7 +75,7 @@ class Settings extends Component {
       })
       .then(res => {
         productos = res.data.productos;
-        console.log("Response productos settings", productos);
+        //console.log("Response productos settings", productos);
         this.setState({ productos });
       });
   };
@@ -122,7 +122,7 @@ class Settings extends Component {
   };
 
   getAddressFromCoordinates(lat, long) {
-    console.log(`latlng=${lat},${long}`);
+    //console.log(`latlng=${lat},${long}`);
 
     axios
       .get(
@@ -132,17 +132,17 @@ class Settings extends Component {
       )
       .then(resp => {
         let address = resp.data.results[0].formatted_address;
-        console.log(address);
+        //console.log(address);
         this.setState({ address });
       })
       .catch(err => {
-        console.log(err);
+        //console.log(err);
       });
   }
 
   _getLocationAsync = async () => {
     let { status } = await Permissions.askAsync(Permissions.LOCATION);
-    console.log("_getLocationAsync", status);
+    //console.log("_getLocationAsync", status);
     if (status !== "granted") {
       this.setState({
         locationResult: "Permiso para acceder a la localizacion fue rechazado"

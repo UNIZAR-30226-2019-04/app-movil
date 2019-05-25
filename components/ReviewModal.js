@@ -63,8 +63,8 @@ export default class ReviewtModalClass extends Component {
         <View style={styles.buttonView}>
           <Button
             title="Valorar Usuario"
-            style={styles.floatingButton}
-            onPress={() => this.setModalVisible(true)}
+            titleStyle={{ margin: 10, width: width / 2 - 20, marginTop: 10 }}
+            onPress={() => this.setModalVisible(true)} 
           />
         </View>
       </View>

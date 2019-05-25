@@ -1,15 +1,15 @@
 let nextId = 0;
 const tags = (state = [], action) => {
-  console.log("TAG REDUCER", action);
+  //console.log("TAG REDUCER", action);
 
   switch (action.type) {
     case "ADD_TAG":
       const duplicate = state.filter(tag => {
-        console.log(tag);
+        //console.log(tag);
         return tag.ctype === action.ctype;
       });
 
-      console.log("duplicate", duplicate, state);
+      //console.log("duplicate", duplicate, state);
 
       const new_state = state.filter(tag => tag.ctype !== action.ctype);
 

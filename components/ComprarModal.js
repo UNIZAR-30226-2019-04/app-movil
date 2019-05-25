@@ -62,7 +62,7 @@ export default class ComprarModal extends Component {
                 marginTop: 60
               }}
               onPress={() => {
-                console.log("Pressed");
+                //console.log("Pressed");
                 this.setModalVisible(false);
               }}
               name="md-close"

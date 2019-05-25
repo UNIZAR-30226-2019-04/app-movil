@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Telocamv5",
-    "slug": "telocamv5",
+    "name": "Telocamv11",
+    "slug": "telocamv11",
     "icon": "./assets/icons/telocam_icon.png",
     "version": "1.4.1",
     "privacy": "public",
@@ -13,7 +13,10 @@
     "android": {
       "package": "com.telocamSL.telocam"
     },
-    "platforms": ["ios", "android"],
+    "platforms": [
+      "ios",
+      "android"
+    ],
     "orientation": "portrait",
     "splash": {
       "image": "./assets/images/splash2.png",
@@ -23,7 +26,9 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "description": ""
   }
 }

@@ -57,9 +57,9 @@ class Feed extends Component {
     try {
       user = await AsyncStorage.getItem("user");
       token = await AsyncStorage.getItem("token");
-      console.log("User", user, token);
+      //console.log("User", user, token);
     } catch (error) {
-      console.log(error);
+      //console.log(error);
     }
     if (DEBUG) {
       user = USER;
@@ -97,7 +97,7 @@ class Feed extends Component {
   };
 
   handleLoadMore = () => {
-    console.log("handleLoadMore", this.page + 1);
+    //console.log("handleLoadMore", this.page + 1);
 
     if (!this.state.loading) {
       this.page = this.page + 1; // increase page by 1
@@ -128,16 +128,16 @@ class Feed extends Component {
     try {
       // Get the token that uniquely identifies this device
       let token = await Notifications.getExpoPushTokenAsync();
-      console.log("PUSH TOKEN", token);
+      //console.log("PUSH TOKEN", token);
 
       // POST the token to your backend server from where you can retrieve it to send push notifications.
     } catch (error) {
-      console.log(error);
+      //console.log(error);
     }
   };
 
   onRefresh() {
-    console.log("onRefresh");
+    //console.log("onRefresh");
     const user = this.state.user;
 
     this.setState({ isRefreshing: true }); // true isRefreshing flag for enable pull to refresh indicator
@@ -147,7 +147,7 @@ class Feed extends Component {
       .get(URL)
       .then(res => {
         let productos = res.data.productos;
-        console.log("Response  onRefresh productos", productos);
+        //console.log("Response  onRefresh productos", productos);
 
         this.setState({ isRefreshing: false, products: productos }); // false isRefreshing flag for disable pull to refresh indicator, and clear all data and store only first page data
       })
@@ -163,7 +163,7 @@ class Feed extends Component {
   fetchItems = page => {
     const user = this.state.user;
     const URL = `${API_BASE}/producto?usuario=${user}&number=20&page=${page}`;
-    console.log(URL);
+    //console.log(URL);
 
     axios
       .get(URL, {
@@ -173,9 +173,9 @@ class Feed extends Component {
       })
       .then(res => {
         productos = res.data.productos;
-        console.log("State productos", this.state.products);
+        //console.log("State productos", this.state.products);
 
-        console.log("Response productos", productos);
+        //console.log("Response productos", productos);
 
         this.setState({ products: this.state.products.concat(productos) });
 
@@ -187,18 +187,18 @@ class Feed extends Component {
       });
   };
   onClick() {
-    console.log("navigation searchbar");
+    //console.log("navigation searchbar");
     let { navigation } = this.props;
     navigation.navigate("Settings");
   }
 
   showSearches = () => {
-    console.log(" searching");
+    //console.log(" searching");
     //this.setState({ search });
   };
 
   updateSearch = search => {
-    console.log(" searching");
+    //console.log(" searching");
 
     this.setState({ search });
   };
@@ -208,7 +208,7 @@ class Feed extends Component {
   };
 
   _method = product => {
-    console.log("ProductDetails", product);
+    //console.log("ProductDetails", product);
     this.props.navigation.navigate("ProductDetails", {
       product: product.id,
       deseado: product.deseado
@@ -216,11 +216,11 @@ class Feed extends Component {
   };
   _renderItem = ({ item }) => {
     let { navigation } = this.props;
-    console.log("pressed");
+    //console.log("pressed");
     let thumbnail = {};
     for (let i = 0; i < item.multimedia.length; i++) {
       if (!item.multimedia[i].tipo) {
-        console.log(item.multimedia[i]);
+        //console.log(item.multimedia[i]);
         thumbnail = item.multimedia[i];
         break;
       }
@@ -258,7 +258,7 @@ class Feed extends Component {
 
   render() {
     const { search } = this.state;
-    console.log(categories, this.state.products);
+    //console.log(categories, this.state.products);
     const list_categories = Object.keys(categories).map(name => {
       return (
         <View
@@ -299,7 +299,7 @@ class Feed extends Component {
     if (this.state.products.length > 0) {
       list_products = this.state.products.map(product => {
         let thumbnail = {};
-        console.log("Product:", product);
+        //console.log("Product:", product);
         for (let i = 0; i < product.multimedia.length; i++) {
           if (!product.multimedia[i].tipo) {
             thumbnail = product.multimedia[i];

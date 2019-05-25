@@ -45,7 +45,7 @@ class DeleteAccount extends Component {
     const { password } = this.state;
     const public_id = this.props.user;
     const token = this.props.token;
-    console.log("_deleteUser", public_id, token);
+    //console.log("_deleteUser", public_id, token);
 
     axios
       .post(
@@ -61,8 +61,8 @@ class DeleteAccount extends Component {
         }
       )
       .then(resp => {
-        console.log(resp.data);
-        console.log("_deleteUser", resp.data);
+        //console.log(resp.data);
+        //console.log("_deleteUser", resp.data);
 
         if (err.response.status !== 200) {
           this.setState({
@@ -74,7 +74,7 @@ class DeleteAccount extends Component {
         //Aquí la parte de borrar
       })
       .catch(err => {
-        console.log("Error: ", err.response.status);
+        //console.log("Error: ", err.response.status);
       });
   }
 

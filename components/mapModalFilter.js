@@ -53,13 +53,11 @@ export default class MapModalFilter extends Component {
   }
 
   componentDidUpdate() {
-    console.log("updated", this.props.mapRegion);
-
     if (this.state.markers.length < 1 && this.props.markers.length > 0) {
       this.setState({ markers: this.props.markers });
       this.setState({ products: this.props.products });
 
-      console.log("componentDidUpdate map", this.props.products);
+      //console.log("componentDidUpdate map", this.props.products);
     }
     if (this.props.mapRegion !== null && !updated) {
       updated = true;
@@ -68,7 +66,9 @@ export default class MapModalFilter extends Component {
         latitude: this.props.mapRegion.latitude,
         longitude: this.props.mapRegion.longitude
       };
-      this.setState({ LATLNG: latlong });
+      console.log("updated mapModalFilter", latlong, this.props.radious);
+
+      this.setState({ LATLNG: latlong, radious: this.props.radious });
     }
   }
 
@@ -82,7 +82,7 @@ export default class MapModalFilter extends Component {
   render() {
     const { search } = this.state;
     const { width, height } = Dimensions.get("window");
-    console.log("mapModalFilter", this.state);
+    //console.log("mapModalFilter", this.state);
     return (
       <MapView
         style={{
@@ -111,7 +111,7 @@ export default class MapModalFilter extends Component {
         <MapView.Circle
           key={"key1112".toString()}
           center={this.state.LATLNG}
-          radius={RADIUS * this.props.radious}
+          radius={RADIUS * this.state.radious}
           strokeWidth={2}
           strokeColor={"#1a66ff"}
           fillColor={"rgba(115, 134, 242, 0.45)"}
@@ -123,7 +123,7 @@ export default class MapModalFilter extends Component {
           if (this.state.products !== undefined) {
             let product = this.state.products[index];
 
-            console.log("Product:", product);
+            //console.log("Product:", product);
             for (let i = 0; i < product.multimedia.length; i++) {
               if (!product.multimedia[i].tipo) {
                 thumbnail = product.multimedia[i];
@@ -141,7 +141,10 @@ export default class MapModalFilter extends Component {
                   size="small"
                   containerStyle={{ marginHorizontal: 10 }}
                   source={{
-                    uri: thumbnail.path
+                    uri:
+                      thumbnail.path !== ""
+                        ? thumbnail.path
+                        : "http://34.90.77.95:10080/user/default.png"
                   }}
                 />
                 <MapView.Callout tooltip />

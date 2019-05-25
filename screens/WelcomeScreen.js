@@ -115,13 +115,13 @@ export default class LoginScreen2 extends Component {
         const token = resp.data.Authorization;
         //const user = resp.data.user;
         const public_id = resp.data.public_id;
-        console.log(resp.data);
+        //console.log(resp.data);
 
         try {
           AsyncStorage.setItem("token", token);
           AsyncStorage.setItem("user", public_id);
         } catch (error) {
-          console.log(error);
+          //console.log(error);
         }
 
         // Add the following line:
@@ -129,7 +129,7 @@ export default class LoginScreen2 extends Component {
         this.props.navigation.navigate("Dashboard");
       })
       .catch(err => {
-        console.log("Error: ", err.response.status);
+        //console.log("Error: ", err.response.status);
         if (err.response.status == 401 && this.state.isEmailValid) {
           this.setState({
             isFormErrorMsg: "Email o contraseña no coinciden.",
@@ -141,7 +141,7 @@ export default class LoginScreen2 extends Component {
           AsyncStorage.removeItem("token" + "");
           AsyncStorage.removeItem("user" + "");
         } catch (error) {
-          console.log(error);
+          //console.log(error);
         }
       });
   }
@@ -158,7 +158,7 @@ export default class LoginScreen2 extends Component {
       isConfirmationValid:
         password == passwordConfirmation || this.confirmationInput.shake()
     });
-    console.log(email, username, password);
+    //console.log(email, username, password);
 
     axios
       .post(
@@ -171,12 +171,12 @@ export default class LoginScreen2 extends Component {
         {}
       )
       .then(resp => {
-        console.log(resp.data);
+        //console.log(resp.data);
         const token = resp.data.Authorization;
         const user = resp.data.user;
       })
       .catch(err => {
-        console.log(err);
+        //console.log(err);
       });
   }
 
@@ -392,7 +392,7 @@ export default class LoginScreen2 extends Component {
                   titleStyle={{ color: "white" }}
                   buttonStyle={{ backgroundColor: "transparent" }}
                   underlayColor="transparent"
-                  onPress={() => console.log("Account created")}
+                  onPress={() => {}} //console.log("Account created")}
                 />
               </View>
             </View>

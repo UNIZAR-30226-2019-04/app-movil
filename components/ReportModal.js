@@ -34,6 +34,15 @@ export default class ReportModalClass extends Component {
     this.setState({ modalVisible: visible });
   }
 
+  /*   componentDidMount() {
+    this.setState({ modalVisible: this.props.modalVisible });
+  } */
+
+  /*   componentDidUpdate() {
+    if (this.props.modalVisible && !this.state.modalVisible) {
+      this.setModalVisible(true);
+    }
+  } */
   render() {
     const { search } = this.state;
 
@@ -45,7 +54,10 @@ export default class ReportModalClass extends Component {
           visible={this.state.modalVisible}
           onRequestClose={() => this.setModalVisible(false)}
         >
-          <Report closeModal={() => this.setModalVisible(false)} user={this.props.user} />
+          <Report
+            closeModal={() => this.setModalVisible(false)}
+            user={this.props.user}
+          />
           <Ionicons
             style={{
               position: "absolute",
@@ -62,9 +74,14 @@ export default class ReportModalClass extends Component {
         </Modal>
         <View style={styles.buttonView}>
           <Button
+            style={{ color: "crimson" }}
             title="Reportar Usuario"
-            style={styles.floatingButton}
+            titleStyle={{ width: width / 2 - 20 }}
             onPress={() => this.setModalVisible(true)}
+            color="crimson"
+            buttonStyle={{
+              backgroundColor: "crimson"
+            }}
           />
         </View>
       </View>
@@ -76,17 +93,18 @@ const styles = StyleSheet.create({
   section: {
     flex: 1,
     marginVertical: 2,
-    backgroundColor: "white",
+    backgroundColor: "white"
   },
 
   floatingButton: {
     width: 160,
-    height: 60
+    height: 30
   },
   buttonView: {
-    position: "relative",
-    right: width / 2 - 80,
+    //position: "relative",
+    //right: width / 2 - 80,
     backgroundColor: "crimson",
-    borderRadius: 20,
+    color: "crimson"
+    //borderRadius: 20
   }
 });

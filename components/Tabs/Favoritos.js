@@ -30,7 +30,7 @@ export default class Favoritos extends Component {
 
     this.setState({ user });
     const URL = `${API_BASE}/user/${user}`;
-    console.log(URL);
+    //console.log(URL);
 
     axios
       .get(URL, {
@@ -40,7 +40,7 @@ export default class Favoritos extends Component {
       })
       .then(res => {
         productos = res.data.deseados;
-        console.log("Response productos deseados", productos);
+        //console.log("Response productos deseados", productos);
         this.setState({ products: productos });
       });
   };
@@ -59,7 +59,7 @@ export default class Favoritos extends Component {
     if (this.state.products !== undefined && this.state.products.length > 0) {
       list_products = this.state.products.map(product => {
         let thumbnail = {};
-        console.log("Product:", product);
+        //console.log("Product:", product);
         for (let i = 0; i < product.multimedia.length; i++) {
           if (!product.multimedia[i].tipo) {
             thumbnail = product.multimedia[i];

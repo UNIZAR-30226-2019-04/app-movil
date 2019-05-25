@@ -6,7 +6,8 @@ import {
   Image,
   Dimensions,
   TouchableOpacity,
-  Share
+  Share,
+  RefreshControl
 } from "react-native";
 
 import { Video } from "expo";
@@ -35,7 +36,7 @@ const BannerHeight = 260;
 export default class ProductDetails extends Component {
   state = {
     search: "",
-    modalVisible: null,
+    modalVisible: false,
     product: null,
     titulo: "",
     precioBase: 0,
@@ -56,11 +57,28 @@ export default class ProductDetails extends Component {
     vendedor: "",
     followed: false,
     timer: null,
-    fechaexpiracion: ""
+    fechaexpiracion: "",
+    isRefreshing: false,
+    visualizaciones: 0,
+    likes: 0
   };
 
+  onRefresh() {
+    console.log("onRefresh");
+    const user = this.state.user;
+
+    this.setState({ isRefreshing: true }); // true isRefreshing flag for enable pull to refresh indicator
+
+    const { state } = this.props.navigation;
+    //console.log("STATE PARAMS: ", state);
+    this.setState({ isLiked: state.params.deseado });
+    this.fetchProduct(state.params.product);
+
+    this.setState({ isRefreshing: false }); // true isRefreshing flag for enable pull to refresh indicator
+  }
+
   onPressHeart = async product => {
-    console.log("onPressHeart", product);
+    //console.log("onPressHeart", product);
 
     let user = this.state.user;
     let token = this.state.token;
@@ -74,7 +92,7 @@ export default class ProductDetails extends Component {
     }
     this.setState({ isLiked: !this.state.isLiked });
 
-    console.log(URL);
+    //console.log(URL);
     axios
       .post(
         URL,
@@ -96,12 +114,19 @@ export default class ProductDetails extends Component {
       });
   };
 
+  _reportUser() {
+    console.log("REPORT");
+    this.setState({ modalVisible: true });
+  }
+
   _onShare() {
     try {
       const result = Share.share({
         message:
-          "Telocam | Mira lo que he encontrado en Telocam!" +
-          this.state.product.titulo
+          "Telocam | Mira lo que he encontrado en Telocam!, " +
+          this.state.product.titulo +
+          " \n Descubre más aqui: https://telocam.com/producto/" +
+          this.product.is
       });
 
       if (result.action === Share.sharedAction) {
@@ -169,7 +194,7 @@ export default class ProductDetails extends Component {
   };
 
   getAddressFromCoordinates(lat, long) {
-    console.log(`latlng=${lat},${long}`);
+    //console.log(`latlng=${lat},${long}`);
 
     axios
       .get(
@@ -179,23 +204,24 @@ export default class ProductDetails extends Component {
       )
       .then(resp => {
         let address = resp.data.results[0].formatted_address;
-        console.log("address", address);
+        //console.log("address", address);
         this.setState({ address });
       })
       .catch(err => {
-        console.log(err);
+        //console.log(err);
       });
   }
 
   _renderRow(rowData, rowID, highlighted) {
-    console.log(rowData, rowID, highlighted);
+    //console.log(rowData, rowID, highlighted);
     return (
-      <Button
+      /*       <Button
         title={rowData}
         type="clear"
-        //onPress={() => this.props.navigation.navigate("Welcome")}
+        onPress={() => _this._reportUser()}
         style={{ color: "black", width: 200 }}
-      />
+      /> */
+      <ReportModal user={this.state.user} />
     );
   }
   componentDidMount = async () => {
@@ -203,21 +229,21 @@ export default class ProductDetails extends Component {
 
     const { setParams } = this.props.navigation;
     const { state } = this.props.navigation;
-    console.log("STATE PARAMS: ", state);
+    //console.log("STATE PARAMS: ", state);
     this.setState({ isLiked: state.params.deseado });
     this.fetchProduct(state.params.product);
   };
 
   fetchUser = async user => {
     const URL = `${API_BASE}/user/${user}`;
-    console.log("fetchUser", URL);
+    //console.log("fetchUser", URL);
     const res = await axios.get(URL, {
       headers: {
         "Content-Type": "application/json"
       }
     });
     const perfil = res.data;
-    console.log("Response Seller Perfil", perfil);
+    //console.log("Response Seller Perfil", perfil);
     this.setState({
       valoracion: perfil.valoracion,
       nick: perfil.nick,
@@ -231,9 +257,9 @@ export default class ProductDetails extends Component {
     try {
       user = await AsyncStorage.getItem("user");
       token = await AsyncStorage.getItem("token");
-      console.log("User", user, token);
+      //console.log("User", user, token);
     } catch (error) {
-      console.log(error);
+      //console.log(error);
     }
     if (DEBUG) {
       user = USER;
@@ -242,7 +268,7 @@ export default class ProductDetails extends Component {
     this.setState({ user, token });
 
     const URL = `${API_BASE}/producto/${id}`;
-    console.log(URL);
+    //console.log(URL);
 
     const res = await axios.get(URL, {
       headers: {
@@ -251,6 +277,9 @@ export default class ProductDetails extends Component {
     });
 
     const producto = res.data;
+    if (producto.precioAux === null) {
+      producto.precioAux = producto.precioBase;
+    }
     this.fetchUser(producto.vendedor);
 
     console.log("Response producto", producto, id);
@@ -270,12 +299,12 @@ export default class ProductDetails extends Component {
     });
 
     this.getAddressFromCoordinates(producto.latitud, producto.longitud);
-    console.log(producto);
+    //console.log(producto);
   };
 
   followUser() {
     if (this.state.followed) {
-      console.log("UnfollowUser", this.state.vendedor);
+      //console.log("UnfollowUser", this.state.vendedor);
       axios
         .post(
           `${API_BASE}/seguir/${this.state.user}/remove`,
@@ -290,14 +319,14 @@ export default class ProductDetails extends Component {
           }
         )
         .then(res => {
-          console.log("Siguiendo usuario", this.state.nick, res.data);
+          //console.log("Siguiendo usuario", this.state.nick, res.data);
           if (res.data.status === "success") {
             this.setState({ followed: false });
           }
         })
         .catch(err => console.log("Error following user", err));
     } else {
-      console.log("followUser", this.state.vendedor);
+      //console.log("followUser", this.state.vendedor);
 
       axios
         .post(
@@ -313,7 +342,7 @@ export default class ProductDetails extends Component {
           }
         )
         .then(res => {
-          console.log("Siguiendo usuario", this.state.nick, res.data);
+          //console.log("Siguiendo usuario", this.state.nick, res.data);
           if (res.data.status === "success") {
             this.setState({ followed: true });
           }
@@ -358,16 +387,24 @@ export default class ProductDetails extends Component {
     );
   }
   render() {
-    console.log("render", this.state);
+    //console.log("render", this.state);
     const width = Dimensions.get("window").width;
     let red = "rgba(245,60,60,0.8)";
-    console.log("TIPO");
-    console.log(this.state.tipo);
-    console.log("TRUEQUE");
+    //console.log("TIPO");
+    //console.log(this.state.tipo);
+    //console.log("TRUEQUE");
     let trueque = this.state.tipo == "trueque";
-    console.log(trueque);
+    //console.log(trueque);
     return (
-      <ScrollView style={{ flex: 1 }}>
+      <ScrollView
+        style={{ flex: 1 }}
+        refreshControl={
+          <RefreshControl
+            refreshing={this.state.isRefreshing}
+            onRefresh={this.onRefresh.bind(this)}
+          />
+        }
+      >
         <View style={{ flex: 1 }}>
           <View style={{ flex: 1 }}>
             <Carousel
@@ -401,7 +438,7 @@ export default class ProductDetails extends Component {
                   paddingHorizontal: 10
                 }}
               >
-                {this.state.precioBase}€
+                {this.state.precioAux}€
               </Text>
 
               <TouchableOpacity
@@ -535,7 +572,7 @@ export default class ProductDetails extends Component {
                         marginVertical: 10
                       }}
                     >
-                      {this.state.visualizaciones}
+                      {this.state.likes}
                     </Text>
                   </View>
                 </View>
@@ -635,18 +672,29 @@ export default class ProductDetails extends Component {
                       )}
                     </View>
                   </View>
-
-                  <View style={styles.reportButton}>
-                    <ReportModal user={this.state.user} />
-                  </View>
-                  <View style={styles.reportButton}>
-                    <ReviewModal user={this.state.user} receiver={this.state.receiver} token={this.state.token}/>
-                  </View>
                 </View>
               </View>
             </View>
           </View>
         </View>
+
+        {/*         <View
+          style={{
+            //width: width,
+            height: 100,
+            position: "relative",
+            flex: 1,
+            flexDirection: "row",
+            left: 110,
+            bottom: 20
+          }}
+        >
+          <ReviewModal
+            user={this.state.user}
+            receiver={this.state.receiver}
+            token={this.state.token}
+          />
+        </View> */}
 
         <View
           style={{
@@ -658,9 +706,13 @@ export default class ProductDetails extends Component {
           }}
         >
           {this.state.tipo === "normal" ? (
-            <ComprarModal user={this.state.user} product={this.state.product}/>
+            <ComprarModal user={this.state.user} product={this.state.product} />
           ) : this.state.tipo === "subasta" ? (
-            <SubastarModal />
+            <SubastarModal
+              product={this.state.product}
+              user={this.state.user}
+              token={this.state.token}
+            />
           ) : (
             []
           )}
