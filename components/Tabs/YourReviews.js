@@ -20,7 +20,6 @@ export default class MyReviews extends Component {
 
   fetchItems() {
     let user = this.props.user;
-    console.log(user);
     let URL = `${API_BASE}/user/${user}`; 
     axios
         .get(
@@ -28,7 +27,7 @@ export default class MyReviews extends Component {
         )
         .then(res => {
             var list = [];
-            Object.keys(res.data.valoraciones_hechas).map(name => {
+            res.data.valoraciones_recibidas.map(name => {
               list.push(name);
             });
             this.setState({
@@ -53,9 +52,9 @@ export default class MyReviews extends Component {
     return (
       <TouchableHighlight onPress={() => this._method(item)}>
         <Review
-          imageUri={{ uri: item.multimedia[0].url }}
-          name={item.name}
-          description={item.description}
+          name={item.titulo}
+          description={item.descripcion}
+          valoracion = {item.valoracion}
         />
       </TouchableHighlight>
     );

@@ -44,7 +44,7 @@ export default class ProductHorizontal2 extends Component {
               display: "flex",
               flexDirection: "row",
 
-              margin: 0
+              margin: 10
             }}
           >
             <Text
@@ -52,7 +52,6 @@ export default class ProductHorizontal2 extends Component {
             >
               {this.props.precio}€
             </Text>
-            <TruequeModal producto={this.props.id} />
           </View>
         </View>
       </View>
@@ -67,7 +66,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "flex-start",
 
-    width: Dimensions.get("window").width - 20,
+    width: Dimensions.get("window").width/2 + 60,
     marginHorizontal: 10,
 
     borderWidth: 0.5,

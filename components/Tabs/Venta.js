@@ -54,7 +54,7 @@ export default class Venta extends Component {
   };
 
   _method = product => {
-    this.props.navigation.navigate("ProductDetails", { product });
+    this.props.route.navigation.navigate("ProductDetails", { product });
   };
 
   render() {
@@ -103,26 +103,25 @@ export default class Venta extends Component {
             <View
               key={product.id}
               style={{
-                flex: 1,
                 display: "flex",
                 flexDirection: "row",
                 flexWrap: "wrap",
-                justifyContent: "center",
+                justifyContent: "space-evenly",
                 alignItems: "center",
-                margin: 0
+                margin: 10
               }}
             >
               <TouchableHighlight onPress={() => this._method(product.id)}>
                 <ProductHorizontal2
                   navigation={navigation}
                   thumbnail={thumbnail.path}
-                  id={product.id}
                   titulo={product.titulo}
                   precio={product.precioBase}
                   deseado={product.deseado}
                   descripcion={product.descripcion}
                 />
               </TouchableHighlight>
+              <TruequeModal producto={product.id} />
             </View>
           );
         }

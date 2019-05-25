@@ -18,9 +18,9 @@ export default class ReviewTab extends Component {
     products: [],
     index: 0,
     routes: [
-      { key: "first", title: "Recibidas", navigation: this.props.navigation },
+      { key: "first", title: "Realizadas", navigation: this.props.navigation },
 
-      { key: "second", title: "Realizadas", navigation: this.props.navigation }
+      { key: "second", title: "Recibidas", navigation: this.props.navigation }
     ]
   };
 
@@ -40,26 +40,6 @@ export default class ReviewTab extends Component {
       products: [...this.state.products, ...list]
     });
   }
-
-  _keyExtractor = (item, index) => {
-    return index.toString();
-  };
-
-  _method = product => {
-    this.props.navigation.navigate("ProductDetails", { product });
-  };
-  _renderItem = ({ item }) => {
-    //console.log("pressed");
-    return (
-      <TouchableHighlight onPress={() => this._method(item)}>
-        <Review
-          imageUri={{ uri: item.multimedia[0].url }}
-          name={item.name}
-          description={item.description}
-        />
-      </TouchableHighlight>
-    );
-  };
 
   _renderTabBar = props => {
     return (

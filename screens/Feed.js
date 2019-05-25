@@ -105,6 +105,30 @@ class Feed extends Component {
     }
   };
 
+  pushToken(token) {
+    const user = this.state.user;
+    const URL = `${API_BASE}/user/${user}/token/${token}`;
+    //console.log(URL);
+    axios
+      .get(
+        URL,
+        {
+          token: token
+        },
+        {
+          headers: {
+            "Content-Type": "application/json"
+          }
+        }
+      )
+      .then(res => {
+        productos = res.data;
+        //console.log("State productos", this.state.products);
+        console.log("Response productos", productos);
+      })
+      .catch(err => console.log("ERR pushing token", err));
+  }
+
   registerForPushNotificationsAsync = async () => {
     const { status: existingStatus } = await Permissions.getAsync(
       Permissions.NOTIFICATIONS
@@ -128,7 +152,9 @@ class Feed extends Component {
     try {
       // Get the token that uniquely identifies this device
       let token = await Notifications.getExpoPushTokenAsync();
-      //console.log("PUSH TOKEN", token);
+      console.log("PUSH TOKEN", token);
+
+      //this.pushToken(token);
 
       // POST the token to your backend server from where you can retrieve it to send push notifications.
     } catch (error) {
