@@ -50,7 +50,7 @@ export default class MyReviews extends Component {
     return (
       <TouchableHighlight onPress={() => this._method(item)}>
         <Review
-          imageUri={{ uri: item.multimedia[0].url }}
+         // imageUri={{ uri: item.multimedia[0].url }}
           name={item.name}
           description={item.description}
         />

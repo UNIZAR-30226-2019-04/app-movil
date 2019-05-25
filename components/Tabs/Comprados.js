@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import ProductHorizontal from "../ProductHorizontal";
+import ProductHorizontal2 from "../ProductHorizontal2";
+import ReviewModal from "../ReviewModal";
 import axios from "axios";
 import { API_BASE, DEBUG, USER, TOKEN } from "../../config";
 
@@ -76,13 +77,13 @@ export default class Comprados extends Component {
               display: "flex",
               flexDirection: "row",
               flexWrap: "wrap",
-              justifyContent: "center",
+              justifyContent: "space-evenly",
               alignItems: "center",
               margin: 0
             }}
           >
             <TouchableHighlight onPress={() => this._method(product.id)}>
-              <ProductHorizontal
+              <ProductHorizontal2
                 navigation={navigation}
                 thumbnail={thumbnail.path}
                 titulo={product.titulo}
@@ -91,6 +92,7 @@ export default class Comprados extends Component {
                 descripcion={product.descripcion}
               />
             </TouchableHighlight>
+            <ReviewModal producto={product.id} />
           </View>
         );
       });
