@@ -38,7 +38,7 @@ export default class Profile extends Component {
       this.setState({ isUser: false, user: params.vendedor });
     }
     //this.props.navigation.setParams({ seller: this.state.seller });
-    if(DEBUG){
+    if (DEBUG) {
       this.state.user = USER;
     }
   }
@@ -127,12 +127,12 @@ export default class Profile extends Component {
     profile: {},
     index: 0,
     routes: [
-      { key: "first", title: "En Venta", navigation: this.props.navigation },
+      { key: "first", title: "En Venta" },
 
-      { key: "second", title: "Comprados", navigation: this.props.navigation },
-      { key: "third", title: "Favoritos", navigation: this.props.navigation },
+      { key: "second", title: "Comprados" },
+      { key: "third", title: "Favoritos" },
 
-      { key: "fourth", title: "Reviews", navigation: this.props.navigation }
+      { key: "fourth", title: "Reviews" }
     ]
   };
 
@@ -279,10 +279,30 @@ export default class Profile extends Component {
           style={{ backgroundColor: "white", color: "red", fontWeight: "bold" }}
           navigationState={this.state}
           renderScene={SceneMap({
-            first: () => <Venta user={this.state.user} />,
-            second: () => <Comprados user={this.state.user} />,
-            third: () => <Favoritos user={this.state.user} />,
-            fourth: () => <ReviewTab user={this.state.user} />
+            first: () => (
+              <Venta
+                user={this.state.user}
+                navigation={this.props.navigation}
+              />
+            ),
+            second: () => (
+              <Comprados
+                user={this.state.user}
+                navigation={this.props.navigation}
+              />
+            ),
+            third: () => (
+              <Favoritos
+                user={this.state.user}
+                navigation={this.props.navigation}
+              />
+            ),
+            fourth: () => (
+              <ReviewTab
+                user={this.state.user}
+                navigation={this.props.navigation}
+              />
+            )
           })}
           renderTabBar={this._renderTabBar}
           onIndexChange={index => this.setState({ index })}

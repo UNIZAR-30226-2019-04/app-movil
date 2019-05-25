@@ -9,9 +9,7 @@ import { RkText, RkStyleSheet, RkGallery } from "react-native-ui-kitten";
 import YourReviews from "./YourReviews";
 import MyReviews from "./MyReviews";
 
-
 export default class ReviewTab extends Component {
-
   constructor(props) {
     super(props);
   }
@@ -22,7 +20,7 @@ export default class ReviewTab extends Component {
     routes: [
       { key: "first", title: "Recibidas", navigation: this.props.navigation },
 
-      { key: "second", title: "Realizadas", navigation: this.props.navigation },
+      { key: "second", title: "Realizadas", navigation: this.props.navigation }
     ]
   };
 
@@ -48,7 +46,7 @@ export default class ReviewTab extends Component {
   };
 
   _method = product => {
-    this.props.route.navigation.navigate("ProductDetails", { product });
+    this.props.navigation.navigate("ProductDetails", { product });
   };
   _renderItem = ({ item }) => {
     //console.log("pressed");
@@ -78,7 +76,6 @@ export default class ReviewTab extends Component {
     );
   };
 
-
   render() {
     //console.log("-----------REVIEWTAB-----------");
     //console.log(this.props.user);
@@ -90,7 +87,7 @@ export default class ReviewTab extends Component {
           navigationState={this.state}
           renderScene={SceneMap({
             first: () => <MyReviews user={this.props.user} />,
-            second: () => <YourReviews user={this.props.user} />,
+            second: () => <YourReviews user={this.props.user} />
           })}
           renderTabBar={this._renderTabBar}
           onIndexChange={index => this.setState({ index })}
