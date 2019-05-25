@@ -103,6 +103,7 @@ export default class Venta extends Component {
             <View
               key={product.id}
               style={{
+                flex: 1,
                 display: "flex",
                 flexDirection: "row",
                 flexWrap: "wrap",
@@ -111,11 +112,11 @@ export default class Venta extends Component {
                 margin: 0
               }}
             >
-              <TruequeModal producto={product.id} />
               <TouchableHighlight onPress={() => this._method(product.id)}>
                 <ProductHorizontal2
                   navigation={navigation}
                   thumbnail={thumbnail.path}
+                  id={product.id}
                   titulo={product.titulo}
                   precio={product.precioBase}
                   deseado={product.deseado}

@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import TruequeModal from "./TruequeModal";
+
 import {
   View,
   Text,
@@ -36,11 +38,22 @@ export default class ProductHorizontal2 extends Component {
             {this.props.titulo}
           </Text>
 
-          <Text
-            style={{ fontSize: 20, fontWeight: "500", paddingHorizontal: 10 }}
+          <View
+            key={this.props.id}
+            style={{
+              display: "flex",
+              flexDirection: "row",
+
+              margin: 0
+            }}
           >
-            {this.props.precio}€
-          </Text>
+            <Text
+              style={{ fontSize: 20, fontWeight: "500", paddingHorizontal: 10 }}
+            >
+              {this.props.precio}€
+            </Text>
+            <TruequeModal producto={this.props.id} />
+          </View>
         </View>
       </View>
     );
@@ -54,8 +67,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "flex-start",
 
-    width: Dimensions.get("window").width/2 - 20,
-    marginHorizontal: 50,
+    width: Dimensions.get("window").width - 20,
+    marginHorizontal: 10,
 
     borderWidth: 0.5,
     borderRadius: 12,
