@@ -13,7 +13,7 @@ import axios from "axios";
 import { API_BASE, API_KEY } from "../config";
 
 const dates = ["24h", "7d", "30d"];
-const modos = ["Compra", "Trueque", "Subasta"];
+const modos = ["normal", "trueque", "subasta"];
 import store from "../store";
 class Settings extends Component {
   constructor() {

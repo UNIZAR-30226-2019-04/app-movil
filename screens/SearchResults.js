@@ -201,6 +201,9 @@ class SearchResults extends Component {
       }
     });
 
+    console.log("-----------TIPO-----------");
+    console.log(URL);
+
     let config = {
       headers: {
         "Content-Type": "application/json"
