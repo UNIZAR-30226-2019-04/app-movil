@@ -18,31 +18,32 @@ export default class Review extends Component {
     const custom_height = Dimensions.get("window").height / 10;
     return (
       <View style={styles.container}>
-        <View style={{ flex: 1 }}>
-          <Image
-            source={this.props.imageUri}
-            style={{
-              width: 80,
-              height: 80,
-              resizeMode: "cover",
-              borderRadius: 16,
-              marginHorizontal: 10
-            }}
-          />
-        </View>
         <View style={{ margin: 10, flex: 3, flexDirection: "column" }}>
-          <Text
-            style={{ fontSize: 20, fontWeight: "500", paddingHorizontal: 10 }}
+          <View>
+            <Text
+              style={{ fontSize: 20, fontWeight: "500", paddingHorizontal: 10 }}
+            >
+              {this.props.name}
+            </Text>
+          </View>
+          <View
+            style = {{paddingRight: width/2 + 65}}
           >
-            {this.props.name}
-          </Text>
-
-          <Text
-            numberOfLines={9}
-            style={{ fontSize: 14, fontWeight: "200", paddingHorizontal: 10 }}
-          >
-            {this.props.description}€
-          </Text>
+            <AirbnbRating 
+              count = {5}
+              Rating = {this.props.valoracion}
+              showRating = {false}
+              size={12}
+            />
+          </View>
+          <View>
+            <Text
+              numberOfLines={9}
+              style={{ fontSize: 14, fontWeight: "200", paddingHorizontal: 10, marginTop: 10 }}
+            >
+              {this.props.description}
+            </Text>
+          </View>
         </View>
       </View>
     );
@@ -51,7 +52,7 @@ export default class Review extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    height: 200,
+    height: 100,
     flex: 1,
     flexDirection: "row",
     justifyContent: "flex-start",
