@@ -42,35 +42,45 @@ export default class MakeReview extends React.Component {
     description: ""
   };
 
-  _valorar() {
-    //console.log("--------------USER--------------");
-    //console.log(this.props.user);
-    //console.log("--------------RECEIVER--------------");
-    //console.log(this.props.receiver);
-    //console.log("--------------RATING--------------");
-    //console.log(this.state.rating.value);
-
-    let token = this.state.token;
-    let URL = `${API_BASE}/valoracion/${this.props.user}`;
+  _valorar= async () => {
+    let my_user = "";
+    let token = "";
+    try {
+      my_user = await AsyncStorage.getItem("user");
+      token = await AsyncStorage.getItem("token");
+    } catch (error) {
+      //console.log(error);
+    }
+    let URL = `${API_BASE}/valoracion/${my_user}`;
     let body = {
         titulo: this.state.titulo,
         descripcion: this.state.description,
         puntuacion: this.state.rating.value,
-        puntuado: this.props.user
+        puntuado: this.props.producto.vendedor
     };
   
     let config = {
         headers: {
             "Content-Type": "application/json",
-            Authorization: this.props.token
+            "Authorization": token
         }
     };
+
+    console.log("-----------------URL--------------------");
+    console.log(URL);
+    console.log("-----------------USER----------------");
+    console.log(my_user);
+    console.log("----------------TOKEN-------------------");
+    console.log(this.state.titulo);
+    console.log("-----------------VENDEDOR-------------------");
+    console.log(this.props.producto.vendedor);
 
     axios
     .post(URL, JSON.stringify(body), config)
     .then(resp => {
       // //console.log(resp);
-      //console.log("Usuario Valorado");
+      console.log("Usuario Valorado");
+      this.props.closeModal();
     })
     .catch(err => {
       //console.log(err);
@@ -104,7 +114,7 @@ export default class MakeReview extends React.Component {
               <Text style={styles.label}>Título</Text>
               <TextInput
                 style={styles.text_input}
-                onChangeText={this.onTitleChanged}
+                onChangeText={this.onTituloChanged}
                 value={this.state.title}
               />
             </View>

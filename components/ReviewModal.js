@@ -45,7 +45,7 @@ export default class ReviewtModalClass extends Component {
           visible={this.state.modalVisible}
           onRequestClose={() => this.setModalVisible(false)}
         >
-          <MakeReview closeModal={() => this.setModalVisible(false)} user={this.props.user} receiver={this.props.receiver} token={this.props.token} />
+          <MakeReview closeModal={() => this.setModalVisible(false)} producto={this.props.producto} />
           <Ionicons
             style={{
               position: "absolute",

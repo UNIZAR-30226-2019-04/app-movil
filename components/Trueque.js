@@ -55,6 +55,7 @@ class Trueque extends Component {
                 resp.data.data.map(item => {
                     //console.log(item.nick);
                     if(item.nick === mi_nick){
+                        console.log("HOLAAAAAAAA");
                         id = item.public_id;
                     }
                 })
@@ -62,15 +63,16 @@ class Trueque extends Component {
                 //console.log(this.props.producto);
                 //console.log("ID");
                 //console.log(id);
-                URL = `${API_BASE}/producto/?=${this.props.producto}/venta/?=${id}`;
-                
+                URL = `${API_BASE}/producto/${this.props.producto}/venta/${id}`;
+                console.log(URL);
                 axios
                 .post(
                     URL
                 )
                 .then(res => { 
                     // //console.log(resp);
-                    //console.log("Trueque realizado");
+                    console.log("Trueque realizado");
+                    this.props.closeModal();
                 })
                 .catch(err => {
                     //console.log(err);
@@ -86,7 +88,7 @@ class Trueque extends Component {
             <View>
                 <View style={styles.section}>
                     <Header
-                        centerComponent={{ text: 'REPORTAR USUARIO', style: { color: '#fff', fontSize: 30, marginBottom:30  } }}
+                        centerComponent={{ text: 'TRUEQUE', style: { color: '#fff', fontSize: 30, marginBottom:30  } }}
                         backgroundColor = "#1c7bc3"
                     />
                     <View style={styles.row}>

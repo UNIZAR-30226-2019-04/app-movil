@@ -66,6 +66,7 @@ class Report extends Component {
       .then(resp => {
         //console.log(resp);
         // console.log("Usuario Reportado");
+        this.props.closeModal();
       })
       .catch(err => {
         console.log(err);
