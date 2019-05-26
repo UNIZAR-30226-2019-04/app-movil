@@ -34,7 +34,7 @@ const height = Dimensions.get("window").height;
 
 let calendarDate = moment();
 
-export default class ProfileSettings extends React.Component {
+export default class UploadProduct extends React.Component {
   static navigationOptions = {
     title: "Profile Settings".toUpperCase()
   };
