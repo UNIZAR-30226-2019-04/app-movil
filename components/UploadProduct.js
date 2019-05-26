@@ -177,6 +177,9 @@ export default class UploadProduct extends React.Component {
         this.uploadProductSubasta();
       }
     }
+
+    // Añadido para simplificar test
+    return algoMal;
   }
 
   uploadProductNormal() {
