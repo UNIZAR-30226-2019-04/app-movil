@@ -230,14 +230,14 @@ export default class Profile extends Component {
 
   render = () => (
     <View>
-      <View
+      {/*       <View
         style={{
           position: "absolute",
           top: 50
         }}
       >
         <UploadProductModal />
-      </View>
+      </View> */}
 
       <ScrollView style={styles.root}>
         <View style={[styles.header, styles.bordered]}>

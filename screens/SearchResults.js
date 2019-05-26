@@ -29,6 +29,7 @@ const height = Dimensions.get("window").height;
 class SearchResults extends Component {
   constructor(props) {
     super(props);
+    this.likePressed = this.likePressed.bind(this);
 
     this.deleteTag = this.deleteTag.bind(this);
   }
@@ -262,6 +263,53 @@ class SearchResults extends Component {
     // this.setState({ modalVisible: false });
     this.props.navigation.navigate("ProductDetails", { product });
   };
+
+  onPressHeart = async (product, isLiked) => {
+    //console.log("onPressHeart", product);
+
+    let user = this.state.user;
+    let token = this.state.token;
+    let URL = `${API_BASE}/deseados/${user}`;
+    if (isLiked) {
+      console.log("isLiked", user, token);
+      URL = `${API_BASE}/deseados/${user}/remove`;
+    } else {
+      console.log("DisLiked", user, token);
+    }
+
+    axios
+      .post(
+        URL,
+        {
+          producto_id: product
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: token
+          }
+        }
+      )
+      .then(resp => {
+        console.log(resp.data);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
+  likePressed(id, deseado) {
+    let products = this.state.products;
+    products.map((product, index) => {
+      if (product.id === id) {
+        products[index].deseado = deseado;
+        console.log("likePressed", products[index].deseado);
+        this.onPressHeart(product.id, deseado);
+      }
+    });
+    this.setState({ products });
+  }
+
   _renderItem = ({ item }) => {
     let { navigation } = this.props;
     //console.log("pressed");
@@ -282,6 +330,8 @@ class SearchResults extends Component {
           precio={item.precioBase}
           deseado={item.deseado}
           descripcion={item.descripcion}
+          id={item.id}
+          likePressed={this.likePressed}
         />
       </TouchableHighlight>
     );

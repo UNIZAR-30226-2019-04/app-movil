@@ -103,48 +103,50 @@ export default class LoginScreen2 extends Component {
       isPasswordValid: password.length >= 6 || this.passwordInput.shake()
     });
 
-    axios
-      .post(
-        `${API_BASE}/user/login`,
-        {
-          email: email,
-          password: password
-        },
-        {}
-      )
-      .then(resp => {
-        const token = resp.data.Authorization;
-        //const user = resp.data.user;
-        const public_id = resp.data.public_id;
-        //console.log(resp.data);
+    if (this.validateEmail(email) && password.length >= 6) {
+      axios
+        .post(
+          `${API_BASE}/user/login`,
+          {
+            email: email,
+            password: password
+          },
+          {}
+        )
+        .then(resp => {
+          const token = resp.data.Authorization;
+          //const user = resp.data.user;
+          const public_id = resp.data.public_id;
+          //console.log(resp.data);
 
-        try {
-          AsyncStorage.setItem("token", token);
-          AsyncStorage.setItem("user", public_id);
-        } catch (error) {
-          //console.log(error);
-        }
+          try {
+            AsyncStorage.setItem("token", token);
+            AsyncStorage.setItem("user", public_id);
+          } catch (error) {
+            //console.log(error);
+          }
 
-        // Add the following line:
-        axios.defaults.headers.common["Authorization"] = token;
-        this.props.navigation.navigate("Dashboard");
-      })
-      .catch(err => {
-        //console.log("Error: ", err.response.status);
-        if (err.response.status == 401 && this.state.isEmailValid) {
-          this.setState({
-            isFormErrorMsg: "Email o contraseña no coinciden.",
-            isEmailValid: false
-          });
-        }
+          // Add the following line:
+          axios.defaults.headers.common["Authorization"] = token;
+          this.props.navigation.navigate("Dashboard");
+        })
+        .catch(err => {
+          //console.log("Error: ", err.response.status);
+          if (err.response.status == 401 && this.state.isEmailValid) {
+            this.setState({
+              isFormErrorMsg: "Email o contraseña no coinciden.",
+              isEmailValid: false
+            });
+          }
 
-        try {
-          AsyncStorage.removeItem("token" + "");
-          AsyncStorage.removeItem("user" + "");
-        } catch (error) {
-          //console.log(error);
-        }
-      });
+          try {
+            AsyncStorage.removeItem("token" + "");
+            AsyncStorage.removeItem("user" + "");
+          } catch (error) {
+            //console.log(error);
+          }
+        });
+    }
   }
 
   firstPass(password) {
@@ -179,27 +181,32 @@ export default class LoginScreen2 extends Component {
         password == passwordConfirmation || this.confirmationInput.shake()
     });
     //console.log(email, username, password);
-
-    axios
-      .post(
-        `${API_BASE}/user/`,
-        {
-          email: email,
-          username: username,
-          password: password
-        },
-        {}
-      )
-      .then(resp => {
-        console.log(resp.data);
-        const token = resp.data.Authorization;
-        const user = resp.data.user;
-        this.setState({ selectedCategory: 0 });
-      })
-      .catch(err => {
-        console.log(err);
-        this.setState({ selectedCategory: 0 });
-      });
+    if (
+      this.validateEmail(email) &&
+      this.firstPass(password) &&
+      password == passwordConfirmation
+    ) {
+      axios
+        .post(
+          `${API_BASE}/user/`,
+          {
+            email: email,
+            username: username,
+            password: password
+          },
+          {}
+        )
+        .then(resp => {
+          console.log(resp.data);
+          const token = resp.data.Authorization;
+          const user = resp.data.user;
+          this.setState({ selectedCategory: 0 });
+        })
+        .catch(err => {
+          console.log(err);
+          this.setState({ selectedCategory: 0 });
+        });
+    }
   }
 
   render() {

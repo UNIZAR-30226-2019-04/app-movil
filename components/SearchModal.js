@@ -86,7 +86,7 @@ class SearchModal extends Component {
           <View
             key={product.id}
             style={{
-              margin: 0
+              marginVertical: 10
             }}
           >
             <TouchableHighlight onPress={() => this._method(product.titulo)}>

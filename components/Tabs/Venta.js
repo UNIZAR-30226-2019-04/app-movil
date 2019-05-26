@@ -54,7 +54,7 @@ export default class Venta extends Component {
   };
 
   _method = product => {
-    this.props.route.navigation.navigate("ProductDetails", { product });
+    this.props.navigation.navigate("ProductDetails", { product });
   };
 
   render() {

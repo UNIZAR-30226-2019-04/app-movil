@@ -12,32 +12,29 @@ export default class MyReviews extends Component {
   };
 
   componentDidMount = async () => {
-    if(this.state.visto != 1 && this.props.user != null){
+    if (this.state.visto != 1 && this.props.user != null) {
       this.state.visto = 1;
       this.fetchItems();
     }
-  }
+  };
 
   fetchItems() {
     let user = this.props.user;
-    let URL = `${API_BASE}/user/${user}`; 
+    let URL = `${API_BASE}/user/${user}`;
     axios
-        .get(
-            URL
-        )
-        .then(res => {
-            var list = [];
-            res.data.valoraciones_recibidas.map(name => {
-              list.push(name);
-            });
-            this.setState({
-              products: [...this.state.products, ...list]
-            });
-            
-        })
-        .catch(err => {
-            console.log(err);
+      .get(URL)
+      .then(res => {
+        var list = [];
+        res.data.valoraciones_recibidas.map(name => {
+          list.push(name);
         });
+        this.setState({
+          products: [...this.state.products, ...list]
+        });
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
 
   _keyExtractor = (item, index) => {
@@ -45,7 +42,7 @@ export default class MyReviews extends Component {
   };
 
   _method = product => {
-    this.props.route.navigation.navigate("ProductDetails", { product });
+    this.props.navigation.navigate("ProductDetails", { product });
   };
   _renderItem = ({ item }) => {
     //console.log("pressed");
@@ -54,7 +51,7 @@ export default class MyReviews extends Component {
         <Review
           name={item.titulo}
           description={item.descripcion}
-          valoracion = {item.valoracion}
+          valoracion={item.valoracion}
         />
       </TouchableHighlight>
     );
