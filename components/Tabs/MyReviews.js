@@ -26,8 +26,6 @@ export default class MyReviews extends Component {
       .then(res => {
         var list = [];
         res.data.valoraciones_hechas.map(name => {
-          console.log("----------COSA-----------");
-          console.log(name);
           list.push(name);
         });
         this.setState({
@@ -47,13 +45,14 @@ export default class MyReviews extends Component {
     this.props.navigation.navigate("ProductDetails", { product });
   };
   _renderItem = ({ item }) => {
-    //console.log("pressed");
+    console.log("VALORACION");
+    console.log(item.puntuacion);
     return (
       <TouchableHighlight onPress={() => this._method(item)}>
         <Review
           name={item.titulo}
           description={item.descripcion}
-          valoracion = {item.valoracion}
+          valoracion = {item.puntuacion}
         />
       </TouchableHighlight>
     );

@@ -71,7 +71,7 @@ export default class MakeReview extends React.Component {
     console.log("-----------------USER----------------");
     console.log(my_user);
     console.log("----------------TOKEN-------------------");
-    console.log(this.state.titulo);
+    console.log(this.state.rating.value);
     console.log("-----------------VENDEDOR-------------------");
     console.log(this.props.producto.vendedor);
 
