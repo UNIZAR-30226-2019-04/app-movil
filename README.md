@@ -13,8 +13,11 @@ npm install
 
 # Lanzar Expo
 expo start
+
+# Correr tests
+npm test
 `````
-## Refenrecias:
+## Referencias:
 
 * React Native Elements:
   - https://react-native-training.github.io/react-native-elements/docs/overview.html
