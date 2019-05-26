@@ -105,7 +105,7 @@ export default class ProfileSettings extends React.Component {
     };
 
     fetch(apiUrl, options)
-      .then(res => {})//console.log(res))
+      .then(res => {}) //console.log(res))
       .catch();
   };
 
@@ -209,9 +209,9 @@ export default class ProfileSettings extends React.Component {
   };
 
   changePassword = async () => {
-    //console.log("changePassword");
+    console.log("changePassword", this.state.password, this.state.newPassword);
 
-    if (this.state.newPassword !== this.state.confirmPassword) {
+    if (this.state.password !== this.state.newPassword) {
       this.setState({ isConfirmPasswordIValid: false });
       return;
     }
@@ -225,7 +225,7 @@ export default class ProfileSettings extends React.Component {
       URL,
       {
         oldpassword: this.state.password,
-        password: this.state.newPassword
+        password: this.state.confirmPassword
       },
       {
         headers: {
@@ -235,11 +235,12 @@ export default class ProfileSettings extends React.Component {
       }
     );
     const perfil = res.data;
-    //console.log("Response Perfil", perfil);
+    console.log("Response Perfil", perfil);
     this.setState(perfil);
     this.setState({ profile: perfil });
     if (perfil.status === "success") {
       this.setState({ password: "", newPassword: "", confirmPassword: "" });
+      this.props.navigation.navigate("Welcome");
     }
   };
 
@@ -394,7 +395,7 @@ export default class ProfileSettings extends React.Component {
             </View>
             <View style={styles.row}>
               <RkTextInput
-                label="Nueva contraseña"
+                label="Repetir contraseña"
                 value={this.state.newPassword}
                 rkType="right clear"
                 secureTextEntry

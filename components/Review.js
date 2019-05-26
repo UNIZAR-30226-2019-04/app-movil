@@ -31,7 +31,7 @@ export default class Review extends Component {
           >
             <AirbnbRating 
               count = {5}
-              Rating = {this.props.valoracion}
+              defaultRating = {this.props.valoracion}
               showRating = {false}
               size={12}
             />

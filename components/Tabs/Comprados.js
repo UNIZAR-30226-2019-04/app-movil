@@ -92,7 +92,7 @@ export default class Comprados extends Component {
                 descripcion={product.descripcion}
               />
             </TouchableHighlight>
-            <ReviewModal producto={product.id} />
+            <ReviewModal user={this.props.user} producto={product} />
           </View>
         );
       });

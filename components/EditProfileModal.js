@@ -7,7 +7,7 @@ import { Button, Tooltip } from "react-native-elements";
 import Icon from "react-native-vector-icons/FontAwesome";
 import ProfileSettings from "../components/profileSettings";
 
-export default class SearchModal extends Component {
+export default class EditProfileModal extends Component {
   constructor(props) {
     super(props);
   }
@@ -35,7 +35,10 @@ export default class SearchModal extends Component {
           visible={this.state.modalVisible}
           onRequestClose={() => this.setModalVisible(false)}
         >
-          <ProfileSettings profile={() => this.props.profile()} />
+          <ProfileSettings
+            profile={() => this.props.profile()}
+            navigation={this.props.navigation}
+          />
           <Ionicons
             style={{
               position: "absolute",

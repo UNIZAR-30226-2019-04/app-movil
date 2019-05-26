@@ -51,7 +51,7 @@ export default class MyReviews extends Component {
         <Review
           name={item.titulo}
           description={item.descripcion}
-          valoracion={item.valoracion}
+          valoracion={item.puntuacion}
         />
       </TouchableHighlight>
     );

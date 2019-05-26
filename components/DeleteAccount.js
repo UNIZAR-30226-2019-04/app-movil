@@ -41,42 +41,37 @@ class DeleteAccount extends Component {
     }
   });
 
-  _deleteUser() {
+  _deleteUser = async () => {
     const { password } = this.state;
     const public_id = this.props.user;
     const token = this.props.token;
-    //console.log("_deleteUser", public_id, token);
+    console.log("_deleteUser", public_id, token, password);
 
-    axios
-      .post(
-        `${API_BASE}/user/${public_id}/delete`,
-        {
-          password: password
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: token
-          }
-        }
-      )
-      .then(resp => {
-        //console.log(resp.data);
-        //console.log("_deleteUser", resp.data);
+    let { resp } = await axios({
+      url: `${API_BASE}/user/${public_id}`,
+      method: "delete",
+      data: {
+        password: password
+      },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token
+      }
+    });
+    this.props.navigation.navigate("Welcome");
 
-        if (err.response.status !== 200) {
-          this.setState({
-            errorMsg: "Contraseña incorrecta.",
-            isPasswordValid: false
-          });
-        }
-        this.props.navigation.navigate("Welcome");
-        //Aquí la parte de borrar
-      })
-      .catch(err => {
-        //console.log("Error: ", err.response.status);
+    console.log(resp);
+
+    if (resp.data.status !== 200) {
+      this.setState({
+        errorMsg: "Contraseña incorrecta.",
+        isPasswordValid: false
       });
-  }
+    } else {
+      this.props.navigation.navigate("Welcome");
+    }
+    //Aquí la parte de borrar
+  };
 
   render() {
     return (

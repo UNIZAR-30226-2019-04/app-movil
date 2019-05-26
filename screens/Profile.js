@@ -67,6 +67,7 @@ export default class Profile extends Component {
         >
           {isUser ? (
             <EditProfileModal
+              navigation={navigation}
               profile={() => {
                 this._perfil;
               }}
