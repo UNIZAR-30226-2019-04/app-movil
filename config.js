@@ -1,8 +1,8 @@
 //export const API_BASE = "http://155.210.47.51:5000";
 export const API_KEY = "AIzaSyDdvFWG152xtiqVlWNELt3aXycL6DXQ8Hk";
 //export const API_BASE = "http://localhost:5000";
-//export const API_BASE = "https://api.telocam.com/";
-export const API_BASE = "http://34.90.77.95:5000";
+export const API_BASE = "https://api.telocam.com";
+//export const API_BASE = "http://34.90.77.95:5000";
 export const DEBUG = false;
 export const USER = "454342ce-3e53-4161-9065-281f06e350b8";
 export const TOKEN =

@@ -13,7 +13,7 @@ export default class Settings extends Component {
   constructor(props) {
     super(props);
     // Creating the socket-client instance will automatically connect to the server.
-    this.socket = SocketIOClient("http://34.90.77.95:5000/mychat", {
+    this.socket = SocketIOClient(API_BASE + "/mychat", {
       transports: ["websocket"]
     });
   }
