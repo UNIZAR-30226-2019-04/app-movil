@@ -13,7 +13,7 @@ export default class Settings extends Component {
   constructor(props) {
     super(props);
     // Creating the socket-client instance will automatically connect to the server.
-    this.socket = SocketIOClient(API_BASE + "/mychat", {
+    this.socket = SocketIOClient("http://34.90.77.95:5001/mychat", {
       transports: ["websocket"]
     });
   }
@@ -68,7 +68,7 @@ export default class Settings extends Component {
       })
       .then(response => {
         const msg = response.data.data;
-        //console.log("fetchMessages", response.data.data);
+        console.log("fetchMessages", response.data.data);
         const messages = msg.map(m => this.parseMsg(m));
         this.setState({ messages: messages.reverse() });
       });
@@ -88,7 +88,7 @@ export default class Settings extends Component {
         const id = response.data.id;
         //console.log("fetchRoomId", id);
         this.setState({ room: id });
-        //console.log("connected!");
+        console.log("connected!");
         this.socket.emit("JOINED", {
           room: id
         });
@@ -139,7 +139,7 @@ export default class Settings extends Component {
     //console.log("Params", this.props.navigation.state.params);
 
     this.socket.on("MESSAGE", data => {
-      //console.log("MESSAGE", data);
+      console.log("MESSAGE", data);
       var msg = this.parseMsg(data);
       this.setState(previousState => ({
         messages: GiftedChat.append(previousState.messages, msg)
@@ -151,7 +151,7 @@ export default class Settings extends Component {
     const { navigation } = this.props;
 
     const msg = messages[0];
-    //console.log("SEND_MESSAGE", messages[0], this.state.room);
+    console.log("SEND_MESSAGE", messages[0], this.state.room);
 
     this.socket.emit("SEND_MESSAGE", {
       //usuario: navigation.getParam("user"),

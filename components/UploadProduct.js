@@ -5,9 +5,7 @@ import {
   StyleSheet,
   TextInput,
   Text,
-  ActivityIndicator,
-  TouchableOpacity,
-  Image
+  Dimensions
 } from "react-native";
 import {
   RkText,
@@ -31,6 +29,8 @@ import { AsyncStorage } from "react-native";
 import { Calendar, CalendarList, Agenda } from "react-native-calendars";
 import moment from "moment";
 import DateTimePicker from "react-native-modal-datetime-picker";
+const width = Dimensions.get("window").width;
+const height = Dimensions.get("window").height;
 
 let calendarDate = moment();
 
@@ -58,7 +58,15 @@ export default class ProfileSettings extends React.Component {
     locationResult: null,
     fechaexpiracion: null,
     markedDate: {},
-    isDateTimePickerVisible: false
+    isDateTimePickerVisible: false,
+    titleColor: 'white',
+    descriptionColor: 'white',
+    precioColor: 'white',
+    radioColor: 'white',
+    tipoColor: 'white',
+    categoriaColor: 'white',
+    truequeColor: 'white',
+    subastaColor: 'white'
   };
 
   handleDatePicked = time => {
@@ -125,25 +133,50 @@ export default class ProfileSettings extends React.Component {
   };
 
   uploadProduct() {
-    //console.log("Titulo:", this.state.title);
-    //console.log("Precio:", this.state.precioBase);
-    //console.log("Latitud:", this.state.latitud);
-    //console.log("Longitud:", this.state.longitud);
-    //console.log("Tipo:", this.state.tipo);
-    //console.log("Descripcion:", this.state.description);
-    //console.log("Categoria:", this.state.categoria);
-    //console.log("Radio_ubicacion:", this.state.radio_ubicacion);
-    //console.log("Usuario:", this.state.vendedor);
-    //console.log("FechaExp:", this.state.fechaexpiracion);
+    let algoMal = false;
+    if(this.state.title === ""){
+      this.setState({titleColor: 'crimson'});
+      algoMal = true;
+    }  
+    if(this.state.description === ""){
+      this.setState({descriptionColor: 'crimson'});
+      algoMal = true;
+    } 
+    if (this.state.precioBase === 0) {
+      this.setState({precioColor: 'crimson'});
+      algoMal = true;
+    } 
+    if (this.state.radio_ubicacion === 0) {
+      this.setState({radioColor: 'crimson'});
+      algoMal = true;
+    } 
+    if (this.state.tipo === "") {
+      this.setState({tipoColor: 'crimson'});
+      algoMal = true;
+    } 
+    if (this.state.categoria === "") {
+      this.setState({categoriaColor: 'crimson'});
+      algoMal = true;
+    } 
+    if (this.state.tipo === "trueque" && (this.state.precioAux === 0 || this.state.precioAux < this.state.precioBase)) {
+      this.setState({truequeColor: 'crimson'});
+      algoMal = true;
+    } 
 
-    if (this.state.tipo == "normal") {
-      this.uploadProductNormal();
-    } else if (this.state.tipo == "trueque") {
-      this.uploadProductTrueque();
-    } else if (this.state.tipo == "subasta") {
-      this.uploadProductSubasta();
+    if (this.state.tipo === "subasta" && this.state.fechaexpiracion === null) {
+      this.setState({subastaColor: 'crimson'});
+      algoMal = true;
+    } 
+
+    if(!algoMal) {
+      if (this.state.tipo == "normal") {
+        this.uploadProductNormal();
+      } else if (this.state.tipo == "trueque") {
+        this.uploadProductTrueque();
+      } else if (this.state.tipo == "subasta") {
+        this.uploadProductSubasta();
+      }
     }
-    // this.reset_forms();
   }
 
   uploadProductNormal() {
@@ -329,11 +362,17 @@ export default class ProfileSettings extends React.Component {
 
   onTitleChanged = text => {
     this.setState({ title: text });
+    if(text !== ""){
+      this.setState({titleColor: 'white'});
+    } else {
+      this.setState({titleColor: 'crimson'});
+    }
   };
 
   saveCategory = category => {
     //console.log("saveCategory", category);
     this.setState({ categoria: category });
+    this.setState({ categoriaColor: 'white' });
   };
 
   saveType = type => {
@@ -345,23 +384,52 @@ export default class ProfileSettings extends React.Component {
     } else if (type == "Subasta") {
       this.setState({ tipo: "subasta" });
     }
+    this.setState({tipoColor: 'white'});
   };
 
   onDescriptionChanged = text => {
     this.setState({ description: text });
+    if(text !== ""){
+      this.setState({desctiptionColor: 'white'});
+    } else {
+      this.setState({descriptionColor: 'crimson'});
+    }
   };
 
   onPrecioChanged = text => {
     this.setState({ precioBase: text });
+    if(text !== ""){
+      this.setState({precioColor: 'white'});
+    } else {
+      this.setState({precioColor: 'crimson'});
+    }
   };
 
   onPrecioTruequeChanged = text => {
     this.setState({ precioAux: text });
+    if(text !== ""){
+      this.setState({truequeColor: 'white'});
+    } else {
+      this.setState({truequeColor: 'crimson'});
+    }
   };
 
   onRadioUbicacionChanged = text => {
     this.setState({ radio_ubicacion: text });
+    if(text !== ""){
+      this.setState({radioColor: 'white'});
+    } else {
+      this.setState({radioColor: 'crimson'});
+    }
   };
+
+  validTitulo= async () => {
+    if(this.state.title !== ""){
+      return 'white';
+    } else {
+      return 'crimson';
+    }
+  }
 
   render = () => {
     ////console.log("Location", this.state.locationResult);
@@ -377,7 +445,7 @@ export default class ProfileSettings extends React.Component {
             <View style={styles.row}>
               <Text style={styles.label}>Título</Text>
               <TextInput
-                style={styles.text_input}
+                style={[styles.text_input, {borderColor: this.state.titleColor}]}
                 onChangeText={this.onTitleChanged}
                 value={this.state.title}
               />
@@ -385,7 +453,7 @@ export default class ProfileSettings extends React.Component {
             <View style={styles.row}>
               <Textarea
                 containerStyle={styles.textareaContainer}
-                style={styles.textarea}
+                style={[styles.textarea, {borderColor: this.state.descriptionColor}]}
                 onChangeText={this.onDescriptionChanged}
                 defaultValue={this.state.description}
                 maxLength={1000}
@@ -398,7 +466,7 @@ export default class ProfileSettings extends React.Component {
             <View style={styles.row}>
               <Text style={styles.label}>Precio</Text>
               <TextInput
-                style={styles.text_input}
+                style={[styles.text_input,{borderColor: this.state.precioColor}]}
                 keyboardType="numeric"
                 onChangeText={this.onPrecioChanged}
                 value={this.state.precioBase}
@@ -408,7 +476,7 @@ export default class ProfileSettings extends React.Component {
             <View style={styles.row}>
               <Text style={styles.label}>Radio de tu ubicación</Text>
               <TextInput
-                style={styles.text_input}
+                style={[styles.text_input,{borderColor: this.state.precioColor, width: width/2 + 10}]}
                 keyboardType="numeric"
                 onChangeText={this.onRadioUbicacionChanged}
                 value={this.state.radio_ubicacion}
@@ -418,6 +486,7 @@ export default class ProfileSettings extends React.Component {
             <View style={styles.row2}>
               <TypePickerModal saveType={this.saveType} />
               <Text style={{ marginHorizontal: 5 }}>{this.state.tipo}</Text>
+              <Text style={{ marginHorizontal: 5, color: this.state.tipoColor }}>Campo Requerido</Text>
             </View>
 
             {this.state.tipo === "subasta" ? (
@@ -442,6 +511,7 @@ export default class ProfileSettings extends React.Component {
                   is24Hour={true}
                   minimumDate={new Date()}
                 />
+                <Text style={{color: this.state.subastaColor, marginHorizontal: 10}}>Requerido</Text>
               </View>
             ) : (
               []
@@ -451,7 +521,7 @@ export default class ProfileSettings extends React.Component {
               <View style={styles.row}>
                 <Text style={styles.label}>Precio máx. del trueque</Text>
                 <TextInput
-                  style={styles.text_input}
+                  style={[styles.text_input, {borderColor: this.state.truequeColor, width: width/2}]}
                   keyboardType="numeric"
                   onChangeText={this.onPrecioTruequeChanged}
                   value={this.state.precioAux}
@@ -462,9 +532,8 @@ export default class ProfileSettings extends React.Component {
             )}
             <View style={styles.row2}>
               <CategoryPickerModal saveCategory={this.saveCategory} />
-              <Text style={{ marginHorizontal: 5 }}>
-                {this.state.categoria}
-              </Text>
+              <Text style={{ marginHorizontal: 5 }}> {this.state.categoria} </Text>
+              <Text style={{ marginHorizontal: 5, color: this.state.categoriaColor }}>Campo Requerido</Text>
             </View>
 
             <View style={styles.row}>
@@ -530,6 +599,7 @@ const styles = RkStyleSheet.create(theme => ({
     borderWidth: 1
   },
   row: {
+    width: width,
     flexDirection: "row",
     paddingHorizontal: 17.5,
     borderBottomWidth: StyleSheet.hairlineWidth,
@@ -537,6 +607,7 @@ const styles = RkStyleSheet.create(theme => ({
     alignItems: "center"
   },
   row2: {
+    width: width,
     flexDirection: "row",
     paddingHorizontal: 17.5,
     paddingTop: 17.5,

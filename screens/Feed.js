@@ -30,12 +30,15 @@ import { Font } from "expo";
 
 import Icon from "react-native-vector-icons/FontAwesome";
 import ProductHorizontal from "../components/ProductHorizontal";
+
 const width = Dimensions.get("window").width;
 const height = Dimensions.get("window").height;
 class Feed extends Component {
   constructor(props) {
     super(props);
     this.page = 0;
+
+    this.likePressed = this.likePressed.bind(this);
     this.state = {
       loading: false, // user list loading
       isRefreshing: false, //for pull to refresh
@@ -240,6 +243,52 @@ class Feed extends Component {
       deseado: product.deseado
     });
   };
+
+  onPressHeart = async (product, isLiked) => {
+    //console.log("onPressHeart", product);
+
+    let user = this.state.user;
+    let token = this.state.token;
+    let URL = `${API_BASE}/deseados/${user}`;
+    if (isLiked) {
+      console.log("isLiked", user, token);
+      URL = `${API_BASE}/deseados/${user}/remove`;
+    } else {
+      console.log("DisLiked", user, token);
+    }
+
+    axios
+      .post(
+        URL,
+        {
+          producto_id: product
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: token
+          }
+        }
+      )
+      .then(resp => {
+        console.log(resp.data);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
+  likePressed(id, deseado) {
+    let products = this.state.products;
+    products.map((product, index) => {
+      if (product.id === id) {
+        products[index].deseado = deseado;
+        console.log("likePressed", products[index].deseado);
+        this.onPressHeart(product.id, deseado);
+      }
+    });
+    this.setState({ products });
+  }
   _renderItem = ({ item }) => {
     let { navigation } = this.props;
     //console.log("pressed");
@@ -260,6 +309,8 @@ class Feed extends Component {
           precio={item.precioBase}
           descripcion={item.descripcion}
           deseado={item.deseado}
+          id={item.id}
+          likePressed={this.likePressed}
         />
       </TouchableHighlight>
     );

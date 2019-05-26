@@ -110,7 +110,7 @@ class Report extends Component {
             <Picker.Item label="Mala educación" value="Mala educación" />
             <Picker.Item label="Producto en mal estado" value="Producto en mal estado" />
             <Picker.Item label="No me ha vendido" value="No me ha vendido" />
-            <Picker.Item label="Malas intenciones" value="Malas intenciones" />
+            <Picker.Item label="Contenido inapropiado" value="Contenido inapropiado" />
           </Picker>
           <Button 
             style = {{marginTop: 10}}

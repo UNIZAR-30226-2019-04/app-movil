@@ -721,27 +721,30 @@ export default class ProductDetails extends Component {
             <Button
               title="Chat"
               titleStyle={{ margin: 10, width: width / 2 - 20, marginTop: 10 }}
-              onPress={() =>
+              onPress={() => {
+                if (this.state.user === this.state.vendedor) return;
                 this.props.navigation.navigate("ChatTabNavigator", {
                   room: this.state.room,
                   user: this.state.vendedor,
                   receiver: this.state.product.vendedor,
                   token: this.state.token
-                })
-              }
+                });
+              }}
             />
           ) : (
             <Button
               title="Chat"
               titleStyle={{ margin: 10, width: width, marginTop: 10 }}
-              onPress={() =>
+              onPress={() => {
+                if (this.state.user === this.state.vendedor) return;
+
                 this.props.navigation.navigate("ChatTabNavigator", {
                   room: this.state.room,
                   user: this.state.vendedor,
                   receiver: this.state.product.vendedor,
                   token: this.state.token
-                })
-              }
+                });
+              }}
             />
           )}
         </View>

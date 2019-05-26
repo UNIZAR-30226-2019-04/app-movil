@@ -55,7 +55,8 @@ export default class LoginScreen2 extends Component {
       isPasswordValid: true,
       isConfirmationValid: true,
       isFormValid: true,
-      isFormErrorMsg: ""
+      isFormErrorMsg: "",
+      isFormErrorMsgPw: ""
     };
 
     this.selectCategory = this.selectCategory.bind(this);
@@ -99,7 +100,7 @@ export default class LoginScreen2 extends Component {
     this.setState({
       isLoading: false,
       isEmailValid: this.validateEmail(email) || this.emailInput.shake(),
-      isPasswordValid: password.length >= 8 || this.passwordInput.shake()
+      isPasswordValid: password.length >= 6 || this.passwordInput.shake()
     });
 
     axios
@@ -146,6 +147,25 @@ export default class LoginScreen2 extends Component {
       });
   }
 
+  firstPass(password) {
+    if (password.length < 6) {
+      return false;
+    } else {
+      if (
+        /[A-Z]/.test(password) &&
+        /[a-z]/.test(password) &&
+        /[0-9]/.test(password)
+      ) {
+        return true;
+      } else {
+        this.setState({
+          isFormErrorMsgPw:
+            "Introduzca una contraseña valida, debe contener al menos 6 caracteres con letras, números y una mayúscula"
+        });
+        return false;
+      }
+    }
+  }
   signUp() {
     const { email, password, passwordConfirmation, username } = this.state;
     this.setState({ isLoading: true });
@@ -154,7 +174,7 @@ export default class LoginScreen2 extends Component {
     this.setState({
       isLoading: false,
       isEmailValid: this.validateEmail(email) || this.emailInput.shake(),
-      isPasswordValid: password.length >= 8 || this.passwordInput.shake(),
+      isPasswordValid: this.firstPass(password) || this.passwordInput.shake(),
       isConfirmationValid:
         password == passwordConfirmation || this.confirmationInput.shake()
     });
@@ -171,12 +191,14 @@ export default class LoginScreen2 extends Component {
         {}
       )
       .then(resp => {
-        //console.log(resp.data);
+        console.log(resp.data);
         const token = resp.data.Authorization;
         const user = resp.data.user;
+        this.setState({ selectedCategory: 0 });
       })
       .catch(err => {
-        //console.log(err);
+        console.log(err);
+        this.setState({ selectedCategory: 0 });
       });
   }
 
@@ -333,9 +355,7 @@ export default class LoginScreen2 extends Component {
                     }
                     onChangeText={password => this.setState({ password })}
                     errorMessage={
-                      isPasswordValid
-                        ? null
-                        : "La contraseña debe de tener al menos 8 caracteres"
+                      isPasswordValid ? null : this.state.isFormErrorMsgPw
                     }
                   />
                   {isSignUpPage && (

@@ -13,10 +13,14 @@ const width = Dimensions.get("window").width / 2 - 20;
 
 export default class ProductVertical extends Component {
   state = {
-    isLiked: false
+    isLiked: false,
+    updated: false
   };
   onPressHeart() {
-    //console.log("Like pressed");
+    let user = this.state.user;
+
+    console.log("Like pressed");
+    this.props.likePressed(this.props.id, !this.state.isLiked);
     this.setState({ isLiked: !this.state.isLiked });
   }
 
@@ -28,11 +32,16 @@ export default class ProductVertical extends Component {
     this.setState({ isliked: this.props.deseado });
   }
 
-  /*   componentDidUpdate() {
-    if (this.props.deseado !== this.state.isLiked) {
-      this.setState({ isliked: this.props.deseado });
+  componentDidUpdate() {
+    console.log(
+      "UPDATED product Vertical",
+      this.props.deseado,
+      this.state.isLiked
+    );
+    if (this.props.deseado && !this.state.isLiked && !this.state.updated) {
+      this.setState({ isliked: true, updated: true });
     }
-  } */
+  }
 
   render() {
     let red = "rgba(245,60,60,0.8)";

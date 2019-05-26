@@ -106,7 +106,7 @@ export default class FilterMap extends Component {
         }
 
         let category = categories[product.categoria_nombre];
-        //console.log("category", category);
+        console.log("category", category);
         return (
           <View
             key={product.id}
@@ -136,14 +136,20 @@ export default class FilterMap extends Component {
                 <Card.Title
                   title={product.titulo}
                   subtitle={product.precioBase + "€"}
-                  left={props => (
-                    <Icon
-                      {...props}
-                      size={36}
-                      color="grey"
-                      name={category.icon}
-                    />
-                  )}
+                  left={props => {
+                    {
+                      category !== undefined ? (
+                        <Icon
+                          {...props}
+                          size={36}
+                          color="grey"
+                          name={category.icon}
+                        />
+                      ) : (
+                        []
+                      );
+                    }
+                  }}
                 />
               </Card>
             </TouchableHighlight>

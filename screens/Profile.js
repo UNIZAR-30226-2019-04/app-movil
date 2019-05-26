@@ -230,6 +230,15 @@ export default class Profile extends Component {
 
   render = () => (
     <View>
+      <View
+        style={{
+          position: "absolute",
+          top: 50
+        }}
+      >
+        <UploadProductModal />
+      </View>
+
       <ScrollView style={styles.root}>
         <View style={[styles.header, styles.bordered]}>
           <Avatar
@@ -309,14 +318,14 @@ export default class Profile extends Component {
           initialLayout={{ width: Dimensions.get("window").width }}
         />
       </ScrollView>
-      <UploadProductModal />
     </View>
   );
 }
 
 const styles = RkStyleSheet.create(theme => ({
   root: {
-    backgroundColor: "#F5F5F5"
+    backgroundColor: "#F5F5F5",
+    marginBottom: 30
   },
   tabbar: {
     backgroundColor: "#F5F5F5"

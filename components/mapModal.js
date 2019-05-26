@@ -51,7 +51,8 @@ export default class MapModal extends Component {
 
     this.setState({
       mapRegion: this.props.mapRegion,
-      radious: this.props.radious
+      radious: this.props.radious,
+      product: product
       //markers: this.props.product
     });
     if (this.props.mapRegion !== null && this.props.mapRegion !== undefined) {
@@ -95,7 +96,7 @@ export default class MapModal extends Component {
           }
         }
       ];
-      this.setState({ markers: marker });
+      this.setState({ markers: marker, product: product });
     }
 
     if (this.props.mapRegion !== null && !updated) {
@@ -159,37 +160,38 @@ export default class MapModal extends Component {
 
             {this.state.markers.map((marker, index) => {
               let product = this.state.product;
+              console.log("Product:", product);
+
               let thumbnail = null;
 
               if (product !== null && product !== undefined) {
-                //console.log("Product:", product);
                 for (let i = 0; i < product.multimedia.length; i++) {
                   if (!product.multimedia[i].tipo) {
                     thumbnail = product.multimedia[i];
+                    console.log("thumbnail:", thumbnail);
+
                     break;
                   }
                 }
               }
-
-              return (
-                <MapView.Marker {...marker} key={index}>
-                  <View style={styles.marker}>
-                    <Avatar
-                      rounded
-                      //onPress={() => //console.log("Works!")}
-                      size="small"
-                      containerStyle={{ marginHorizontal: 10 }}
-                      source={{
-                        uri:
-                          thumbnail !== null
-                            ? thumbnail.path
-                            : "https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg"
-                      }}
-                    />
-                    <MapView.Callout tooltip />
-                  </View>
-                </MapView.Marker>
-              );
+              if (thumbnail !== null) {
+                return (
+                  <MapView.Marker {...marker} key={index}>
+                    <View style={styles.marker}>
+                      <Avatar
+                        rounded
+                        //onPress={() => //console.log("Works!")}
+                        size="small"
+                        containerStyle={{ marginHorizontal: 10 }}
+                        source={{
+                          uri: thumbnail.path
+                        }}
+                      />
+                      <MapView.Callout tooltip />
+                    </View>
+                  </MapView.Marker>
+                );
+              }
             })}
           </MapView>
         </Modal>
@@ -229,23 +231,39 @@ export default class MapModal extends Component {
             }
           >
             {this.state.markers.map((marker, index) => {
-              return (
-                <MapView.Marker {...marker} key={index}>
-                  <View style={styles.marker}>
-                    <Avatar
-                      rounded
-                      //onPress={() => //console.log("Works!")}
-                      size="small"
-                      containerStyle={{ marginHorizontal: 10 }}
-                      source={{
-                        uri:
-                          "https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg"
-                      }}
-                    />
-                    <MapView.Callout tooltip />
-                  </View>
-                </MapView.Marker>
-              );
+              let product = this.state.product;
+              console.log("Product:", product);
+
+              let thumbnail = null;
+
+              if (product !== null && product !== undefined) {
+                for (let i = 0; i < product.multimedia.length; i++) {
+                  if (!product.multimedia[i].tipo) {
+                    thumbnail = product.multimedia[i];
+                    console.log("thumbnail:", thumbnail);
+
+                    break;
+                  }
+                }
+              }
+              if (thumbnail !== null) {
+                return (
+                  <MapView.Marker {...marker} key={index}>
+                    <View style={styles.marker}>
+                      <Avatar
+                        rounded
+                        //onPress={() => //console.log("Works!")}
+                        size="small"
+                        containerStyle={{ marginHorizontal: 10 }}
+                        source={{
+                          uri: thumbnail.path
+                        }}
+                      />
+                      <MapView.Callout tooltip />
+                    </View>
+                  </MapView.Marker>
+                );
+              }
             })}
             <MapView.Circle
               key={"key111".toString()}
