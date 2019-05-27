@@ -196,8 +196,59 @@ export default class UploadProduct extends React.Component {
         this.uploadProductSubasta();
       }
     }
+  }
 
-    // Añadido para simplificar test
+  uploadProductTest() {
+    let algoMal = false;
+    if(this.state.title === ""){
+      this.setState({titleColor: 'crimson'});
+      algoMal = true;
+    }  
+    if(this.state.description === ""){
+      this.setState({descriptionColor: 'crimson'});
+      algoMal = true;
+    } 
+    if (this.state.precioBase === 0) {
+      this.setState({precioColor: 'crimson'});
+      algoMal = true;
+    } 
+    if (this.state.radio_ubicacion === 0) {
+      this.setState({radioColor: 'crimson'});
+      algoMal = true;
+    } 
+    if (this.state.tipo === "") {
+      this.setState({tipoColor: 'crimson'});
+      algoMal = true;
+    } 
+    if (this.state.categoria === "") {
+      this.setState({categoriaColor: 'crimson'});
+      algoMal = true;
+    } 
+    if (this.state.tipo === "trueque" && (this.state.precioAux === 0 || this.state.precioAux < this.state.precioBase)) {
+      console.log("----------BASE----------");
+      console.log(this.state.precioBase);
+      console.log("-------------AUX--------");
+      console.log(this.state.precioAux);
+      this.setState({truequeColor: 'crimson'});
+      algoMal = true;
+    } 
+
+    if (this.state.tipo === "subasta" && this.state.fechaexpiracion === null) {
+      this.setState({subastaColor: 'crimson'});
+      algoMal = true;
+    }
+
+    if (this.state.latitud === "" || this.state.longitud === ""){
+      this.setState({locationColor: 'crimson'});
+      algoMal = true;
+    }
+
+
+    if (this.state.latitud === null || this.state.longitud === null){
+      this.setState({locationColor: 'crimson'});
+      algoMal = true;
+    }
+    
     return algoMal;
   }
 

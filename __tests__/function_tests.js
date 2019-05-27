@@ -50,7 +50,10 @@ describe('UploadProduct functions tests', () => {
         uProduct.onDescriptionChanged("description");
         uProduct.onPrecioChanged("11");
         uProduct.onRadioUbicacionChanged("100");
-        expect(uProduct.uploadProduct()).toBe(false);
+        uProduct.setState({ latitud: 100,
+                            longitud:200
+        });
+        expect(uProduct.uploadProductTest()).toBe(false);
     });
 
     test('check fields are incorrect', () => {
@@ -61,7 +64,10 @@ describe('UploadProduct functions tests', () => {
         uProduct.onDescriptionChanged("description");
         uProduct.onPrecioChanged("11");
         uProduct.onRadioUbicacionChanged("100");
-        expect(uProduct.uploadProduct()).toBe(true);
+        uProduct.setState({ latitud: 100,
+                            longitud:200
+        });
+        expect(uProduct.uploadProductTest()).toBe(true);
     });
 
     test('check trueque fields are correct', () => {
@@ -73,7 +79,10 @@ describe('UploadProduct functions tests', () => {
         uProduct.onPrecioChanged("11");
         uProduct.onRadioUbicacionChanged("100");
         uProduct.onPrecioTruequeChanged("50");
-        expect(uProduct.uploadProduct()).toBe(false);
+        uProduct.setState({ latitud: 100,
+                            longitud:200
+        });
+        expect(uProduct.uploadProductTest()).toBe(false);
     });
 
     test('check trueque fields are incorrect', () => {
@@ -85,7 +94,10 @@ describe('UploadProduct functions tests', () => {
         uProduct.onPrecioChanged(200);
         uProduct.onRadioUbicacionChanged("100");
         uProduct.onPrecioTruequeChanged(10);
-        expect(uProduct.uploadProduct()).toBe(true);
+        uProduct.setState({ latitud: 100,
+                            longitud:200
+        });
+        expect(uProduct.uploadProductTest()).toBe(true);
     });
 
 
@@ -98,7 +110,10 @@ describe('UploadProduct functions tests', () => {
         uProduct.onPrecioChanged("11");
         uProduct.onRadioUbicacionChanged("100");
         uProduct.setState({markedDate: "15/17/2019"});
-        expect(uProduct.uploadProduct()).toBe(false);
+        uProduct.setState({ latitud: 100,
+                            longitud:200
+        });
+        expect(uProduct.uploadProductTest()).toBe(false);
     });
 
     test('check subasta fields are incorrect', () => {
@@ -109,8 +124,11 @@ describe('UploadProduct functions tests', () => {
         uProduct.onDescriptionChanged("description");
         uProduct.onPrecioChanged("11");
         uProduct.onRadioUbicacionChanged("100");
+        uProduct.setState({ latitud: 100,
+                            longitud:200
+        });
         //uProduct.setState({markedDate: "15/17/2019"});
-        expect(uProduct.uploadProduct()).toBe(false);
+        expect(uProduct.uploadProductTest()).toBe(false);
     });
 
 });
