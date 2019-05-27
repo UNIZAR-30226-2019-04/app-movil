@@ -22,6 +22,7 @@ import UploadMultimedia from '../components/UploadMultimedia';
 
 import renderer from 'react-test-renderer';
 
+
 describe('Screens snapshot tests', () => {
 
   test('Conversaciones renders correctly', () => {
