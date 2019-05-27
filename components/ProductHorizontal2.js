@@ -23,15 +23,16 @@ export default class ProductHorizontal2 extends Component {
           <Image
             source={{ uri: this.props.thumbnail }}
             style={{
-              width: 40,
+              width: 80,
               height: 80,
               resizeMode: "cover",
               borderRadius: 16,
-              marginHorizontal: 10
+              marginHorizontal: 10,
+              marginVertical: 10
             }}
           />
         </View>
-        <View style={{ margin: 10, flex: 3, flexDirection: "column" }}>
+        <View style={{ margin: 10, flex: 3, flexDirection: "column", marginHorizontal: 50 }}>
           <Text
             style={{ fontSize: 20, fontWeight: "500", paddingHorizontal: 10 }}
           >
@@ -48,7 +49,7 @@ export default class ProductHorizontal2 extends Component {
             }}
           >
             <Text
-              style={{ fontSize: 20, fontWeight: "500", paddingHorizontal: 10 }}
+              style={{ fontSize: 20, fontWeight: "200"}}
             >
               {this.props.precio}€
             </Text>
@@ -66,8 +67,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "flex-start",
 
-    width: Dimensions.get("window").width/2 + 60,
-    marginHorizontal: 10,
+    width: Dimensions.get("window").width/2 + 65,
+    marginHorizontal: 7,
+    marginTop: 7,
 
     borderWidth: 0.5,
     borderRadius: 12,

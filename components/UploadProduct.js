@@ -21,10 +21,11 @@ import CameraRollSelect from "./CameraRollSelect";
 import TypePickerModal from "./TypePickerModal";
 import UploadProductModal from "./UploadProductModal";
 import CategoryPickerModal from "./CategoryPickerModal";
+import LocationPickerModal from "./LocationPickerModal";
 import { addTag } from "../actions";
 import { Constants, MapView, Location, Permissions } from "expo";
 import axios from "axios";
-import { API_BASE, DEBUG } from "../config";
+import { API_BASE, DEBUG, API_KEY } from "../config";
 import { AsyncStorage } from "react-native";
 import { Calendar, CalendarList, Agenda } from "react-native-calendars";
 import moment from "moment";
@@ -34,7 +35,7 @@ const height = Dimensions.get("window").height;
 
 let calendarDate = moment();
 
-export default class ProfileSettings extends React.Component {
+export default class UploadProduct extends React.Component {
   static navigationOptions = {
     title: "Profile Settings".toUpperCase()
   };
@@ -66,7 +67,10 @@ export default class ProfileSettings extends React.Component {
     tipoColor: 'white',
     categoriaColor: 'white',
     truequeColor: 'white',
-    subastaColor: 'white'
+    subastaColor: 'white',
+    locationType: "",
+    locationColor: 'white',
+    locationString: ""
   };
 
   handleDatePicked = time => {
@@ -159,6 +163,10 @@ export default class ProfileSettings extends React.Component {
       algoMal = true;
     } 
     if (this.state.tipo === "trueque" && (this.state.precioAux === 0 || this.state.precioAux < this.state.precioBase)) {
+      console.log("----------BASE----------");
+      console.log(this.state.precioBase);
+      console.log("-------------AUX--------");
+      console.log(this.state.precioAux);
       this.setState({truequeColor: 'crimson'});
       algoMal = true;
     } 
@@ -166,8 +174,19 @@ export default class ProfileSettings extends React.Component {
     if (this.state.tipo === "subasta" && this.state.fechaexpiracion === null) {
       this.setState({subastaColor: 'crimson'});
       algoMal = true;
-    } 
+    }
 
+    if (this.state.latitud === "" || this.state.longitud === ""){
+      this.setState({locationColor: 'crimson'});
+      algoMal = true;
+    }
+
+
+    if (this.state.latitud === null || this.state.longitud === null){
+      this.setState({locationColor: 'crimson'});
+      algoMal = true;
+    }
+    
     if(!algoMal) {
       if (this.state.tipo == "normal") {
         this.uploadProductNormal();
@@ -177,6 +196,9 @@ export default class ProfileSettings extends React.Component {
         this.uploadProductSubasta();
       }
     }
+
+    // Añadido para simplificar test
+    return algoMal;
   }
 
   uploadProductNormal() {
@@ -279,6 +301,27 @@ export default class ProfileSettings extends React.Component {
     this.fetchData();
   }
 
+  getCoordinatesFromAddress(location) {
+    //console.log(`address=${location}`);
+    axios
+      .get(
+        `https://maps.googleapis.com/maps/api/geocode/json?address=${location}&key=${API_KEY}`,
+        {},
+        {}
+      )
+      .then(resp => {
+        let coords = resp.data.results[0].geometry.location;
+        this.setState({
+          latitud: coords.lat,
+          longitud: coords.lng
+        });
+      })
+      .catch(err => {
+        //console.log(err);
+      });
+  }
+
+
   _getLocationAsync = async () => {
     let { status } = await Permissions.askAsync(Permissions.LOCATION);
     if (status !== "granted") {
@@ -369,10 +412,26 @@ export default class ProfileSettings extends React.Component {
     }
   };
 
+  setProfileLocation = () => {
+    let URL = `${API_BASE}/user/${this.state.vendedor}`
+
+    axios.get(URL).then(res =>{
+      this.setState({latitud: res.data.latitud, longitud: res.data.longitud});
+    }).catch(err =>{
+      console.log(err);
+    })
+  }
+
   saveCategory = category => {
     //console.log("saveCategory", category);
     this.setState({ categoria: category });
     this.setState({ categoriaColor: 'white' });
+  };
+
+  saveLocation = category => {
+    //console.log("saveCategory", category);
+    this.setState({ locationType: category });
+    this.setState({ locationColor: 'white' });
   };
 
   saveType = type => {
@@ -411,6 +470,16 @@ export default class ProfileSettings extends React.Component {
       this.setState({truequeColor: 'white'});
     } else {
       this.setState({truequeColor: 'crimson'});
+    }
+  };
+
+  onLocationChanged = text => {
+    this.setState({ locationString: text });
+    this.getCoordinatesFromAddress(text);
+    if(text !== ""){
+      this.setState({locationColor: 'white'});
+    } else {
+      this.setState({locationColor: 'crimson'});
     }
   };
 
@@ -536,17 +605,48 @@ export default class ProfileSettings extends React.Component {
               <Text style={{ marginHorizontal: 5, color: this.state.categoriaColor }}>Campo Requerido</Text>
             </View>
 
+            <View style={styles.row2}>
+              <LocationPickerModal saveLocation={this.saveLocation} />
+              <Text style={{ marginHorizontal: 5 }}> {this.state.locationType} </Text>
+              <Text style={{ marginHorizontal: 5, color: this.state.locationColor }}>Campo Requerido</Text>
+            </View>
+
+          {this.state.locationType === "Mapa" ? (
+            <View style={styles.row}>
+            <Text style={styles.label}>Localización</Text>
+            {this.state.locationResult !== null ? (
+              <Text style={styles.label}>
+                ({this.state.locationResult.coords.latitude},
+                {this.state.locationResult.coords.longitude})
+              </Text>
+            ) : (
+              []
+            )}
+          </View>
+          ) : (
+            []
+          )}
+
+          {this.state.locationType === "Direccion" ? (
             <View style={styles.row}>
               <Text style={styles.label}>Localización</Text>
-              {this.state.locationResult !== null ? (
-                <Text style={styles.label}>
-                  ({this.state.locationResult.coords.latitude},
-                  {this.state.locationResult.coords.longitude})
-                </Text>
-              ) : (
-                []
-              )}
+              <TextInput
+                  style={[styles.text_input, {borderColor: this.state.truequeColor, width: width/2}]}
+                  onChangeText={this.onLocationChanged}
+                  value={this.state.locationString}
+                />
             </View>
+          ) : (
+            []
+          )}
+            
+          {this.state.locationType === "Perfil" ? (
+            <View style={styles.row}>
+              {this.setProfileLocation()}
+            </View>
+          ) : (
+            []
+          )}
 
             <View style={styles.section}>
               <View style={[styles.row, styles.heading]}>

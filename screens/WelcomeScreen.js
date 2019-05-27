@@ -244,6 +244,7 @@ export default class LoginScreen2 extends Component {
                   }}
                 >
                   <Button
+                    id="loginButton"
                     style={{ backgroundColor: "transparent" }}
                     disabled={isLoading}
                     clear

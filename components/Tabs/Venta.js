@@ -103,12 +103,13 @@ export default class Venta extends Component {
             <View
               key={product.id}
               style={{
+                flex: 1,
                 display: "flex",
                 flexDirection: "row",
                 flexWrap: "wrap",
                 justifyContent: "space-evenly",
                 alignItems: "center",
-                margin: 10
+                margin: 0
               }}
             >
               <TouchableHighlight onPress={() => this._method(product.id)}>
