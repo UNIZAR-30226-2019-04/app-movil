@@ -3,7 +3,7 @@
     "name": "Telocam",
     "slug": "telocam",
     "icon": "./assets/icons/telocam_icon.png",
-    "version": "2.2.2",
+    "version": "2.2.3",
     "privacy": "public",
     "sdkVersion": "32.0.0",
     "ios": {
