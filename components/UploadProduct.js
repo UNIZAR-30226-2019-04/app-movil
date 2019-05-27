@@ -159,6 +159,10 @@ export default class UploadProduct extends React.Component {
       algoMal = true;
     } 
     if (this.state.tipo === "trueque" && (this.state.precioAux === 0 || this.state.precioAux < this.state.precioBase)) {
+      console.log("----------BASE----------");
+      console.log(this.state.precioBase);
+      console.log("-------------AUX--------");
+      console.log(this.state.precioAux);
       this.setState({truequeColor: 'crimson'});
       algoMal = true;
     } 

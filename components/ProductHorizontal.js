@@ -25,7 +25,8 @@ export default class ProductHorizontal extends Component {
               height: 80,
               resizeMode: "cover",
               borderRadius: 16,
-              marginHorizontal: 10
+              marginHorizontal: 10,
+              marginVertical: 10
             }}
           />
         </View>
@@ -37,7 +38,7 @@ export default class ProductHorizontal extends Component {
           </Text>
 
           <Text
-            style={{ fontSize: 20, fontWeight: "500", paddingHorizontal: 10 }}
+            style={{ fontSize: 20, fontWeight: "200", paddingHorizontal: 10 }}
           >
             {this.props.precio}€
           </Text>
@@ -55,7 +56,8 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
 
     width: Dimensions.get("window").width - 20,
-    marginHorizontal: 10,
+    marginHorizontal: 7,
+    marginTop: 7,
 
     borderWidth: 0.5,
     borderRadius: 12,

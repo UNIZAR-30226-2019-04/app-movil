@@ -74,6 +74,7 @@ export default class Comprados extends Component {
           <View
             key={product.id}
             style={{
+              flex: 1,
               display: "flex",
               flexDirection: "row",
               flexWrap: "wrap",
