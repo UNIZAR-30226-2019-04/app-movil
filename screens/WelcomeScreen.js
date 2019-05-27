@@ -117,7 +117,7 @@ export default class LoginScreen2 extends Component {
           const token = resp.data.Authorization;
           //const user = resp.data.user;
           const public_id = resp.data.public_id;
-          //console.log(resp.data);
+          console.log(resp.data);
 
           try {
             AsyncStorage.setItem("token", token);
@@ -131,7 +131,7 @@ export default class LoginScreen2 extends Component {
           this.props.navigation.navigate("Dashboard");
         })
         .catch(err => {
-          //console.log("Error: ", err.response.status);
+          console.log("Error: ", err);
           if (err.response.status == 401 && this.state.isEmailValid) {
             this.setState({
               isFormErrorMsg: "Email o contraseña no coinciden.",

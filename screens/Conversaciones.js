@@ -66,7 +66,7 @@ export default class Conversaciones extends Component {
       })
       .then(res => {
         const conversaciones = res.data.data;
-        //console.log("Conversaciones response", conversaciones);
+        console.log("Conversaciones response", conversaciones);
         //this.setState({ conversaciones });
         this.setState({ conversaciones: conversaciones });
       })
@@ -87,9 +87,9 @@ export default class Conversaciones extends Component {
 
   _checkUserEmail(conversacion) {
     if (conversacion.vendedor === this.state.user) {
-      return conversacion.email_comprador;
+      return conversacion.nick_comprador;
     } else {
-      return conversacion.email_vendedor;
+      return conversacion.nick_vendedor;
     }
   }
 

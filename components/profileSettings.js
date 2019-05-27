@@ -1,5 +1,5 @@
 import React from "react";
-import { ScrollView, View, StyleSheet } from "react-native";
+import { ScrollView, View, StyleSheet, Switch } from "react-native";
 import { Input, Button } from "react-native-elements";
 
 import {
@@ -49,7 +49,8 @@ export default class ProfileSettings extends React.Component {
     token: "",
     user: "",
     image: {},
-    isConfirmPasswordIValid: true
+    isConfirmPasswordIValid: true,
+    quiereEmails: true
   };
 
   _pickImage = async () => {
@@ -145,7 +146,7 @@ export default class ProfileSettings extends React.Component {
       .catch(err => {
         //console.log(err);
       });
-  }
+  } 
 
   _getLocationAsync = async () => {
     let { status } = await Permissions.askAsync(Permissions.LOCATION);
@@ -364,6 +365,16 @@ export default class ProfileSettings extends React.Component {
               underlineColorAndroid={"transparent"}
             />
 
+            <View style={styles.section}>
+              <View style={[styles.row, styles.heading, {flex: 1,justifyContent: "space-between", alignItems: "flex-start"}]}>
+                <RkText rkType="header6 primary">¿Quiere recibir notificaciones?</RkText>
+                <Switch
+                  value = {this.state.quiereEmails}
+                  onValueChange = {value => this.setState({quiereEmails: value})}
+                />
+              </View>
+            </View>
+
             <Button
               type="clear"
               containerStyle={{ height: 50, marginTop: 20 }}
@@ -372,6 +383,7 @@ export default class ProfileSettings extends React.Component {
               onPress={this.updateProfile}
             />
           </View>
+
 
           <View style={[styles.row, styles.section]}>
             <DeleteAccountModal

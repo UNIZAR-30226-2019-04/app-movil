@@ -157,7 +157,7 @@ class Feed extends Component {
       let token = await Notifications.getExpoPushTokenAsync();
       console.log("PUSH TOKEN", token);
 
-      //this.pushToken(token);
+      this.pushToken(token);
 
       // POST the token to your backend server from where you can retrieve it to send push notifications.
     } catch (error) {
