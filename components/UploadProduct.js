@@ -611,7 +611,7 @@ export default class UploadProduct extends React.Component {
               <Text style={{ marginHorizontal: 5, color: this.state.locationColor }}>Campo Requerido</Text>
             </View>
 
-          {this.state.locationType === "Mapa" ? (
+          {this.state.locationType === "Ubicación actual" ? (
             <View style={styles.row}>
             <Text style={styles.label}>Localización</Text>
             {this.state.locationResult !== null ? (
@@ -627,7 +627,7 @@ export default class UploadProduct extends React.Component {
             []
           )}
 
-          {this.state.locationType === "Direccion" ? (
+          {this.state.locationType === "Introducir Dirección" ? (
             <View style={styles.row}>
               <Text style={styles.label}>Localización</Text>
               <TextInput
@@ -640,7 +640,7 @@ export default class UploadProduct extends React.Component {
             []
           )}
             
-          {this.state.locationType === "Perfil" ? (
+          {this.state.locationType === "Ubicación del Perfil" ? (
             <View style={styles.row}>
               {this.setProfileLocation()}
             </View>
