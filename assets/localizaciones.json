@@ -1,0 +1,11 @@
+{
+    "Mapa": {
+      "icon": "car"
+    },
+    "Direccion" :{
+        "icon": "mobile"
+    },
+    "Perfil": {
+        "icon": "profile"
+    }
+}
