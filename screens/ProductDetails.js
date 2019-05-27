@@ -125,8 +125,8 @@ export default class ProductDetails extends Component {
         message:
           "Telocam | Mira lo que he encontrado en Telocam!, " +
           this.state.product.titulo +
-          " \n Descubre más aqui: https://telocam.com/producto/" +
-          this.product.is
+          " \n Descubre más aqui: https://telocam.com/#/ProductPage?idProd=" +
+          this.state.product.id
       });
 
       if (result.action === Share.sharedAction) {
