@@ -1,11 +1,11 @@
 {
-    "Mapa": {
-      "icon": "car"
+    "Ubicación actual": {
+      "icon": "map-marker"
     },
-    "Direccion" :{
-        "icon": "mobile"
+    "Introducir Dirección" :{
+        "icon": "map"
     },
-    "Perfil": {
-        "icon": "profile"
+    "Ubicación del Perfil": {
+        "icon": "street-view"
     }
 }
