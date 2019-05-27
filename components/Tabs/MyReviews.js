@@ -25,6 +25,7 @@ export default class MyReviews extends Component {
       .get(URL)
       .then(res => {
         var list = [];
+        console.log("valoraciones_hechas", res.data);
         res.data.valoraciones_hechas.map(name => {
           list.push(name);
         });
@@ -42,7 +43,12 @@ export default class MyReviews extends Component {
   };
 
   _method = product => {
-    this.props.navigation.navigate("ProductDetails", { product });
+    console.log("ProductDetails", product.id);
+
+    /*     this.props.navigation.navigate("ProductDetails", {
+      product: product.id,
+      deseado: product.deseado
+    }); */
   };
   _renderItem = ({ item }) => {
     console.log("VALORACION");
@@ -52,7 +58,7 @@ export default class MyReviews extends Component {
         <Review
           name={item.titulo}
           description={item.descripcion}
-          valoracion = {item.puntuacion}
+          valoracion={item.puntuacion}
         />
       </TouchableHighlight>
     );

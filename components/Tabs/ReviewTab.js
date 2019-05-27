@@ -66,8 +66,18 @@ export default class ReviewTab extends Component {
           style={{ backgroundColor: "white", color: "red", fontWeight: "bold" }}
           navigationState={this.state}
           renderScene={SceneMap({
-            first: () => <MyReviews user={this.props.user} />,
-            second: () => <YourReviews user={this.props.user} />
+            first: () => (
+              <MyReviews
+                user={this.props.user}
+                navigation={this.props.navigation}
+              />
+            ),
+            second: () => (
+              <YourReviews
+                user={this.props.user}
+                navigation={this.props.navigation}
+              />
+            )
           })}
           renderTabBar={this._renderTabBar}
           onIndexChange={index => this.setState({ index })}
