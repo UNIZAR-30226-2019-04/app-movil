@@ -512,9 +512,16 @@ export default class ProductDetails extends Component {
                   </Text>
                 ) : this.state.fechaexpiracion !== null ? (
                   <View style={{ flex: 2 }}>
-                    <TimerCountdown
-                      fechaexpiracion={this.state.fechaexpiracion}
-                    />
+                    <Text
+                    style={{
+                      paddingHorizontal: 30,
+                      color: "grey",
+                      marginVertical: 10
+                    }}
+                    
+                  >
+                    Fecha de finalización: {this.state.fechaexpiracion}
+                  </Text>
                   </View>
                 ) : (
                   []
