@@ -445,12 +445,13 @@ export default class UploadProduct extends React.Component {
       };
 
       fetch(apiUrl, options)
-        .then(res => {})//console.log(res))
+        .then(res => {
+          this.props.closeModal();
+        })
         .catch(error => {
           console.log(error);
         });
 
-      this.props.closeModal();
     }
   };
 

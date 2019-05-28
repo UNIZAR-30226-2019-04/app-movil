@@ -333,6 +333,12 @@ class Feed extends Component {
     );
   };
 
+  shuffleDestacados = list => {
+    var shuffle = require('shuffle-array');
+    shuffle(list);
+    return list;
+  }
+
   render() {
     const { search } = this.state;
     //console.log(categories, this.state.products);
@@ -457,7 +463,7 @@ class Feed extends Component {
             showsHorizontalScrollIndicator={false}
             style={styles.section}
           >
-            {list_products}
+            {this.shuffleDestacados(list_products)}
           </ScrollView>
         </View>
 
