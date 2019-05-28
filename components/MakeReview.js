@@ -51,6 +51,11 @@ export default class MakeReview extends React.Component {
     } catch (error) {
       //console.log(error);
     }
+
+    if(this.state.titulo === "") {
+      this.setState({titulo: "Sin título"})
+    }
+
     let URL = `${API_BASE}/valoracion/${my_user}`;
     let body = {
         titulo: this.state.titulo,
